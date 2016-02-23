@@ -9,8 +9,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
+import com.ai.paas.cpaas.mgmt.manage.model.chronos.JobsResp;
 import com.ai.paas.cpaas.mgmt.manage.model.consul.ServiceInfo;
-import com.ai.paas.cpaas.mgmt.manage.model.marathon.GeneralResp;
 import com.ai.paas.cpaas.mgmt.service.IRemoteService;
 import com.ai.paas.cpaas.mgmt.service.RemoteServiceException;
 
@@ -24,7 +25,7 @@ public class AgentRemoteService implements IRemoteService {
 	}
 
 	@Override
-	public <T extends GeneralResp> T deployLongRun(String createAppReq, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T deployLongRun(String createAppReq, Class<T> cls) throws RemoteServiceException {
 		T t = null;
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -39,12 +40,12 @@ public class AgentRemoteService implements IRemoteService {
 	}
 
 	@Override
-	public <T extends GeneralResp> T getContainerInfo(String containerId, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T getContainerInfo(String containerId, Class<T> cls) throws RemoteServiceException {
 		return null;
 	}
 
 	@Override
-	public <T extends GeneralResp> T putConfig(String changeConfigReq, String containerId, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T putConfig(String changeConfigReq, String containerId, Class<T> cls) throws RemoteServiceException {
 		return null;
 	}
 
@@ -95,13 +96,13 @@ public class AgentRemoteService implements IRemoteService {
 	}
 
 	@Override
-	public <T extends GeneralResp> T destroyLongRun(String containerId, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T destroyLongRun(String containerId, Class<T> cls) throws RemoteServiceException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <T extends GeneralResp> T getConfig(String containerId, String version, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T getConfig(String containerId, String version, Class<T> cls) throws RemoteServiceException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -120,6 +121,36 @@ public class AgentRemoteService implements IRemoteService {
 
 	@Override
 	public List<ServiceInfo> getServiceInfo(String param) throws RemoteServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GeneralHttpResp deployTimer(String createAppReq) throws RemoteServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GeneralHttpResp deployTimerDependency(String createAppReq) throws RemoteServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GeneralHttpResp destroyTimer(String name) throws RemoteServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GeneralHttpResp forceTimer(String name) throws RemoteServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JobsResp getTimerJobs() throws RemoteServiceException {
 		// TODO Auto-generated method stub
 		return null;
 	}

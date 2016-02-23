@@ -3,8 +3,8 @@ package com.ai.paas.cpaas.mgmt.manage.thread;
 import org.apache.log4j.Logger;
 
 import com.ai.paas.cpaas.mgmt.manage.RunJobThread;
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq.Container;
-import com.ai.paas.cpaas.mgmt.manage.model.marathon.GeneralResp;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.GetConfigResp;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.SimpleInfoResp;
 import com.ai.paas.cpaas.mgmt.service.RemoteServiceException;
@@ -40,7 +40,7 @@ public class UpgradeApp extends RunJobThread<GetConfigResp> {
 	}
 
 	@Override
-	protected GeneralResp runJob(String containerId, String param) throws RemoteServiceException {
+	protected GeneralHttpResp runJob(String containerId, String param) throws RemoteServiceException {
 		return remoteService.putConfig(param, containerId, SimpleInfoResp.class);
 	}
 

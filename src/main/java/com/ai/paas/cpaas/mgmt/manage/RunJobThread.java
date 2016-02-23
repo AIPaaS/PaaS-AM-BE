@@ -24,13 +24,13 @@ import com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskDetail;
 import com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfo;
 import com.ai.paas.cpaas.mgmt.manage.model.ActionType;
 import com.ai.paas.cpaas.mgmt.manage.model.CallBackReq;
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
 import com.ai.paas.cpaas.mgmt.manage.model.CallBackReq.Container.Instance;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq.Container;
 import com.ai.paas.cpaas.mgmt.manage.model.InstanceStateType;
 import com.ai.paas.cpaas.mgmt.manage.model.TaskIdInfo;
 import com.ai.paas.cpaas.mgmt.manage.model.TaskStateType;
-import com.ai.paas.cpaas.mgmt.manage.model.marathon.GeneralResp;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.GetAppResp;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.GetAppResp.App;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.GetAppResp.App.Task;
@@ -98,7 +98,7 @@ public abstract class RunJobThread<T> implements Runnable {
 					int taskId = appTaskDetailService.saveAppTaskDetail(reqId, appId, container.getContainerName(), toJson(t), TaskStateType.STAGING);
 					appTaskLogService.saveTaskLog(taskId, "start container " + container.getContainerName());
 
-					GeneralResp createAppResp = runJob(container.getContainerName(), toJson(t));
+					GeneralHttpResp createAppResp = runJob(container.getContainerName(), toJson(t));
 					TaskIdInfo taskIdInfo = new TaskIdInfo(taskId, container.getContainerName());
 					if (createAppResp.getSuccess()) {
 						tasks.put(taskIdInfo, t);
@@ -252,7 +252,7 @@ public abstract class RunJobThread<T> implements Runnable {
 
 	protected abstract boolean validate(Container container);
 
-	protected abstract GeneralResp runJob(String containerId, String param) throws RemoteServiceException;
+	protected abstract GeneralHttpResp runJob(String containerId, String param) throws RemoteServiceException;
 
 	protected String toJson(Object obj) {
 		return (new Gson()).toJson(obj);

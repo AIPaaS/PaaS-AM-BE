@@ -2,7 +2,9 @@ package com.ai.paas.cpaas.mgmt.manage.model.marathon;
 
 import java.util.List;
 
-public class GetAppResp extends GeneralResp {
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
+
+public class GetAppResp extends GeneralHttpResp {
 	private App app;
 
 	public App getApp() {

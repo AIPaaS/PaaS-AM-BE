@@ -2,20 +2,31 @@ package com.ai.paas.cpaas.mgmt.service;
 
 import java.util.List;
 
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
+import com.ai.paas.cpaas.mgmt.manage.model.chronos.JobsResp;
 import com.ai.paas.cpaas.mgmt.manage.model.consul.ServiceInfo;
-import com.ai.paas.cpaas.mgmt.manage.model.marathon.GeneralResp;
 
 public interface IRemoteService {
 
-	public <T extends GeneralResp> T deployLongRun(String createAppReq, Class<T> cls) throws RemoteServiceException;
+	public <T extends GeneralHttpResp> T deployLongRun(String createAppReq, Class<T> cls) throws RemoteServiceException;
 
-	public <T extends GeneralResp> T getContainerInfo(String containerId, Class<T> cls) throws RemoteServiceException;
+	public GeneralHttpResp deployTimer(String createAppReq) throws RemoteServiceException;
 
-	public <T extends GeneralResp> T putConfig(String changeConfigReq, String containerId, Class<T> cls) throws RemoteServiceException;
+	public GeneralHttpResp deployTimerDependency(String createAppReq) throws RemoteServiceException;
 
-	public <T extends GeneralResp> T getConfig(String containerId, String version, Class<T> cls) throws RemoteServiceException;
+	public <T extends GeneralHttpResp> T getContainerInfo(String containerId, Class<T> cls) throws RemoteServiceException;
 
-	public <T extends GeneralResp> T destroyLongRun(String containerId, Class<T> cls) throws RemoteServiceException;
+	public <T extends GeneralHttpResp> T putConfig(String changeConfigReq, String containerId, Class<T> cls) throws RemoteServiceException;
+
+	public <T extends GeneralHttpResp> T getConfig(String containerId, String version, Class<T> cls) throws RemoteServiceException;
+
+	public <T extends GeneralHttpResp> T destroyLongRun(String containerId, Class<T> cls) throws RemoteServiceException;
+
+	public GeneralHttpResp destroyTimer(String name) throws RemoteServiceException;
+
+	public GeneralHttpResp forceTimer(String name) throws RemoteServiceException;
+	
+	public JobsResp getTimerJobs() throws RemoteServiceException;
 
 	public boolean registerService(String param) throws RemoteServiceException;
 

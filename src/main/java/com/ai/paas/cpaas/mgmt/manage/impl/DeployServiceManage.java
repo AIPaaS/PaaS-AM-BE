@@ -13,15 +13,22 @@ import com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskLog;
 import com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfo;
 import com.ai.paas.cpaas.mgmt.interfaces.IDeployServiceManager;
 import com.ai.paas.cpaas.mgmt.manage.model.ActionType;
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralDeployResp;
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq.Container;
-import com.ai.paas.cpaas.mgmt.manage.model.GeneralDeployResp;
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralResp;
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralTimerReq;
 import com.ai.paas.cpaas.mgmt.manage.model.LogReq;
 import com.ai.paas.cpaas.mgmt.manage.model.LogResp;
 import com.ai.paas.cpaas.mgmt.manage.model.LogResp.Log;
 import com.ai.paas.cpaas.mgmt.manage.model.LogResp.Task;
 import com.ai.paas.cpaas.mgmt.manage.model.StatusResp;
 import com.ai.paas.cpaas.mgmt.manage.model.TaskStateType;
+import com.ai.paas.cpaas.mgmt.manage.model.TimerQueryResp;
+import com.ai.paas.cpaas.mgmt.manage.model.chronos.ChronosJob;
+import com.ai.paas.cpaas.mgmt.manage.model.chronos.JobsResp;
+import com.ai.paas.cpaas.mgmt.manage.model.chronos.TurnChronosFactory;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.GetAppResp;
 import com.ai.paas.cpaas.mgmt.manage.thread.CreateLongRun;
 import com.ai.paas.cpaas.mgmt.manage.thread.DestroyApp;
@@ -78,7 +85,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 		appReqInfoService.updateReqInfo(reqId, generalResp);
 		return gson.toJson(generalResp);
 	}
-	
+
 	@Override
 	public String destroyLongRun(String param) {
 		Gson gson = new Gson();
@@ -105,11 +112,6 @@ public class DeployServiceManage implements IDeployServiceManager {
 		generalResp.setReqId(reqId);
 		appReqInfoService.updateReqInfo(reqId, generalResp);
 		return gson.toJson(generalResp);
-	}
-
-	@Override
-	public String createTimer(String param) {
-		return null;
 	}
 
 	@Override
@@ -302,26 +304,116 @@ public class DeployServiceManage implements IDeployServiceManager {
 	}
 
 	@Override
+	public String createTimer(String param) {
+		Gson gson = new Gson();
+		GeneralResp generalResp = new GeneralResp();
+		try {
+			generalResp = gson.fromJson(param, GeneralResp.class);
+			GeneralTimerReq generalTimerReq = gson.fromJson(param, GeneralTimerReq.class);
+			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
+			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
+			ChronosJob createReq = TurnChronosFactory.turnCreateReq(generalTimerReq);
+			GeneralHttpResp generalHttpResp = null;
+			if (createReq.getParents() == null)
+				generalHttpResp = clusterProxy.deployTimer(gson.toJson(createReq));
+			else
+				generalHttpResp = clusterProxy.deployTimerDependency(gson.toJson(createReq));
+
+			if (generalHttpResp.getSuccess()) {
+				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
+				generalResp.setResultMsg("timer started");
+			} else {
+				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+				generalResp.setResultMsg("create timer failed");
+			}
+		} catch (Exception e) {
+			logger.error(e);
+			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+			generalResp.setResultMsg("create timer failed because exception");
+		}
+		return gson.toJson(generalResp);
+	}
+
+	@Override
 	public String destroyTimer(String param) {
-		// TODO Auto-generated method stub
-		return null;
+		Gson gson = new Gson();
+		GeneralResp generalResp = new GeneralResp();
+		try {
+			generalResp = gson.fromJson(param, GeneralResp.class);
+			GeneralTimerReq generalTimerReq = gson.fromJson(param, GeneralTimerReq.class);
+			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
+			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
+			GeneralHttpResp generalHttpResp = clusterProxy.destroyTimer(generalTimerReq.getAppId());
+
+			if (generalHttpResp.getSuccess()) {
+				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
+				generalResp.setResultMsg("timer destroyed");
+			} else {
+				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+				generalResp.setResultMsg("destroy timer failed");
+			}
+		} catch (Exception e) {
+			logger.error(e);
+			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+			generalResp.setResultMsg("destroy timer failed because exception");
+		}
+		return gson.toJson(generalResp);
 	}
 
 	@Override
 	public String startTimer(String param) {
-		// TODO Auto-generated method stub
-		return null;
+		Gson gson = new Gson();
+		GeneralResp generalResp = new GeneralResp();
+		try {
+			generalResp = gson.fromJson(param, GeneralResp.class);
+			GeneralTimerReq generalTimerReq = gson.fromJson(param, GeneralTimerReq.class);
+			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
+			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
+			GeneralHttpResp generalHttpResp = clusterProxy.forceTimer(generalTimerReq.getAppName());
+
+			if (generalHttpResp.getSuccess()) {
+				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
+				generalResp.setResultMsg("timer destroyed");
+			} else {
+				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+				generalResp.setResultMsg("destroy timer failed");
+			}
+		} catch (Exception e) {
+			logger.error(e);
+			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+			generalResp.setResultMsg("destroy timer failed because exception");
+		}
+		return gson.toJson(generalResp);
 	}
 
 	@Override
 	public String upgradeTimer(String param) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String statusTimer(String param) {
-		// TODO Auto-generated method stub
-		return null;
+		Gson gson = new Gson();
+		TimerQueryResp generalResp = new TimerQueryResp();
+		try {
+			generalResp = gson.fromJson(param, TimerQueryResp.class);
+			GeneralTimerReq generalTimerReq = gson.fromJson(param, GeneralTimerReq.class);
+			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
+			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
+			JobsResp jobsResp = clusterProxy.getTimerJobs();
+			if (jobsResp.getSuccess()) {
+				generalResp = TurnChronosFactory.fillTimerQueryResp(generalResp, jobsResp);
+				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
+				generalResp.setResultMsg("timer destroyed");
+			} else {
+				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+				generalResp.setResultMsg("destroy timer failed");
+			}
+		} catch (Exception e) {
+			logger.error(e);
+			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+			generalResp.setResultMsg("destroy timer failed because exception");
+		}
+		return gson.toJson(generalResp);
 	}
 }

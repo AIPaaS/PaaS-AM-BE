@@ -1,8 +1,8 @@
 package com.ai.paas.cpaas.mgmt.manage.thread;
 
 import com.ai.paas.cpaas.mgmt.manage.RunJobThread;
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq.Container;
-import com.ai.paas.cpaas.mgmt.manage.model.marathon.GeneralResp;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.SimpleInfoResp;
 import com.ai.paas.cpaas.mgmt.service.RemoteServiceException;
 
@@ -20,7 +20,7 @@ public class DestroyApp extends RunJobThread<Object> {
 	}
 
 	@Override
-	protected GeneralResp runJob(String containerId, String param) throws RemoteServiceException {
+	protected GeneralHttpResp runJob(String containerId, String param) throws RemoteServiceException {
 		return remoteService.destroyLongRun(containerId, SimpleInfoResp.class);
 	}
 

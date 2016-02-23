@@ -1,6 +1,8 @@
 package com.ai.paas.cpaas.mgmt.manage.model.marathon;
 
-public class SimpleInfoResp extends GeneralResp {
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
+
+public class SimpleInfoResp extends GeneralHttpResp {
 
 	private String deploymentId;
 	private String version;

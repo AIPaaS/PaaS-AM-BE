@@ -11,6 +11,7 @@ import com.ai.paas.cpaas.mgmt.manage.RunJobThread;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq.Container;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq.Container.Check;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq.Container.For;
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
 import com.ai.paas.cpaas.mgmt.manage.model.TaskStateType;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.CreateAppReq;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.CreateAppReq.Container.Docker;
@@ -18,7 +19,6 @@ import com.ai.paas.cpaas.mgmt.manage.model.marathon.CreateAppReq.Container.Docke
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.CreateAppReq.Container.Volume;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.CreateAppReq.HealthCheck;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.CreateAppResp;
-import com.ai.paas.cpaas.mgmt.manage.model.marathon.GeneralResp;
 import com.ai.paas.cpaas.mgmt.service.RemoteServiceException;
 
 public class CreateLongRun extends RunJobThread<CreateAppReq> {
@@ -93,7 +93,7 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 	}
 
 	@Override
-	protected GeneralResp runJob(String containerId, String param) throws RemoteServiceException {
+	protected GeneralHttpResp runJob(String containerId, String param) throws RemoteServiceException {
 		return remoteService.deployLongRun(param, CreateAppResp.class);
 	}
 

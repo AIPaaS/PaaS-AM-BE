@@ -1,6 +1,8 @@
-package com.ai.paas.cpaas.mgmt.manage.model.marathon;
+package com.ai.paas.cpaas.mgmt.manage.model;
 
-public class GeneralResp {
+import com.ai.paas.cpaas.mgmt.manage.model.marathon.FailedResp;
+
+public class GeneralHttpResp {
 	private Boolean success;
 	private FailedResp failedResp;
 

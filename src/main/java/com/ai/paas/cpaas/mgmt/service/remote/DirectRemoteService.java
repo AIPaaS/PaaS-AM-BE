@@ -15,9 +15,11 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfo;
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
+import com.ai.paas.cpaas.mgmt.manage.model.chronos.ChronosJob;
+import com.ai.paas.cpaas.mgmt.manage.model.chronos.JobsResp;
 import com.ai.paas.cpaas.mgmt.manage.model.consul.ServiceInfo;
 import com.ai.paas.cpaas.mgmt.manage.model.marathon.FailedResp;
-import com.ai.paas.cpaas.mgmt.manage.model.marathon.GeneralResp;
 import com.ai.paas.cpaas.mgmt.service.IRemoteService;
 import com.ai.paas.cpaas.mgmt.service.RemoteServiceException;
 import com.google.common.reflect.TypeToken;
@@ -27,14 +29,14 @@ public class DirectRemoteService implements IRemoteService {
 	private static Logger logger = Logger.getLogger(DirectRemoteService.class);
 	public static final String MARATHON_APP_PATH = "/v2/apps";
 	public static final String CONSUL_APP_PATH = "/v1/catalog";
-	// public static final String marathon_app_info = "";
+	public static final String CHRONOS_APP_PATH = "/scheduler";
 	private ResClusterInfo resClusterInfo;
 
 	public DirectRemoteService(ResClusterInfo resClusterInfo) {
 		this.resClusterInfo = resClusterInfo;
 	}
 
-	public <T extends GeneralResp> T deployLongRun(String createAppReq, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T deployLongRun(String createAppReq, Class<T> cls) throws RemoteServiceException {
 		T t = null;
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -63,7 +65,7 @@ public class DirectRemoteService implements IRemoteService {
 		return t;
 	}
 
-	public <T extends GeneralResp> T getContainerInfo(String containerId, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T getContainerInfo(String containerId, Class<T> cls) throws RemoteServiceException {
 		T t = null;
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -86,7 +88,7 @@ public class DirectRemoteService implements IRemoteService {
 		return t;
 	}
 
-	public <T extends GeneralResp> T putConfig(String changeConfigReq, String containerId, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T putConfig(String changeConfigReq, String containerId, Class<T> cls) throws RemoteServiceException {
 		T t = null;
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -117,7 +119,7 @@ public class DirectRemoteService implements IRemoteService {
 	}
 
 	@Override
-	public <T extends GeneralResp> T destroyLongRun(String containerId, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T destroyLongRun(String containerId, Class<T> cls) throws RemoteServiceException {
 		T t = null;
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -141,7 +143,7 @@ public class DirectRemoteService implements IRemoteService {
 	}
 
 	@Override
-	public <T extends GeneralResp> T getConfig(String containerId, String version, Class<T> cls) throws RemoteServiceException {
+	public <T extends GeneralHttpResp> T getConfig(String containerId, String version, Class<T> cls) throws RemoteServiceException {
 		T t = null;
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -231,5 +233,131 @@ public class DirectRemoteService implements IRemoteService {
 		} catch (Exception e) {
 			throw new RemoteServiceException(e);
 		}
+	}
+
+	@Override
+	public GeneralHttpResp deployTimer(String createAppReq) throws RemoteServiceException {
+		GeneralHttpResp t = new GeneralHttpResp();
+		try {
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			HttpPost httpPost = new HttpPost(resClusterInfo.getChronosAddr() + CHRONOS_APP_PATH + "/iso8601");
+
+			StringEntity entity = new StringEntity(createAppReq, "utf-8");
+			entity.setContentEncoding("UTF-8");
+			entity.setContentType("application/json");
+			httpPost.setEntity(entity);
+			logger.info(createAppReq);
+			CloseableHttpResponse resp = httpclient.execute(httpPost);
+			// HttpEntity respEntity = resp.getEntity();
+			// String respString = EntityUtils.toString(respEntity, "UTF-8");
+			logger.info(resp.getStatusLine().getStatusCode());
+			if (resp.getStatusLine().getStatusCode() == 204) {
+				t.setSuccess(true);
+			} else {
+				// FailedResp failedResp = (new Gson()).fromJson(respString,
+				// FailedResp.class);
+				// t.setFailedResp(failedResp);
+				t.setSuccess(false);
+			}
+		} catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+		return t;
+	}
+
+	@Override
+	public GeneralHttpResp destroyTimer(String name) throws RemoteServiceException {
+		GeneralHttpResp t = new GeneralHttpResp();
+		try {
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			HttpDelete httpDelete = new HttpDelete(resClusterInfo.getChronosAddr() + CHRONOS_APP_PATH + "/job/" + name);
+
+			CloseableHttpResponse resp = httpclient.execute(httpDelete);
+			logger.info(resp.getStatusLine().getStatusCode());
+			if (resp.getStatusLine().getStatusCode() == 204) {
+				t.setSuccess(true);
+			} else {
+				t.setSuccess(false);
+			}
+		} catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+		return t;
+	}
+
+	@Override
+	public GeneralHttpResp deployTimerDependency(String createAppReq) throws RemoteServiceException {
+		GeneralHttpResp t = new GeneralHttpResp();
+		try {
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			HttpPost httpPost = new HttpPost(resClusterInfo.getChronosAddr() + CHRONOS_APP_PATH + "/dependency");
+
+			StringEntity entity = new StringEntity(createAppReq, "utf-8");
+			entity.setContentEncoding("UTF-8");
+			entity.setContentType("application/json");
+			httpPost.setEntity(entity);
+			logger.info(createAppReq);
+			CloseableHttpResponse resp = httpclient.execute(httpPost);
+			// HttpEntity respEntity = resp.getEntity();
+			// String respString = EntityUtils.toString(respEntity, "UTF-8");
+			logger.info(resp.getStatusLine().getStatusCode());
+			if (resp.getStatusLine().getStatusCode() == 204) {
+				t.setSuccess(true);
+			} else {
+				// FailedResp failedResp = (new Gson()).fromJson(respString,
+				// FailedResp.class);
+				// t.setFailedResp(failedResp);
+				t.setSuccess(false);
+			}
+		} catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+		return t;
+	}
+
+	@Override
+	public GeneralHttpResp forceTimer(String name) throws RemoteServiceException {
+		GeneralHttpResp t = new GeneralHttpResp();
+		try {
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			HttpPut httpPut = new HttpPut(resClusterInfo.getChronosAddr() + CHRONOS_APP_PATH + "/job/" + name);
+
+			CloseableHttpResponse resp = httpclient.execute(httpPut);
+			logger.info(resp.getStatusLine().getStatusCode());
+			if (resp.getStatusLine().getStatusCode() == 204) {
+				t.setSuccess(true);
+			} else {
+				t.setSuccess(false);
+			}
+		} catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+		return t;
+	}
+
+	@Override
+	public JobsResp getTimerJobs() throws RemoteServiceException {
+		JobsResp jobsResp = new JobsResp();
+		try {
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			HttpGet httpGet = new HttpGet(resClusterInfo.getChronosAddr() + CHRONOS_APP_PATH + "/jobs");
+
+			CloseableHttpResponse resp = httpclient.execute(httpGet);
+			HttpEntity respEntity = resp.getEntity();
+			String respString = EntityUtils.toString(respEntity, "UTF-8");
+			logger.info(resp.getStatusLine().getStatusCode());
+			if (resp.getStatusLine().getStatusCode() == 200) {
+				List<ChronosJob> jobs = (new Gson()).fromJson(respString, new TypeToken<List<ChronosJob>>(){}.getType());
+				jobsResp.setJobs(jobs);
+				jobsResp.setSuccess(true);
+			} else {
+				FailedResp failedResp = (new Gson()).fromJson(respString, FailedResp.class);
+				jobsResp.setFailedResp(failedResp);
+				jobsResp.setSuccess(false);
+			}
+		} catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+		return jobsResp;
 	}
 }

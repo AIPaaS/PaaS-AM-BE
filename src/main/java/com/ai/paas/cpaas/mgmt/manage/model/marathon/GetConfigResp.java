@@ -2,9 +2,10 @@ package com.ai.paas.cpaas.mgmt.manage.model.marathon;
 
 import java.util.List;
 
+import com.ai.paas.cpaas.mgmt.manage.model.GeneralHttpResp;
 import com.ai.paas.cpaas.mgmt.manage.model.Parameter;
 
-public class GetConfigResp extends GeneralResp {
+public class GetConfigResp extends GeneralHttpResp {
 	private String id;
 	private String cmd;
 	private List<String> args;
