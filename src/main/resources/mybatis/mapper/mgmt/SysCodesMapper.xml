@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ai.paas.cpaas.mgmt.dao.interfaces.SysCodesMapper" >
+  <resultMap id="BaseResultMap" type="com.ai.paas.cpaas.mgmt.dao.mapper.bo.SysCodes" >
+    <result column="sys_code" property="sysCode" jdbcType="VARCHAR" />
+    <result column="code_key" property="codeKey" jdbcType="VARCHAR" />
+    <result column="code_value" property="codeValue" jdbcType="VARCHAR" />
+    <result column="code_state" property="codeState" jdbcType="INTEGER" />
+    <result column="code_order" property="codeOrder" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    sys_code, code_key, code_value, code_state, code_order
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.SysCodesCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_codes
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitEnd}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.SysCodesCriteria" >
+    delete from sys_codes
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.SysCodes" >
+    insert into sys_codes (sys_code, code_key, code_value, 
+      code_state, code_order)
+    values (#{sysCode,jdbcType=VARCHAR}, #{codeKey,jdbcType=VARCHAR}, #{codeValue,jdbcType=VARCHAR}, 
+      #{codeState,jdbcType=INTEGER}, #{codeOrder,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.SysCodes" >
+    insert into sys_codes
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sysCode != null" >
+        sys_code,
+      </if>
+      <if test="codeKey != null" >
+        code_key,
+      </if>
+      <if test="codeValue != null" >
+        code_value,
+      </if>
+      <if test="codeState != null" >
+        code_state,
+      </if>
+      <if test="codeOrder != null" >
+        code_order,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sysCode != null" >
+        #{sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="codeKey != null" >
+        #{codeKey,jdbcType=VARCHAR},
+      </if>
+      <if test="codeValue != null" >
+        #{codeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="codeState != null" >
+        #{codeState,jdbcType=INTEGER},
+      </if>
+      <if test="codeOrder != null" >
+        #{codeOrder,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.SysCodesCriteria" resultType="java.lang.Integer" >
+    select count(*) from sys_codes
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_codes
+    <set >
+      <if test="record.sysCode != null" >
+        sys_code = #{record.sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.codeKey != null" >
+        code_key = #{record.codeKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.codeValue != null" >
+        code_value = #{record.codeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.codeState != null" >
+        code_state = #{record.codeState,jdbcType=INTEGER},
+      </if>
+      <if test="record.codeOrder != null" >
+        code_order = #{record.codeOrder,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_codes
+    set sys_code = #{record.sysCode,jdbcType=VARCHAR},
+      code_key = #{record.codeKey,jdbcType=VARCHAR},
+      code_value = #{record.codeValue,jdbcType=VARCHAR},
+      code_state = #{record.codeState,jdbcType=INTEGER},
+      code_order = #{record.codeOrder,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ai.paas.cpaas.mgmt.dao.interfaces.AppTaskDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskDetail" >
+    <id column="task_id" property="taskId" jdbcType="INTEGER" />
+    <result column="req_id" property="reqId" jdbcType="INTEGER" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="task_name" property="taskName" jdbcType="VARCHAR" />
+    <result column="task_json" property="taskJson" jdbcType="VARCHAR" />
+    <result column="task_order" property="taskOrder" jdbcType="INTEGER" />
+    <result column="task_desc" property="taskDesc" jdbcType="VARCHAR" />
+    <result column="task_state" property="taskState" jdbcType="INTEGER" />
+    <result column="resp_message" property="respMessage" jdbcType="VARCHAR" />
+    <result column="task_start_time" property="taskStartTime" jdbcType="TIMESTAMP" />
+    <result column="task_end_time" property="taskEndTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    task_id, req_id, app_id, task_name, task_json, task_order, task_desc, task_state, 
+    resp_message, task_start_time, task_end_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskDetailCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from app_task_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitEnd}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_task_detail
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="Integer" >
+    delete from app_task_detail
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskDetailCriteria" >
+    delete from app_task_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="taskId" order="AFTER" >
+    SELECT @@IDENTITY
+  	</selectKey>
+    insert into app_task_detail (task_id, req_id, app_id, 
+      task_name, task_json, task_order, 
+      task_desc, task_state, resp_message, 
+      task_start_time, task_end_time)
+    values (#{taskId,jdbcType=INTEGER}, #{reqId,jdbcType=INTEGER}, #{appId,jdbcType=VARCHAR}, 
+      #{taskName,jdbcType=VARCHAR}, #{taskJson,jdbcType=VARCHAR}, #{taskOrder,jdbcType=INTEGER}, 
+      #{taskDesc,jdbcType=VARCHAR}, #{taskState,jdbcType=INTEGER}, #{respMessage,jdbcType=VARCHAR}, 
+      #{taskStartTime,jdbcType=TIMESTAMP}, #{taskEndTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskDetail" >
+    insert into app_task_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="reqId != null" >
+        req_id,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="taskName != null" >
+        task_name,
+      </if>
+      <if test="taskJson != null" >
+        task_json,
+      </if>
+      <if test="taskOrder != null" >
+        task_order,
+      </if>
+      <if test="taskDesc != null" >
+        task_desc,
+      </if>
+      <if test="taskState != null" >
+        task_state,
+      </if>
+      <if test="respMessage != null" >
+        resp_message,
+      </if>
+      <if test="taskStartTime != null" >
+        task_start_time,
+      </if>
+      <if test="taskEndTime != null" >
+        task_end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="reqId != null" >
+        #{reqId,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null" >
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskJson != null" >
+        #{taskJson,jdbcType=VARCHAR},
+      </if>
+      <if test="taskOrder != null" >
+        #{taskOrder,jdbcType=INTEGER},
+      </if>
+      <if test="taskDesc != null" >
+        #{taskDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="taskState != null" >
+        #{taskState,jdbcType=INTEGER},
+      </if>
+      <if test="respMessage != null" >
+        #{respMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStartTime != null" >
+        #{taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskEndTime != null" >
+        #{taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskDetailCriteria" resultType="java.lang.Integer" >
+    select count(*) from app_task_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update app_task_detail
+    <set >
+      <if test="record.taskId != null" >
+        task_id = #{record.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.reqId != null" >
+        req_id = #{record.reqId,jdbcType=INTEGER},
+      </if>
+      <if test="record.appId != null" >
+        app_id = #{record.appId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskName != null" >
+        task_name = #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskJson != null" >
+        task_json = #{record.taskJson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskOrder != null" >
+        task_order = #{record.taskOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskDesc != null" >
+        task_desc = #{record.taskDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskState != null" >
+        task_state = #{record.taskState,jdbcType=INTEGER},
+      </if>
+      <if test="record.respMessage != null" >
+        resp_message = #{record.respMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskStartTime != null" >
+        task_start_time = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskEndTime != null" >
+        task_end_time = #{record.taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update app_task_detail
+    set task_id = #{record.taskId,jdbcType=INTEGER},
+      req_id = #{record.reqId,jdbcType=INTEGER},
+      app_id = #{record.appId,jdbcType=VARCHAR},
+      task_name = #{record.taskName,jdbcType=VARCHAR},
+      task_json = #{record.taskJson,jdbcType=VARCHAR},
+      task_order = #{record.taskOrder,jdbcType=INTEGER},
+      task_desc = #{record.taskDesc,jdbcType=VARCHAR},
+      task_state = #{record.taskState,jdbcType=INTEGER},
+      resp_message = #{record.respMessage,jdbcType=VARCHAR},
+      task_start_time = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      task_end_time = #{record.taskEndTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskDetail" >
+    update app_task_detail
+    <set >
+      <if test="reqId != null" >
+        req_id = #{reqId,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null" >
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskJson != null" >
+        task_json = #{taskJson,jdbcType=VARCHAR},
+      </if>
+      <if test="taskOrder != null" >
+        task_order = #{taskOrder,jdbcType=INTEGER},
+      </if>
+      <if test="taskDesc != null" >
+        task_desc = #{taskDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="taskState != null" >
+        task_state = #{taskState,jdbcType=INTEGER},
+      </if>
+      <if test="respMessage != null" >
+        resp_message = #{respMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStartTime != null" >
+        task_start_time = #{taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskEndTime != null" >
+        task_end_time = #{taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskDetail" >
+    update app_task_detail
+    set req_id = #{reqId,jdbcType=INTEGER},
+      app_id = #{appId,jdbcType=VARCHAR},
+      task_name = #{taskName,jdbcType=VARCHAR},
+      task_json = #{taskJson,jdbcType=VARCHAR},
+      task_order = #{taskOrder,jdbcType=INTEGER},
+      task_desc = #{taskDesc,jdbcType=VARCHAR},
+      task_state = #{taskState,jdbcType=INTEGER},
+      resp_message = #{respMessage,jdbcType=VARCHAR},
+      task_start_time = #{taskStartTime,jdbcType=TIMESTAMP},
+      task_end_time = #{taskEndTime,jdbcType=TIMESTAMP}
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+</mapper>

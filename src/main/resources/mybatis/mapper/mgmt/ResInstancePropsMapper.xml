@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ai.paas.cpaas.mgmt.dao.interfaces.ResInstancePropsMapper" >
+  <resultMap id="BaseResultMap" type="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstanceProps" >
+    <id column="key_id" property="keyId" jdbcType="INTEGER" />
+    <result column="key_value" property="keyValue" jdbcType="VARCHAR" />
+    <result column="cluster_id" property="clusterId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstanceProps" extends="BaseResultMap" >
+    <result column="key_code" property="keyCode" jdbcType="VARBINARY" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    key_id, key_value, cluster_id, state
+  </sql>
+  <sql id="Blob_Column_List" >
+    key_code
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstancePropsCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from res_instance_props
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstancePropsCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from res_instance_props
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitEnd}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from res_instance_props
+    where key_id = #{keyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="Integer" >
+    delete from res_instance_props
+    where key_id = #{keyId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstancePropsCriteria" >
+    delete from res_instance_props
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstanceProps" >
+    insert into res_instance_props (key_id, key_value, cluster_id, 
+      state, key_code)
+    values (#{keyId,jdbcType=INTEGER}, #{keyValue,jdbcType=VARCHAR}, #{clusterId,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{keyCode,jdbcType=VARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstanceProps" >
+    insert into res_instance_props
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="keyId != null" >
+        key_id,
+      </if>
+      <if test="keyValue != null" >
+        key_value,
+      </if>
+      <if test="clusterId != null" >
+        cluster_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="keyCode != null" >
+        key_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="keyId != null" >
+        #{keyId,jdbcType=INTEGER},
+      </if>
+      <if test="keyValue != null" >
+        #{keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="clusterId != null" >
+        #{clusterId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="keyCode != null" >
+        #{keyCode,jdbcType=VARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstancePropsCriteria" resultType="java.lang.Integer" >
+    select count(*) from res_instance_props
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update res_instance_props
+    <set >
+      <if test="record.keyId != null" >
+        key_id = #{record.keyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.keyValue != null" >
+        key_value = #{record.keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clusterId != null" >
+        cluster_id = #{record.clusterId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.keyCode != null" >
+        key_code = #{record.keyCode,jdbcType=VARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update res_instance_props
+    set key_id = #{record.keyId,jdbcType=INTEGER},
+      key_value = #{record.keyValue,jdbcType=VARCHAR},
+      cluster_id = #{record.clusterId,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      key_code = #{record.keyCode,jdbcType=VARBINARY}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update res_instance_props
+    set key_id = #{record.keyId,jdbcType=INTEGER},
+      key_value = #{record.keyValue,jdbcType=VARCHAR},
+      cluster_id = #{record.clusterId,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstanceProps" >
+    update res_instance_props
+    <set >
+      <if test="keyValue != null" >
+        key_value = #{keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="clusterId != null" >
+        cluster_id = #{clusterId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="keyCode != null" >
+        key_code = #{keyCode,jdbcType=VARBINARY},
+      </if>
+    </set>
+    where key_id = #{keyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstanceProps" >
+    update res_instance_props
+    set key_value = #{keyValue,jdbcType=VARCHAR},
+      cluster_id = #{clusterId,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      key_code = #{keyCode,jdbcType=VARBINARY}
+    where key_id = #{keyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResInstanceProps" >
+    update res_instance_props
+    set key_value = #{keyValue,jdbcType=VARCHAR},
+      cluster_id = #{clusterId,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER}
+    where key_id = #{keyId,jdbcType=INTEGER}
+  </update>
+</mapper>

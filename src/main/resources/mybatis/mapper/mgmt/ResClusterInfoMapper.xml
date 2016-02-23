@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ai.paas.cpaas.mgmt.dao.interfaces.ResClusterInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfo" >
+    <id column="cluster_id" property="clusterId" jdbcType="VARCHAR" />
+    <result column="cluster_name" property="clusterName" jdbcType="VARCHAR" />
+    <result column="marathon_addr" property="marathonAddr" jdbcType="VARCHAR" />
+    <result column="consul_addr" property="consulAddr" jdbcType="VARCHAR" />
+    <result column="chronos_addr" property="chronosAddr" jdbcType="VARCHAR" />
+    <result column="mesos_domain" property="mesosDomain" jdbcType="VARCHAR" />
+    <result column="external_domain" property="externalDomain" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    cluster_id, cluster_name, marathon_addr, consul_addr, chronos_addr, mesos_domain, 
+    external_domain
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfoCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from res_cluster_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitEnd}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from res_cluster_info
+    where cluster_id = #{clusterId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from res_cluster_info
+    where cluster_id = #{clusterId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfoCriteria" >
+    delete from res_cluster_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfo" >
+    insert into res_cluster_info (cluster_id, cluster_name, marathon_addr, 
+      consul_addr, chronos_addr, mesos_domain, 
+      external_domain)
+    values (#{clusterId,jdbcType=VARCHAR}, #{clusterName,jdbcType=VARCHAR}, #{marathonAddr,jdbcType=VARCHAR}, 
+      #{consulAddr,jdbcType=VARCHAR}, #{chronosAddr,jdbcType=VARCHAR}, #{mesosDomain,jdbcType=VARCHAR}, 
+      #{externalDomain,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfo" >
+    insert into res_cluster_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="clusterId != null" >
+        cluster_id,
+      </if>
+      <if test="clusterName != null" >
+        cluster_name,
+      </if>
+      <if test="marathonAddr != null" >
+        marathon_addr,
+      </if>
+      <if test="consulAddr != null" >
+        consul_addr,
+      </if>
+      <if test="chronosAddr != null" >
+        chronos_addr,
+      </if>
+      <if test="mesosDomain != null" >
+        mesos_domain,
+      </if>
+      <if test="externalDomain != null" >
+        external_domain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="clusterId != null" >
+        #{clusterId,jdbcType=VARCHAR},
+      </if>
+      <if test="clusterName != null" >
+        #{clusterName,jdbcType=VARCHAR},
+      </if>
+      <if test="marathonAddr != null" >
+        #{marathonAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="consulAddr != null" >
+        #{consulAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="chronosAddr != null" >
+        #{chronosAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="mesosDomain != null" >
+        #{mesosDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="externalDomain != null" >
+        #{externalDomain,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfoCriteria" resultType="java.lang.Integer" >
+    select count(*) from res_cluster_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update res_cluster_info
+    <set >
+      <if test="record.clusterId != null" >
+        cluster_id = #{record.clusterId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clusterName != null" >
+        cluster_name = #{record.clusterName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.marathonAddr != null" >
+        marathon_addr = #{record.marathonAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.consulAddr != null" >
+        consul_addr = #{record.consulAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chronosAddr != null" >
+        chronos_addr = #{record.chronosAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mesosDomain != null" >
+        mesos_domain = #{record.mesosDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.externalDomain != null" >
+        external_domain = #{record.externalDomain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update res_cluster_info
+    set cluster_id = #{record.clusterId,jdbcType=VARCHAR},
+      cluster_name = #{record.clusterName,jdbcType=VARCHAR},
+      marathon_addr = #{record.marathonAddr,jdbcType=VARCHAR},
+      consul_addr = #{record.consulAddr,jdbcType=VARCHAR},
+      chronos_addr = #{record.chronosAddr,jdbcType=VARCHAR},
+      mesos_domain = #{record.mesosDomain,jdbcType=VARCHAR},
+      external_domain = #{record.externalDomain,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfo" >
+    update res_cluster_info
+    <set >
+      <if test="clusterName != null" >
+        cluster_name = #{clusterName,jdbcType=VARCHAR},
+      </if>
+      <if test="marathonAddr != null" >
+        marathon_addr = #{marathonAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="consulAddr != null" >
+        consul_addr = #{consulAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="chronosAddr != null" >
+        chronos_addr = #{chronosAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="mesosDomain != null" >
+        mesos_domain = #{mesosDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="externalDomain != null" >
+        external_domain = #{externalDomain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cluster_id = #{clusterId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResClusterInfo" >
+    update res_cluster_info
+    set cluster_name = #{clusterName,jdbcType=VARCHAR},
+      marathon_addr = #{marathonAddr,jdbcType=VARCHAR},
+      consul_addr = #{consulAddr,jdbcType=VARCHAR},
+      chronos_addr = #{chronosAddr,jdbcType=VARCHAR},
+      mesos_domain = #{mesosDomain,jdbcType=VARCHAR},
+      external_domain = #{externalDomain,jdbcType=VARCHAR}
+    where cluster_id = #{clusterId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ai.paas.cpaas.mgmt.dao.interfaces.ResJobDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetail" >
+    <id column="task_id" property="taskId" jdbcType="INTEGER" />
+    <result column="job_id" property="jobId" jdbcType="INTEGER" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="task_state" property="taskState" jdbcType="INTEGER" />
+    <result column="task_order" property="taskOrder" jdbcType="INTEGER" />
+    <result column="task_start_time" property="taskStartTime" jdbcType="TIMESTAMP" />
+    <result column="task_end_time" property="taskEndTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetail" extends="BaseResultMap" >
+    <result column="task_playbook" property="taskPlaybook" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    task_id, job_id, type_id, task_state, task_order, task_start_time, task_end_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    task_playbook
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetailCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from res_job_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetailCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from res_job_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitEnd}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from res_job_detail
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="Integer" >
+    delete from res_job_detail
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetailCriteria" >
+    delete from res_job_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetail" >
+    insert into res_job_detail (task_id, job_id, type_id, 
+      task_state, task_order, task_start_time, 
+      task_end_time, task_playbook)
+    values (#{taskId,jdbcType=INTEGER}, #{jobId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER}, 
+      #{taskState,jdbcType=INTEGER}, #{taskOrder,jdbcType=INTEGER}, #{taskStartTime,jdbcType=TIMESTAMP}, 
+      #{taskEndTime,jdbcType=TIMESTAMP}, #{taskPlaybook,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetail" >
+    insert into res_job_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="jobId != null" >
+        job_id,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="taskState != null" >
+        task_state,
+      </if>
+      <if test="taskOrder != null" >
+        task_order,
+      </if>
+      <if test="taskStartTime != null" >
+        task_start_time,
+      </if>
+      <if test="taskEndTime != null" >
+        task_end_time,
+      </if>
+      <if test="taskPlaybook != null" >
+        task_playbook,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="jobId != null" >
+        #{jobId,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="taskState != null" >
+        #{taskState,jdbcType=INTEGER},
+      </if>
+      <if test="taskOrder != null" >
+        #{taskOrder,jdbcType=INTEGER},
+      </if>
+      <if test="taskStartTime != null" >
+        #{taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskEndTime != null" >
+        #{taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskPlaybook != null" >
+        #{taskPlaybook,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetailCriteria" resultType="java.lang.Integer" >
+    select count(*) from res_job_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update res_job_detail
+    <set >
+      <if test="record.taskId != null" >
+        task_id = #{record.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.jobId != null" >
+        job_id = #{record.jobId,jdbcType=INTEGER},
+      </if>
+      <if test="record.typeId != null" >
+        type_id = #{record.typeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskState != null" >
+        task_state = #{record.taskState,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskOrder != null" >
+        task_order = #{record.taskOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskStartTime != null" >
+        task_start_time = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskEndTime != null" >
+        task_end_time = #{record.taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskPlaybook != null" >
+        task_playbook = #{record.taskPlaybook,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update res_job_detail
+    set task_id = #{record.taskId,jdbcType=INTEGER},
+      job_id = #{record.jobId,jdbcType=INTEGER},
+      type_id = #{record.typeId,jdbcType=INTEGER},
+      task_state = #{record.taskState,jdbcType=INTEGER},
+      task_order = #{record.taskOrder,jdbcType=INTEGER},
+      task_start_time = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      task_end_time = #{record.taskEndTime,jdbcType=TIMESTAMP},
+      task_playbook = #{record.taskPlaybook,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update res_job_detail
+    set task_id = #{record.taskId,jdbcType=INTEGER},
+      job_id = #{record.jobId,jdbcType=INTEGER},
+      type_id = #{record.typeId,jdbcType=INTEGER},
+      task_state = #{record.taskState,jdbcType=INTEGER},
+      task_order = #{record.taskOrder,jdbcType=INTEGER},
+      task_start_time = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      task_end_time = #{record.taskEndTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetail" >
+    update res_job_detail
+    <set >
+      <if test="jobId != null" >
+        job_id = #{jobId,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="taskState != null" >
+        task_state = #{taskState,jdbcType=INTEGER},
+      </if>
+      <if test="taskOrder != null" >
+        task_order = #{taskOrder,jdbcType=INTEGER},
+      </if>
+      <if test="taskStartTime != null" >
+        task_start_time = #{taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskEndTime != null" >
+        task_end_time = #{taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskPlaybook != null" >
+        task_playbook = #{taskPlaybook,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetail" >
+    update res_job_detail
+    set job_id = #{jobId,jdbcType=INTEGER},
+      type_id = #{typeId,jdbcType=INTEGER},
+      task_state = #{taskState,jdbcType=INTEGER},
+      task_order = #{taskOrder,jdbcType=INTEGER},
+      task_start_time = #{taskStartTime,jdbcType=TIMESTAMP},
+      task_end_time = #{taskEndTime,jdbcType=TIMESTAMP},
+      task_playbook = #{taskPlaybook,jdbcType=LONGVARCHAR}
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.ResJobDetail" >
+    update res_job_detail
+    set job_id = #{jobId,jdbcType=INTEGER},
+      type_id = #{typeId,jdbcType=INTEGER},
+      task_state = #{taskState,jdbcType=INTEGER},
+      task_order = #{taskOrder,jdbcType=INTEGER},
+      task_start_time = #{taskStartTime,jdbcType=TIMESTAMP},
+      task_end_time = #{taskEndTime,jdbcType=TIMESTAMP}
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+</mapper>

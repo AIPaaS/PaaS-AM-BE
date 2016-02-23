@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ai.paas.cpaas.mgmt.dao.interfaces.AppReqInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppReqInfo" >
+    <id column="req_id" property="reqId" jdbcType="INTEGER" />
+    <result column="cluster_id" property="clusterId" jdbcType="VARCHAR" />
+    <result column="action_type" property="actionType" jdbcType="INTEGER" />
+    <result column="req_cnt" property="reqCnt" jdbcType="VARCHAR" />
+    <result column="req_resp" property="reqResp" jdbcType="VARCHAR" />
+    <result column="req_time" property="reqTime" jdbcType="TIMESTAMP" />
+    <result column="resp_time" property="respTime" jdbcType="TIMESTAMP" />
+    <result column="req_state" property="reqState" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    req_id, cluster_id, action_type, req_cnt, req_resp, req_time, resp_time, req_state
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppReqInfoCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from app_req_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitEnd}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from app_req_info
+    where req_id = #{reqId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="Integer" >
+    delete from app_req_info
+    where req_id = #{reqId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppReqInfoCriteria" >
+    delete from app_req_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppReqInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="reqId" order="AFTER" >
+		SELECT @@IDENTITY
+	</selectKey>
+    insert into app_req_info (req_id, cluster_id, action_type, 
+      req_cnt, req_resp, req_time, 
+      resp_time, req_state)
+    values (#{reqId,jdbcType=INTEGER}, #{clusterId,jdbcType=VARCHAR}, #{actionType,jdbcType=INTEGER}, 
+      #{reqCnt,jdbcType=VARCHAR}, #{reqResp,jdbcType=VARCHAR}, #{reqTime,jdbcType=TIMESTAMP}, 
+      #{respTime,jdbcType=TIMESTAMP}, #{reqState,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppReqInfo" >
+    insert into app_req_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reqId != null" >
+        req_id,
+      </if>
+      <if test="clusterId != null" >
+        cluster_id,
+      </if>
+      <if test="actionType != null" >
+        action_type,
+      </if>
+      <if test="reqCnt != null" >
+        req_cnt,
+      </if>
+      <if test="reqResp != null" >
+        req_resp,
+      </if>
+      <if test="reqTime != null" >
+        req_time,
+      </if>
+      <if test="respTime != null" >
+        resp_time,
+      </if>
+      <if test="reqState != null" >
+        req_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reqId != null" >
+        #{reqId,jdbcType=INTEGER},
+      </if>
+      <if test="clusterId != null" >
+        #{clusterId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=INTEGER},
+      </if>
+      <if test="reqCnt != null" >
+        #{reqCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="reqResp != null" >
+        #{reqResp,jdbcType=VARCHAR},
+      </if>
+      <if test="reqTime != null" >
+        #{reqTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="respTime != null" >
+        #{respTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqState != null" >
+        #{reqState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppReqInfoCriteria" resultType="java.lang.Integer" >
+    select count(*) from app_req_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update app_req_info
+    <set >
+      <if test="record.reqId != null" >
+        req_id = #{record.reqId,jdbcType=INTEGER},
+      </if>
+      <if test="record.clusterId != null" >
+        cluster_id = #{record.clusterId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionType != null" >
+        action_type = #{record.actionType,jdbcType=INTEGER},
+      </if>
+      <if test="record.reqCnt != null" >
+        req_cnt = #{record.reqCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reqResp != null" >
+        req_resp = #{record.reqResp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reqTime != null" >
+        req_time = #{record.reqTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.respTime != null" >
+        resp_time = #{record.respTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.reqState != null" >
+        req_state = #{record.reqState,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update app_req_info
+    set req_id = #{record.reqId,jdbcType=INTEGER},
+      cluster_id = #{record.clusterId,jdbcType=VARCHAR},
+      action_type = #{record.actionType,jdbcType=INTEGER},
+      req_cnt = #{record.reqCnt,jdbcType=VARCHAR},
+      req_resp = #{record.reqResp,jdbcType=VARCHAR},
+      req_time = #{record.reqTime,jdbcType=TIMESTAMP},
+      resp_time = #{record.respTime,jdbcType=TIMESTAMP},
+      req_state = #{record.reqState,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppReqInfo" >
+    update app_req_info
+    <set >
+      <if test="clusterId != null" >
+        cluster_id = #{clusterId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        action_type = #{actionType,jdbcType=INTEGER},
+      </if>
+      <if test="reqCnt != null" >
+        req_cnt = #{reqCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="reqResp != null" >
+        req_resp = #{reqResp,jdbcType=VARCHAR},
+      </if>
+      <if test="reqTime != null" >
+        req_time = #{reqTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="respTime != null" >
+        resp_time = #{respTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqState != null" >
+        req_state = #{reqState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where req_id = #{reqId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppReqInfo" >
+    update app_req_info
+    set cluster_id = #{clusterId,jdbcType=VARCHAR},
+      action_type = #{actionType,jdbcType=INTEGER},
+      req_cnt = #{reqCnt,jdbcType=VARCHAR},
+      req_resp = #{reqResp,jdbcType=VARCHAR},
+      req_time = #{reqTime,jdbcType=TIMESTAMP},
+      resp_time = #{respTime,jdbcType=TIMESTAMP},
+      req_state = #{reqState,jdbcType=INTEGER}
+    where req_id = #{reqId,jdbcType=INTEGER}
+  </update>
+</mapper>

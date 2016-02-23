@@ -1,0 +1,39 @@
+package com.ai.paas.cpaas.mgmt.service.impl;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ai.paas.cpaas.mgmt.dao.interfaces.AppTaskLogMapper;
+import com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskLog;
+import com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskLogCriteria;
+import com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppTaskLogCriteria.Criteria;
+import com.ai.paas.cpaas.mgmt.service.IAppTaskLogService;
+import com.ai.paas.ipaas.ServiceUtil;
+
+@Service
+@Transactional(rollbackFor = Exception.class)
+public class AppTaskLogServiceImpl implements IAppTaskLogService {
+
+	@Override
+	public void saveTaskLog(int taskId, String message) {
+		AppTaskLogMapper mapper = ServiceUtil.getMapper(AppTaskLogMapper.class);
+		AppTaskLog appTaskLog = new AppTaskLog();
+		appTaskLog.setLogCnt(message);
+		appTaskLog.setTaskId(taskId);
+		appTaskLog.setLogTime(new Timestamp(System.currentTimeMillis()));
+		mapper.insert(appTaskLog);
+	}
+
+	@Override
+	public List<AppTaskLog> getTaskLogs(int taskId) {
+		AppTaskLogMapper mapper = ServiceUtil.getMapper(AppTaskLogMapper.class);
+		AppTaskLogCriteria appTaskLogCriteria = new AppTaskLogCriteria();
+		Criteria criteria = appTaskLogCriteria.createCriteria();
+		criteria.andTaskIdEqualTo(taskId);
+		return mapper.selectByExample(appTaskLogCriteria);
+	}
+
+}
