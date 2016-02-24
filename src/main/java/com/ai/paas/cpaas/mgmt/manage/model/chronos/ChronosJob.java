@@ -229,4 +229,17 @@ public class ChronosJob {
 		this.parents = parents;
 	}
 
+	public static class Container {
+		private String type = "DOCKER";
+		private String image;
+		private String network = "BRIDGE";
+		
+		private List<Volume> volumes;
+
+		public static class Volume {
+			private String containerPath;
+			private String hostPath;
+			private String mode;
+		}
+	}
 }
