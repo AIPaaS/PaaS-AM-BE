@@ -155,4 +155,10 @@ public class AgentRemoteService implements IRemoteService {
 		return null;
 	}
 
+	@Override
+	public boolean timerJobExist(String name) throws RemoteServiceException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

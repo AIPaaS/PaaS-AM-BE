@@ -65,7 +65,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 		try {
 			GeneralReq createReq = gson.fromJson(param, GeneralReq.class);
 			generalResp = gson.fromJson(param, GeneralDeployResp.class);
-			reqId = appReqInfoService.saveReqInfo(createReq, param, ActionType.deploy);
+			reqId = appReqInfoService.saveReqInfo(createReq.getClusterId(), param, ActionType.deploy);
 			CreateLongRun createLongRun = PaaSBeanFactory.getBean("createLongRun", CreateLongRun.class);
 			createLongRun.setReqId(reqId);
 			createLongRun.setAppId(createReq.getAppId());
@@ -93,7 +93,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 		int reqId = -1;
 		try {
 			GeneralReq destroyReq = gson.fromJson(param, GeneralReq.class);
-			reqId = appReqInfoService.saveReqInfo(destroyReq, param, ActionType.destroy);
+			reqId = appReqInfoService.saveReqInfo(destroyReq.getClusterId(), param, ActionType.destroy);
 			generalResp = gson.fromJson(param, GeneralDeployResp.class);
 			DestroyApp destroyApp = PaaSBeanFactory.getBean("destroyApp", DestroyApp.class);
 			destroyApp.setReqId(reqId);
@@ -123,7 +123,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 		try {
 			GeneralReq scaleReq = gson.fromJson(param, GeneralReq.class);
 			generalResp = gson.fromJson(param, GeneralDeployResp.class);
-			reqId = appReqInfoService.saveReqInfo(scaleReq, param, ActionType.start);
+			reqId = appReqInfoService.saveReqInfo(scaleReq.getClusterId(), param, ActionType.start);
 			ScaleApp scaleApp = PaaSBeanFactory.getBean("scaleApp", ScaleApp.class);
 			scaleApp.setReqId(reqId);
 			scaleApp.setAppId(scaleReq.getAppId());
@@ -151,7 +151,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 
 		try {
 			GeneralReq scaleReq = gson.fromJson(param, GeneralReq.class);
-			reqId = appReqInfoService.saveReqInfo(scaleReq, param, ActionType.stop);
+			reqId = appReqInfoService.saveReqInfo(scaleReq.getClusterId(), param, ActionType.stop);
 			generalResp = gson.fromJson(param, GeneralDeployResp.class);
 			if (CollectionUtils.isNotEmpty(scaleReq.getContainers())) {
 				for (Container container : scaleReq.getContainers())
@@ -184,7 +184,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 
 		try {
 			GeneralReq scaleReq = gson.fromJson(param, GeneralReq.class);
-			reqId = appReqInfoService.saveReqInfo(scaleReq, param, ActionType.scale);
+			reqId = appReqInfoService.saveReqInfo(scaleReq.getClusterId(), param, ActionType.scale);
 			generalResp = gson.fromJson(param, GeneralDeployResp.class);
 			ScaleApp scaleApp = PaaSBeanFactory.getBean("scaleApp", ScaleApp.class);
 			scaleApp.setReqId(reqId);
@@ -212,7 +212,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 		int reqId = -1;
 		try {
 			GeneralReq upgradeReq = gson.fromJson(param, GeneralReq.class);
-			reqId = appReqInfoService.saveReqInfo(upgradeReq, param, ActionType.upgrade);
+			reqId = appReqInfoService.saveReqInfo(upgradeReq.getClusterId(), param, ActionType.upgrade);
 			generalResp = gson.fromJson(param, GeneralDeployResp.class);
 			UpgradeApp upgradeApp = PaaSBeanFactory.getBean("upgradeApp", UpgradeApp.class);
 			upgradeApp.setReqId(reqId);
@@ -310,6 +310,8 @@ public class DeployServiceManage implements IDeployServiceManager {
 		try {
 			generalResp = gson.fromJson(param, GeneralResp.class);
 			GeneralTimerReq generalTimerReq = gson.fromJson(param, GeneralTimerReq.class);
+			int reqId = appReqInfoService.saveReqInfo(generalTimerReq.getClusterId(), param, ActionType.deploy);
+			generalResp.setReqId(reqId);
 			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
 			ChronosJob createReq = TurnChronosFactory.turnCreateReq(generalTimerReq);
@@ -341,6 +343,8 @@ public class DeployServiceManage implements IDeployServiceManager {
 		try {
 			generalResp = gson.fromJson(param, GeneralResp.class);
 			GeneralTimerReq generalTimerReq = gson.fromJson(param, GeneralTimerReq.class);
+			int reqId = appReqInfoService.saveReqInfo(generalTimerReq.getClusterId(), param, ActionType.destroy);
+			generalResp.setReqId(reqId);
 			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
 			GeneralHttpResp generalHttpResp = clusterProxy.destroyTimer(generalTimerReq.getAppId());
@@ -367,6 +371,8 @@ public class DeployServiceManage implements IDeployServiceManager {
 		try {
 			generalResp = gson.fromJson(param, GeneralResp.class);
 			GeneralTimerReq generalTimerReq = gson.fromJson(param, GeneralTimerReq.class);
+			int reqId = appReqInfoService.saveReqInfo(generalTimerReq.getClusterId(), param, ActionType.start);
+			generalResp.setReqId(reqId);
 			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
 			GeneralHttpResp generalHttpResp = clusterProxy.forceTimer(generalTimerReq.getAppName());
@@ -388,7 +394,40 @@ public class DeployServiceManage implements IDeployServiceManager {
 
 	@Override
 	public String upgradeTimer(String param) {
-		return null;
+		Gson gson = new Gson();
+		GeneralResp generalResp = new GeneralResp();
+		try {
+			generalResp = gson.fromJson(param, GeneralResp.class);
+			GeneralTimerReq generalTimerReq = gson.fromJson(param, GeneralTimerReq.class);
+			int reqId = appReqInfoService.saveReqInfo(generalTimerReq.getClusterId(), param, ActionType.upgrade);
+			generalResp.setReqId(reqId);
+			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
+			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
+			if (clusterProxy.timerJobExist(generalTimerReq.getAppId())) {
+				ChronosJob createReq = TurnChronosFactory.turnCreateReq(generalTimerReq);
+				GeneralHttpResp generalHttpResp = null;
+				if (createReq.getParents() == null)
+					generalHttpResp = clusterProxy.deployTimer(gson.toJson(createReq));
+				else
+					generalHttpResp = clusterProxy.deployTimerDependency(gson.toJson(createReq));
+
+				if (generalHttpResp.getSuccess()) {
+					generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
+					generalResp.setResultMsg("timer upgraded");
+				} else {
+					generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+					generalResp.setResultMsg("upgrade timer failed");
+				}
+			} else {
+				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+				generalResp.setResultMsg("upgrade timer failed,job isn't exist");
+			}
+		} catch (Exception e) {
+			logger.error(e);
+			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
+			generalResp.setResultMsg("upgrade timer failed because exception");
+		}
+		return gson.toJson(generalResp);
 	}
 
 	@Override

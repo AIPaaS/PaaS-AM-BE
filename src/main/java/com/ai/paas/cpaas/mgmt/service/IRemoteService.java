@@ -26,6 +26,8 @@ public interface IRemoteService {
 
 	public GeneralHttpResp forceTimer(String name) throws RemoteServiceException;
 	
+	public boolean timerJobExist(String name) throws RemoteServiceException;
+	
 	public JobsResp getTimerJobs() throws RemoteServiceException;
 
 	public boolean registerService(String param) throws RemoteServiceException;

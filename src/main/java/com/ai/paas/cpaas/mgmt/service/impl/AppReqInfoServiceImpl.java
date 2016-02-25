@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ai.paas.cpaas.mgmt.dao.interfaces.AppReqInfoMapper;
 import com.ai.paas.cpaas.mgmt.dao.mapper.bo.AppReqInfo;
 import com.ai.paas.cpaas.mgmt.manage.model.ActionType;
-import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq;
 import com.ai.paas.cpaas.mgmt.manage.model.GeneralDeployResp;
 import com.ai.paas.cpaas.mgmt.service.IAppReqInfoService;
 import com.ai.paas.ipaas.PaaSMgmtConstant;
@@ -20,10 +19,10 @@ import com.google.gson.Gson;
 public class AppReqInfoServiceImpl implements IAppReqInfoService {
 
 	@Override
-	public int saveReqInfo(GeneralReq createReq, String param, ActionType actionType) {
+	public int saveReqInfo(String clusterId, String param, ActionType actionType) {
 		AppReqInfoMapper mapper = ServiceUtil.getMapper(AppReqInfoMapper.class);
 		AppReqInfo appReqInfo = new AppReqInfo();
-		appReqInfo.setClusterId(createReq.getClusterId());
+		appReqInfo.setClusterId(clusterId);
 		appReqInfo.setActionType(actionType.getValue());
 		appReqInfo.setReqCnt(param);
 		appReqInfo.setReqTime(new Timestamp(System.currentTimeMillis()));

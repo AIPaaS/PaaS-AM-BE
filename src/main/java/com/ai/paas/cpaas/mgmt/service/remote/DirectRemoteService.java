@@ -241,22 +241,16 @@ public class DirectRemoteService implements IRemoteService {
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			HttpPost httpPost = new HttpPost(resClusterInfo.getChronosAddr() + CHRONOS_APP_PATH + "/iso8601");
-
 			StringEntity entity = new StringEntity(createAppReq, "utf-8");
 			entity.setContentEncoding("UTF-8");
 			entity.setContentType("application/json");
 			httpPost.setEntity(entity);
 			logger.info(createAppReq);
 			CloseableHttpResponse resp = httpclient.execute(httpPost);
-			// HttpEntity respEntity = resp.getEntity();
-			// String respString = EntityUtils.toString(respEntity, "UTF-8");
 			logger.info(resp.getStatusLine().getStatusCode());
 			if (resp.getStatusLine().getStatusCode() == 204) {
 				t.setSuccess(true);
 			} else {
-				// FailedResp failedResp = (new Gson()).fromJson(respString,
-				// FailedResp.class);
-				// t.setFailedResp(failedResp);
 				t.setSuccess(false);
 			}
 		} catch (Exception e) {
@@ -347,7 +341,8 @@ public class DirectRemoteService implements IRemoteService {
 			String respString = EntityUtils.toString(respEntity, "UTF-8");
 			logger.info(resp.getStatusLine().getStatusCode());
 			if (resp.getStatusLine().getStatusCode() == 200) {
-				List<ChronosJob> jobs = (new Gson()).fromJson(respString, new TypeToken<List<ChronosJob>>(){}.getType());
+				List<ChronosJob> jobs = (new Gson()).fromJson(respString, new TypeToken<List<ChronosJob>>() {
+				}.getType());
 				jobsResp.setJobs(jobs);
 				jobsResp.setSuccess(true);
 			} else {
@@ -359,5 +354,23 @@ public class DirectRemoteService implements IRemoteService {
 			throw new RemoteServiceException(e);
 		}
 		return jobsResp;
+	}
+
+	@Override
+	public boolean timerJobExist(String name) throws RemoteServiceException {
+		try {
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			HttpGet httpGet = new HttpGet(resClusterInfo.getChronosAddr() + CHRONOS_APP_PATH + "/job/stat/" + name);
+
+			CloseableHttpResponse resp = httpclient.execute(httpGet);
+			logger.info(resp.getStatusLine().getStatusCode());
+			if (resp.getStatusLine().getStatusCode() == 200) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 }

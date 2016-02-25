@@ -2,6 +2,8 @@ package com.ai.paas.cpaas.mgmt.manage.model.chronos;
 
 import java.util.List;
 
+import com.ai.paas.cpaas.mgmt.manage.model.Parameter;
+
 public class ChronosJob {
 	private String name;
 	private String command;
@@ -28,6 +30,33 @@ public class ChronosJob {
 	private Boolean dataProcessingJobType;
 	private Boolean errorsSinceLastSuccess;
 	private List<String> parents;
+	private List<Parameter> environmentVariables;
+	private List<List<String>> constraints;
+	private Container container;
+
+	public Container getContainer() {
+		return container;
+	}
+
+	public void setContainer(Container container) {
+		this.container = container;
+	}
+
+	public List<Parameter> getEnvironmentVariables() {
+		return environmentVariables;
+	}
+
+	public void setEnvironmentVariables(List<Parameter> environmentVariables) {
+		this.environmentVariables = environmentVariables;
+	}
+
+	public List<List<String>> getConstraints() {
+		return constraints;
+	}
+
+	public void setConstraints(List<List<String>> constraints) {
+		this.constraints = constraints;
+	}
 
 	public Boolean getShell() {
 		return shell;
@@ -233,13 +262,75 @@ public class ChronosJob {
 		private String type = "DOCKER";
 		private String image;
 		private String network = "BRIDGE";
-		
 		private List<Volume> volumes;
+
+		public String getType() {
+			return type;
+		}
+
+		public void setType(String type) {
+			this.type = type;
+		}
+
+		public String getImage() {
+			return image;
+		}
+
+		public void setImage(String image) {
+			this.image = image;
+		}
+
+		public String getNetwork() {
+			return network;
+		}
+
+		public void setNetwork(String network) {
+			this.network = network;
+		}
+
+		public List<Volume> getVolumes() {
+			return volumes;
+		}
+
+		public void setVolumes(List<Volume> volumes) {
+			this.volumes = volumes;
+		}
 
 		public static class Volume {
 			private String containerPath;
 			private String hostPath;
 			private String mode;
+
+			public Volume(String containerPath, String hostPath, String mode) {
+				this.containerPath = containerPath;
+				this.hostPath = hostPath;
+				this.mode = mode;
+			}
+
+			public String getContainerPath() {
+				return containerPath;
+			}
+
+			public void setContainerPath(String containerPath) {
+				this.containerPath = containerPath;
+			}
+
+			public String getHostPath() {
+				return hostPath;
+			}
+
+			public void setHostPath(String hostPath) {
+				this.hostPath = hostPath;
+			}
+
+			public String getMode() {
+				return mode;
+			}
+
+			public void setMode(String mode) {
+				this.mode = mode;
+			}
+
 		}
 	}
 }

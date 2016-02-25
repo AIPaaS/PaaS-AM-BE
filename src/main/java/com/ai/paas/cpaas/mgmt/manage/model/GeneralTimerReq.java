@@ -15,7 +15,7 @@ public class GeneralTimerReq {
 	private String start;
 	private String repeatNum;
 	private String period;
-	private String retries;
+	private Integer retries;
 	private Container container;
 
 	public String getClusterId() {
@@ -106,11 +106,11 @@ public class GeneralTimerReq {
 		this.period = period;
 	}
 
-	public String getRetries() {
+	public Integer getRetries() {
 		return retries;
 	}
 
-	public void setRetries(String retries) {
+	public void setRetries(Integer retries) {
 		this.retries = retries;
 	}
 
