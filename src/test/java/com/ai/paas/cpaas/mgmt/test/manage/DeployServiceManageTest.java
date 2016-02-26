@@ -15,10 +15,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
-import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq;
-import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq.Container;
-import com.ai.paas.cpaas.mgmt.manage.model.GeneralReq.Container.For;
-import com.ai.paas.cpaas.mgmt.manage.model.LogReq;
+import com.ai.paas.cpaas.be.am.manage.model.GeneralReq;
+import com.ai.paas.cpaas.be.am.manage.model.LogReq;
+import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container;
+import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container.For;
 import com.google.gson.Gson;
 
 //@RunWith(SpringJUnit4ClassRunner.class)

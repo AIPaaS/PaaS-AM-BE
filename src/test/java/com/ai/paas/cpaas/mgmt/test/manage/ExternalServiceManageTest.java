@@ -14,8 +14,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
-import com.ai.paas.cpaas.mgmt.manage.model.ExternalServiceReq;
-import com.ai.paas.cpaas.mgmt.manage.model.ExternalServiceReq.Check;
+import com.ai.paas.cpaas.be.am.manage.model.ExternalServiceReq;
+import com.ai.paas.cpaas.be.am.manage.model.ExternalServiceReq.Check;
 import com.google.gson.Gson;
 
 public class ExternalServiceManageTest {
