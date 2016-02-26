@@ -28,7 +28,7 @@ public class ChronosJob {
 	private String lastSuccess;
 	private String lastError;
 	private Boolean dataProcessingJobType;
-	private Boolean errorsSinceLastSuccess;
+	private Integer errorsSinceLastSuccess;
 	private List<String> parents;
 	private List<Parameter> environmentVariables;
 	private List<List<String>> constraints;
@@ -122,11 +122,11 @@ public class ChronosJob {
 		this.dataProcessingJobType = dataProcessingJobType;
 	}
 
-	public Boolean getErrorsSinceLastSuccess() {
+	public Integer getErrorsSinceLastSuccess() {
 		return errorsSinceLastSuccess;
 	}
 
-	public void setErrorsSinceLastSuccess(Boolean errorsSinceLastSuccess) {
+	public void setErrorsSinceLastSuccess(Integer errorsSinceLastSuccess) {
 		this.errorsSinceLastSuccess = errorsSinceLastSuccess;
 	}
 

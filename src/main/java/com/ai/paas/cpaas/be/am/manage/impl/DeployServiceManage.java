@@ -323,7 +323,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 
 			if (generalHttpResp.getSuccess()) {
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
-				generalResp.setResultMsg("timer started");
+				generalResp.setResultMsg("timer created");
 			} else {
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
 				generalResp.setResultMsg("create timer failed");
@@ -375,19 +375,19 @@ public class DeployServiceManage implements IDeployServiceManager {
 			generalResp.setReqId(reqId);
 			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
-			GeneralHttpResp generalHttpResp = clusterProxy.forceTimer(generalTimerReq.getAppName());
+			GeneralHttpResp generalHttpResp = clusterProxy.forceTimer(generalTimerReq.getAppId());
 
 			if (generalHttpResp.getSuccess()) {
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
-				generalResp.setResultMsg("timer destroyed");
+				generalResp.setResultMsg("timer started");
 			} else {
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
-				generalResp.setResultMsg("destroy timer failed");
+				generalResp.setResultMsg("timer started failed");
 			}
 		} catch (Exception e) {
 			logger.error(e);
 			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
-			generalResp.setResultMsg("destroy timer failed because exception");
+			generalResp.setResultMsg("timer started failed because exception");
 		}
 		return gson.toJson(generalResp);
 	}
@@ -443,15 +443,16 @@ public class DeployServiceManage implements IDeployServiceManager {
 			if (jobsResp.getSuccess()) {
 				generalResp = TurnChronosFactory.fillTimerQueryResp(generalResp, jobsResp);
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
-				generalResp.setResultMsg("timer destroyed");
+				generalResp.setResultMsg("query success");
 			} else {
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
-				generalResp.setResultMsg("destroy timer failed");
+				generalResp.setResultMsg("query failed");
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(e);
 			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
-			generalResp.setResultMsg("destroy timer failed because exception");
+			generalResp.setResultMsg("destroy failed because exception");
 		}
 		return gson.toJson(generalResp);
 	}

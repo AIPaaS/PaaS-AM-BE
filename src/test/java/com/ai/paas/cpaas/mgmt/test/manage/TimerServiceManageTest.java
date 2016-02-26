@@ -1,8 +1,6 @@
 package com.ai.paas.cpaas.mgmt.test.manage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -15,7 +13,6 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
 import com.ai.paas.cpaas.be.am.manage.model.GeneralTimerReq;
-import com.ai.paas.cpaas.be.am.manage.model.Parameter;
 import com.google.gson.Gson;
 
 public class TimerServiceManageTest {
@@ -26,24 +23,26 @@ public class TimerServiceManageTest {
 		HttpPost httpPost = new HttpPost("http://127.0.0.1:20880/cpaas/deploy/manage/create/timer");
 
 		GeneralTimerReq generalTimerReq = new GeneralTimerReq();
+		generalTimerReq.setAppId("redis-chronos111");
 		generalTimerReq.setClusterId("dev");
 		generalTimerReq.setRetries(2);
 		generalTimerReq.setStart("20160223231500");
-		generalTimerReq.setRepeatNum("10");
+		generalTimerReq.setRepeatNum("2");
 		generalTimerReq.setPeriod("T2S");
+		generalTimerReq.setCommond("");
 		GeneralTimerReq.Container container = new GeneralTimerReq.Container();
 		container.setContainerId("12345678");
-		container.setContainerName("redis-chronos");
-		container.setZoneId("backend");
-		container.setAttrs("disk:ssd;netband:1G");
+		container.setContainerName("redis-chronos111");
+		// container.setZoneId("backend");
+		// container.setAttrs("disk:ssd;netband:1G");
 		container.setImgFullName("redis");
-		container.setImgVersion("3.0.5");
+		container.setImgVersion("3.0.6");
 		container.setCpu("2.0");
 		container.setMem("512");
 		container.setDisk("512");
-		List<Parameter> params = new ArrayList<>();
-		params.add(new Parameter("a", "b"));
-		container.setEnvVars(params);
+		// List<Parameter> params = new ArrayList<>();
+		// params.add(new Parameter("a", "b"));
+		// container.setEnvVars(params);
 		generalTimerReq.setContainer(container);
 
 		StringEntity entity = new StringEntity((new Gson()).toJson(generalTimerReq), "utf-8");
@@ -64,7 +63,7 @@ public class TimerServiceManageTest {
 
 		GeneralTimerReq generalTimerReq = new GeneralTimerReq();
 		generalTimerReq.setClusterId("dev");
-
+		generalTimerReq.setAppId("redis-chronos111");
 		StringEntity entity = new StringEntity((new Gson()).toJson(generalTimerReq), "utf-8");
 		entity.setContentEncoding("UTF-8");
 		entity.setContentType("application/json");
@@ -83,7 +82,7 @@ public class TimerServiceManageTest {
 
 		GeneralTimerReq generalTimerReq = new GeneralTimerReq();
 		generalTimerReq.setClusterId("dev");
-
+		generalTimerReq.setAppId("redis-chronos111");
 		StringEntity entity = new StringEntity((new Gson()).toJson(generalTimerReq), "utf-8");
 		entity.setContentEncoding("UTF-8");
 		entity.setContentType("application/json");
@@ -121,6 +120,7 @@ public class TimerServiceManageTest {
 
 		GeneralTimerReq generalTimerReq = new GeneralTimerReq();
 		generalTimerReq.setClusterId("dev");
+		generalTimerReq.setAppId("redis-chronos1112");
 
 		StringEntity entity = new StringEntity((new Gson()).toJson(generalTimerReq), "utf-8");
 		entity.setContentEncoding("UTF-8");

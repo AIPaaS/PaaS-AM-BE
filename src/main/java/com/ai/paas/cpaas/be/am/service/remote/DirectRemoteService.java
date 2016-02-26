@@ -340,6 +340,7 @@ public class DirectRemoteService implements IRemoteService {
 			HttpEntity respEntity = resp.getEntity();
 			String respString = EntityUtils.toString(respEntity, "UTF-8");
 			logger.info(resp.getStatusLine().getStatusCode());
+			logger.info(respString);
 			if (resp.getStatusLine().getStatusCode() == 200) {
 				List<ChronosJob> jobs = (new Gson()).fromJson(respString, new TypeToken<List<ChronosJob>>() {
 				}.getType());

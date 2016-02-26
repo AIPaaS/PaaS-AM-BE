@@ -16,7 +16,16 @@ public class GeneralTimerReq {
 	private String repeatNum;
 	private String period;
 	private Integer retries;
+	private String commond;
 	private Container container;
+
+	public String getCommond() {
+		return commond;
+	}
+
+	public void setCommond(String commond) {
+		this.commond = commond;
+	}
 
 	public String getClusterId() {
 		return clusterId;

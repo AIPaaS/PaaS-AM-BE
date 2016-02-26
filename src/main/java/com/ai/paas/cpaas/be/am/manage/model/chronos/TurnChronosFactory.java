@@ -20,6 +20,7 @@ public class TurnChronosFactory {
 
 	public static ChronosJob turnCreateReq(GeneralTimerReq generalTimerReq) throws RequestParamException {
 		ChronosJob chronosJob = new ChronosJob();
+		chronosJob.setName(generalTimerReq.getAppId());
 		chronosJob.setRetries(generalTimerReq.getRetries());
 		// chronosJob.setCommand(command);
 		StringBuilder schedule = new StringBuilder("");
@@ -37,6 +38,7 @@ public class TurnChronosFactory {
 		schedule.append("/P");
 		schedule.append(generalTimerReq.getPeriod());
 		chronosJob.setSchedule(schedule.toString());
+		chronosJob.setCommand(generalTimerReq.getCommond());
 		GeneralTimerReq.Container reqContainer = generalTimerReq.getContainer();
 		if (reqContainer == null) {
 			throw new RequestParamException("miss container info");
@@ -46,9 +48,10 @@ public class TurnChronosFactory {
 		chronosJob.setDisk(reqContainer.getDisk());
 		ChronosJob.Container container = new ChronosJob.Container();
 		container.setImage(reqContainer.getImgFullName() + ":" + reqContainer.getImgVersion());
-		List<ChronosJob.Container.Volume> volumes = new ArrayList<>();
-		volumes.add(new ChronosJob.Container.Volume(reqContainer.getLogDir(), reqContainer.getDataDir(), "RW"));
-		container.setVolumes(volumes);
+		// List<ChronosJob.Container.Volume> volumes = new ArrayList<>();
+		// volumes.add(new ChronosJob.Container.Volume(reqContainer.getLogDir(),
+		// reqContainer.getDataDir(), "RW"));
+		// container.setVolumes(volumes);
 		chronosJob.setContainer(container);
 		if (CollectionUtils.isNotEmpty(reqContainer.getEnvVars())) {
 			chronosJob.setEnvironmentVariables(reqContainer.getEnvVars());
@@ -65,8 +68,8 @@ public class TurnChronosFactory {
 				constraints.add(Arrays.asList(pair[0], "CLUSTER", pair[1]));
 			}
 		}
-
-		chronosJob.setConstraints(constraints);
+		if (CollectionUtils.isNotEmpty(constraints))
+			chronosJob.setConstraints(constraints);
 		return chronosJob;
 	}
 
