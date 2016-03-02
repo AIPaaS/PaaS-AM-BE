@@ -1,4 +1,4 @@
-package com.ai.paas.cpaas.be.am.manage.impl;
+package com.ai.paas.cpaas.be.srv.manage.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +8,16 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ai.paas.cpaas.be.am.dao.mapper.bo.ResClusterInfo;
-import com.ai.paas.cpaas.be.am.interfaces.IExternalServiceManager;
-import com.ai.paas.cpaas.be.am.manage.model.ExternalQueryResp;
-import com.ai.paas.cpaas.be.am.manage.model.ExternalServiceReq;
-import com.ai.paas.cpaas.be.am.manage.model.ExternalServiceResp;
-import com.ai.paas.cpaas.be.am.manage.model.Parameter;
-import com.ai.paas.cpaas.be.am.manage.model.consul.RegisterReq;
-import com.ai.paas.cpaas.be.am.manage.model.consul.ServiceInfo;
 import com.ai.paas.cpaas.be.am.service.IResClusterInfoService;
-import com.ai.paas.cpaas.be.am.service.RemoteServiceException;
-import com.ai.paas.cpaas.be.am.service.remote.DirectRemoteService;
+import com.ai.paas.cpaas.be.srv.interfaces.IExternalServiceManager;
+import com.ai.paas.cpaas.be.srv.manage.model.ExternalQueryResp;
+import com.ai.paas.cpaas.be.srv.manage.model.ExternalServiceReq;
+import com.ai.paas.cpaas.be.srv.manage.model.ExternalServiceResp;
+import com.ai.paas.cpaas.be.srv.manage.model.Parameter;
+import com.ai.paas.cpaas.be.srv.manage.model.consul.RegisterReq;
+import com.ai.paas.cpaas.be.srv.manage.model.consul.ServiceInfo;
+import com.ai.paas.cpaas.be.srv.service.RemoteServiceException;
+import com.ai.paas.cpaas.be.srv.service.remote.DirectRemoteService;
 import com.ai.paas.ipaas.PaaSMgmtConstant;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.google.gson.Gson;

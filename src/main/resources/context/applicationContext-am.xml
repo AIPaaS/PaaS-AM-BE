@@ -28,6 +28,6 @@
     <!-- 启动注解扫描 -->
     <context:annotation-config/>
     <!-- 设定注解扫描基础包 -->
-    <context:component-scan base-package="com.ai.paas.cpaas.be.am"/>
+    <context:component-scan base-package="com.ai.paas.cpaas.be"/>
 	<dubbo:annotation package="com.ai.paas.cpaas" />	
 </beans>

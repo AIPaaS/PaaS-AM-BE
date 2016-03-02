@@ -1,4 +1,4 @@
-package com.ai.paas.cpaas.be.am.interfaces;
+package com.ai.paas.cpaas.be.srv.interfaces;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

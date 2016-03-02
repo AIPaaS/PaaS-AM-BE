@@ -26,9 +26,9 @@ public class ExternalServiceManageTest {
 		HttpPost httpPost = new HttpPost("http://127.0.0.1:20880/cpaas/external/manage/add");
 		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
 		externalServiceReq.setClusterId("dev");
-		externalServiceReq.setServiceId("redis1");
+		externalServiceReq.setServiceId("redis2");
 		externalServiceReq.setServiceName("redis");
-		externalServiceReq.setAddress("10.1.241.126");
+		externalServiceReq.setAddress("10.1.241.127");
 		externalServiceReq.setPort(31553);
 		List<Check> checks = new ArrayList<>();
 		Check check = new Check();
@@ -74,7 +74,7 @@ public class ExternalServiceManageTest {
 
 		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
 		externalServiceReq.setClusterId("dev");
-		externalServiceReq.setServiceId("redis1");
+		externalServiceReq.setServiceId("redis2");
 		externalServiceReq.setServiceName("redis");
 		StringEntity entity = new StringEntity((new Gson()).toJson(externalServiceReq), "utf-8");
 		entity.setContentEncoding("UTF-8");
