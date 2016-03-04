@@ -4,7 +4,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 ext {
-    projectName="ipaas-mgmt-backend"
+    projectName="PaaS-BE-AM"
     moduleVersion="0.1-SNAPSHOT"
     publishUserName = "devadm"
     publishUserPassword = "Devadm@1212"
@@ -51,8 +51,39 @@ dependencies {
 
 
 task cleanTempDir(type: Delete) {
-    delete fileTree(dir: "$buildDir/libs", include: "$project.ext.projectName*")
+    delete fileTree(dir: "$buildDir", include: "$project.ext.projectName*")
 }
+
+task copy3rdJars(type: Copy) {
+    project.each { project ->
+        from project.configurations.runtime
+        destinationDir file("$buildDir/libs")
+    }
+}
+
+task copyConfig(type: Copy) {
+    project.each { project ->
+        from project.fileTree(
+                dir: 'src/main/resources',
+                include: {
+                    'dubbo/registry/**'
+                    '**.xml'
+                    '**.properties'
+                }
+        )
+        destinationDir file("$buildDir/config")
+    }
+}
+
+task copyBin(type: Copy) {
+    project.each { project ->
+        from project.fileTree(
+                dir: 'shell',
+        )
+        destinationDir file("$buildDir/bin")
+    }
+}
+
 
 jar {
     baseName projectName
@@ -62,6 +93,4 @@ jar {
     }
 }
 
-
-
-build.dependsOn cleanTempDir
+build.dependsOn copy3rdJars,copyConfig,copyBin,cleanTempDir
