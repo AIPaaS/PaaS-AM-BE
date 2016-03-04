@@ -19,7 +19,7 @@ public class ResClusterInfoServiceImpl implements IResClusterInfoService {
 		ResClusterInfoMapper mapper = ServiceUtil.getMapper(ResClusterInfoMapper.class);
 		ResClusterInfoCriteria resClusterInfoCriteria = new ResClusterInfoCriteria();
 		Criteria criteria = resClusterInfoCriteria.createCriteria();
-		criteria.andClusterNameEqualTo(clusterId);
+		criteria.andClusterIdEqualTo(clusterId);
 		return mapper.selectByExample(resClusterInfoCriteria).get(0);
 	}
 
