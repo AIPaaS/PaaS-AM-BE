@@ -1,6 +1,7 @@
 #!/bin/sh
 
 COMMON_LIB=$HOME/applications/PaaS-BE-AM
+COMMON_CONF=$HOME/applications/PaaS-BE-AM/config
 #echo -----------------------------------------COMMON_LIB $COMMON_LIB
 export COMMON_LIB
 
@@ -8,6 +9,7 @@ for file in ${COMMON_LIB}/**/*.jar;
 do CP=${CP}:$file;
 done
 
+CP=${CP}:${COMMON_CONF}
 CLASSPATH="${CP}"
 export CLASSPATH
 #echo $CLASSPATH
