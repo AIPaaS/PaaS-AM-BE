@@ -246,11 +246,4 @@ public class ConfigDO {
         File = file;
     }
 
-    public String getID() {
-        return MID;
-    }
-
-    public void setMID(String ID) {
-        this.MID = ID;
-    }
 }
