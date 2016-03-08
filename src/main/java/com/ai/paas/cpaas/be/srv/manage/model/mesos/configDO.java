@@ -15,152 +15,155 @@ import java.util.ArrayList;
  * http://mesosphere.github.io/mesos-dns/docs/configuration-parameters.html
  */
 
-public class configDO {
-    private String zk;
-    private Integer zkDetectionTimeout;
-    private ArrayList<String> masters;
-    private Integer refreshSeconds;
-    private Integer stateTimeoutSeconds;
-    private Integer ttl;
-    private String domain;
-    private Integer port;
-    private ArrayList<String> resolvers;
-    private Integer timeout;
-    private String listener;
-    private boolean  dnson;
-    private boolean  httpon;
-    private Integer httpport;
-    private boolean  externalon;
+public class ConfigDO {
+    //注意参数大小写
+    private String Zk;
+    private Integer ZkDetectionTimeout;
+    private ArrayList<String> Masters;
+    private Integer RefreshSeconds;
+    private Integer StateTimeoutSeconds;
+    private Integer TTL;
+    private String Domain;
+    private Integer Port;
+    private ArrayList<String> Resolvers;
+    private Integer Timeout;
+    private String Listener;
+    private Boolean   DnsOn;
+    private Boolean   HttpOn;
+    private Integer HttpPort;
+    private Boolean   ExternalOn;
     private String SOAMname;
     private String SOARname;
     private Integer SOARefresh;
     private Integer SOARetry;
     private Integer SOAExpire;
     private Integer SOAMinttl;
-    private boolean recurseon;
-    private boolean enforceRFC952;
+    private Boolean  RecurseOn;
+    private Boolean  EnforceRFC952;
     private ArrayList<String> IPSources;
     //配置文件路径
     private String File;
+    //保留参数ID
+    private String MID;
 
     public String getZk() {
-        return zk;
+        return Zk;
     }
 
     public void setZk(String zk) {
-        this.zk = zk;
+        Zk = zk;
     }
 
     public Integer getZkDetectionTimeout() {
-        return zkDetectionTimeout;
+        return ZkDetectionTimeout;
     }
 
     public void setZkDetectionTimeout(Integer zkDetectionTimeout) {
-        this.zkDetectionTimeout = zkDetectionTimeout;
+        ZkDetectionTimeout = zkDetectionTimeout;
     }
 
     public ArrayList<String> getMasters() {
-        return masters;
+        return Masters;
     }
 
     public void setMasters(ArrayList<String> masters) {
-        this.masters = masters;
+        Masters = masters;
     }
 
     public Integer getRefreshSeconds() {
-        return refreshSeconds;
+        return RefreshSeconds;
     }
 
     public void setRefreshSeconds(Integer refreshSeconds) {
-        this.refreshSeconds = refreshSeconds;
+        RefreshSeconds = refreshSeconds;
     }
 
     public Integer getStateTimeoutSeconds() {
-        return stateTimeoutSeconds;
+        return StateTimeoutSeconds;
     }
 
     public void setStateTimeoutSeconds(Integer stateTimeoutSeconds) {
-        this.stateTimeoutSeconds = stateTimeoutSeconds;
+        StateTimeoutSeconds = stateTimeoutSeconds;
     }
 
-    public Integer getTtl() {
-        return ttl;
+    public Integer getTTL() {
+        return TTL;
     }
 
-    public void setTtl(Integer ttl) {
-        this.ttl = ttl;
+    public void setTTL(Integer TTL) {
+        this.TTL = TTL;
     }
 
     public String getDomain() {
-        return domain;
+        return Domain;
     }
 
     public void setDomain(String domain) {
-        this.domain = domain;
+        Domain = domain;
     }
 
     public Integer getPort() {
-        return port;
+        return Port;
     }
 
     public void setPort(Integer port) {
-        this.port = port;
+        Port = port;
     }
 
     public ArrayList<String> getResolvers() {
-        return resolvers;
+        return Resolvers;
     }
 
     public void setResolvers(ArrayList<String> resolvers) {
-        this.resolvers = resolvers;
+        Resolvers = resolvers;
     }
 
     public Integer getTimeout() {
-        return timeout;
+        return Timeout;
     }
 
     public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
+        Timeout = timeout;
     }
 
     public String getListener() {
-        return listener;
+        return Listener;
     }
 
     public void setListener(String listener) {
-        this.listener = listener;
+        Listener = listener;
     }
 
-    public boolean isDnson() {
-        return dnson;
+    public Boolean getDnsOn() {
+        return DnsOn;
     }
 
-    public void setDnson(boolean dnson) {
-        this.dnson = dnson;
+    public void setDnsOn(Boolean dnsOn) {
+        DnsOn = dnsOn;
     }
 
-    public boolean isHttpon() {
-        return httpon;
+    public Boolean getHttpOn() {
+        return HttpOn;
     }
 
-    public void setHttpon(boolean httpon) {
-        this.httpon = httpon;
+    public void setHttpOn(Boolean httpOn) {
+        HttpOn = httpOn;
     }
 
-    public Integer getHttpport() {
-        return httpport;
+    public Integer getHttpPort() {
+        return HttpPort;
     }
 
-    public void setHttpport(Integer httpport) {
-        this.httpport = httpport;
+    public void setHttpPort(Integer httpPort) {
+        HttpPort = httpPort;
     }
 
-    public boolean isExternalon() {
-        return externalon;
+    public Boolean getExternalOn() {
+        return ExternalOn;
     }
 
-    public void setExternalon(boolean externalon) {
-        this.externalon = externalon;
+    public void setExternalOn(Boolean externalOn) {
+        ExternalOn = externalOn;
     }
 
     public String getSOAMname() {
@@ -211,20 +214,20 @@ public class configDO {
         this.SOAMinttl = SOAMinttl;
     }
 
-    public boolean isRecurseon() {
-        return recurseon;
+    public Boolean getRecurseOn() {
+        return RecurseOn;
     }
 
-    public void setRecurseon(boolean recurseon) {
-        this.recurseon = recurseon;
+    public void setRecurseOn(Boolean recurseOn) {
+        RecurseOn = recurseOn;
     }
 
-    public boolean isEnforceRFC952() {
-        return enforceRFC952;
+    public Boolean getEnforceRFC952() {
+        return EnforceRFC952;
     }
 
-    public void setEnforceRFC952(boolean enforceRFC952) {
-        this.enforceRFC952 = enforceRFC952;
+    public void setEnforceRFC952(Boolean enforceRFC952) {
+        EnforceRFC952 = enforceRFC952;
     }
 
     public ArrayList<String> getIPSources() {
@@ -241,5 +244,13 @@ public class configDO {
 
     public void setFile(String file) {
         File = file;
+    }
+
+    public String getID() {
+        return MID;
+    }
+
+    public void setMID(String ID) {
+        this.MID = ID;
     }
 }
