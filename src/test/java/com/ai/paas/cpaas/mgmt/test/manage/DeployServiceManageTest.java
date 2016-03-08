@@ -35,7 +35,7 @@ public class DeployServiceManageTest {
 		HttpPost httpPost = new HttpPost("http://127.0.0.1:20880/cpaas/deploy/manage/create/longrun");
 
 		GeneralReq createReq = new GeneralReq();
-		createReq.setClusterId("dev");
+		createReq.setClusterId("99");
 		createReq.setAppId("runner-test");
 		List<Container> containers = new ArrayList<>();
 		Container container = new Container();

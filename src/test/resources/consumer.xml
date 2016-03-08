@@ -19,5 +19,5 @@
     <dubbo:annotation package="test.dubborest"/>
     
     <dubbo:reference id="externalServiceManager" interface="com.ai.paas.cpaas.be.srv.interfaces.IExternalServiceManager"/>
-    
+    <dubbo:reference id="deployServiceManager" interface="com.ai.paas.cpaas.be.am.interfaces.IDeployServiceManager" url="rest://127.0.0.1:20880/cpaas/"/>
 </beans>
