@@ -253,4 +253,36 @@ public class ConfigDO {
     public void setMID(String MID) {
         this.MID = MID;
     }
+
+    @Override
+    public String toString() {
+        return "ConfigDO{" +
+                "Zk='" + Zk + '\'' +
+                ", ZkDetectionTimeout=" + ZkDetectionTimeout +
+                ", Masters=" + Masters +
+                ", RefreshSeconds=" + RefreshSeconds +
+                ", StateTimeoutSeconds=" + StateTimeoutSeconds +
+                ", TTL=" + TTL +
+                ", Domain='" + Domain + '\'' +
+                ", Port=" + Port +
+                ", Resolvers=" + Resolvers +
+                ", Timeout=" + Timeout +
+                ", Listener='" + Listener + '\'' +
+                ", DnsOn=" + DnsOn +
+                ", HttpOn=" + HttpOn +
+                ", HttpPort=" + HttpPort +
+                ", ExternalOn=" + ExternalOn +
+                ", SOAMname='" + SOAMname + '\'' +
+                ", SOARname='" + SOARname + '\'' +
+                ", SOARefresh=" + SOARefresh +
+                ", SOARetry=" + SOARetry +
+                ", SOAExpire=" + SOAExpire +
+                ", SOAMinttl=" + SOAMinttl +
+                ", RecurseOn=" + RecurseOn +
+                ", EnforceRFC952=" + EnforceRFC952 +
+                ", IPSources=" + IPSources +
+                ", File='" + File + '\'' +
+                ", MID='" + MID + '\'' +
+                '}';
+    }
 }
