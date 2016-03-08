@@ -32,6 +32,7 @@ public class ConfigDO {
     private Boolean   HttpOn;
     private Integer HttpPort;
     private Boolean   ExternalOn;
+    private String SOASerial;
     private String SOAMname;
     private String SOARname;
     private Integer SOARefresh;
@@ -254,6 +255,14 @@ public class ConfigDO {
         this.MID = MID;
     }
 
+    public String getSOASerial() {
+        return SOASerial;
+    }
+
+    public void setSOASerial(String SOASerial) {
+        this.SOASerial = SOASerial;
+    }
+
     @Override
     public String toString() {
         return "ConfigDO{" +
@@ -272,6 +281,7 @@ public class ConfigDO {
                 ", HttpOn=" + HttpOn +
                 ", HttpPort=" + HttpPort +
                 ", ExternalOn=" + ExternalOn +
+                ", SOASerial='" + SOASerial + '\'' +
                 ", SOAMname='" + SOAMname + '\'' +
                 ", SOARname='" + SOARname + '\'' +
                 ", SOARefresh=" + SOARefresh +
