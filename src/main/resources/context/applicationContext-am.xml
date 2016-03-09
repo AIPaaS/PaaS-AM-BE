@@ -19,17 +19,12 @@
 		   http://www.springframework.org/schema/tx
 		   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"> 
 
-	<bean id="createLongRun" class="com.ai.paas.cpaas.be.am.manage.thread.CreateLongRun" scope="prototype"/>
-	<bean id="scaleApp" class="com.ai.paas.cpaas.be.am.manage.thread.ScaleApp" scope="prototype"/>
-	<bean id="upgradeApp" class="com.ai.paas.cpaas.be.am.manage.thread.UpgradeApp" scope="prototype"/>
-	<bean id="destroyApp" class="com.ai.paas.cpaas.be.am.manage.thread.DestroyApp" scope="prototype"/>
 
 	
     <!-- 启动注解扫描 -->
     <context:annotation-config/>
     <!-- 设定注解扫描基础包 -->
-    <context:component-scan base-package="com.ai.paas.cpaas.be"/>
-	<dubbo:annotation package="com.ai.paas.cpaas" />
+    <context:component-scan base-package="com.ai.paas.cpaas.be.srv.service"/>
 
 	<bean id="mesosService" class="com.ai.paas.cpaas.be.srv.service.impl.MesosServiceImpl"/>
 </beans>
