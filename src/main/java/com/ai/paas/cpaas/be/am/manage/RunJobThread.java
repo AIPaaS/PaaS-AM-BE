@@ -96,7 +96,7 @@ public abstract class RunJobThread<T> implements Runnable {
 
 					// write app_task_log
 					int taskId = appTaskDetailService.saveAppTaskDetail(reqId, appId, container.getContainerName(), toJson(t), TaskStateType.STAGING);
-					appTaskLogService.saveTaskLog(taskId, "start container " + container.getContainerName());
+					appTaskLogService.saveTaskLog(taskId, "start container " + container.getContainerName(), TaskStateType.STAGING);
 
 					GeneralHttpResp createAppResp = runJob(container.getContainerName(), toJson(t));
 					TaskIdInfo taskIdInfo = new TaskIdInfo(taskId, container.getContainerName());
@@ -104,7 +104,7 @@ public abstract class RunJobThread<T> implements Runnable {
 						tasks.put(taskIdInfo, t);
 					} else {
 						appTaskDetailService.updateAppTaskDetail(taskIdInfo.getTaskId(), TaskStateType.FAIL);
-						appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), createAppResp.getFailedMessage());
+						appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), createAppResp.getFailedMessage(), TaskStateType.FAIL);
 					}
 				}
 			}
@@ -119,6 +119,7 @@ public abstract class RunJobThread<T> implements Runnable {
 							// running task equals instances , start
 							// successful
 							appTaskDetailService.updateAppTaskDetail(taskIdInfo.getTaskId(), TaskStateType.SUCCESS);
+							appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), getAppResp.getFailedMessage(), TaskStateType.SUCCESS);
 							needRemove.add(taskIdInfo);
 						} else {
 							continue;
@@ -127,7 +128,7 @@ public abstract class RunJobThread<T> implements Runnable {
 						// http error ,record message to database without
 						// retry
 						appTaskDetailService.updateAppTaskDetail(taskIdInfo.getTaskId(), TaskStateType.FAIL);
-						appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), getAppResp.getFailedMessage());
+						appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), getAppResp.getFailedMessage(), TaskStateType.FAIL);
 						needRemove.add(taskIdInfo);
 					}
 				}
@@ -145,7 +146,7 @@ public abstract class RunJobThread<T> implements Runnable {
 						// update all unfinished task fail
 						TaskIdInfo taskIdInfo = entry.getKey();
 						appTaskDetailService.updateAppTaskDetail(taskIdInfo.getTaskId(), TaskStateType.FAIL);
-						appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), "task fail because unfinished!");
+						appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), "task fail because unfinished!", TaskStateType.FAIL);
 					}
 				} else
 					Thread.sleep(1000);

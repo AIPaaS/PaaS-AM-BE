@@ -242,6 +242,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 		AppReqInfo appReqInfo = appReqInfoService.getReqInfo(logReq.getReqId());
 		logResp.setActionType(ActionType.valueOf(appReqInfo.getActionType()));
 		List<AppTaskDetail> taskDetails = appTaskDetailService.getTasksByReq(logReq.getReqId());
+		String lastFetchTime = null;
 		if (CollectionUtils.isNotEmpty(taskDetails)) {
 			List<Task> tasks = new ArrayList<>();
 			for (AppTaskDetail appTaskDetail : taskDetails) {

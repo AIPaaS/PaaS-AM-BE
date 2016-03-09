@@ -6,7 +6,16 @@ import com.ai.paas.ipaas.rest.vo.BaseResult;
 
 public class LogResp extends BaseResult {
 	private String actionType;
+	private String lastFetchTime;
 	private List<Task> tasks;
+
+	public String getLastFetchTime() {
+		return lastFetchTime;
+	}
+
+	public void setLastFetchTime(String lastFetchTime) {
+		this.lastFetchTime = lastFetchTime;
+	}
 
 	public String getActionType() {
 		return actionType;
