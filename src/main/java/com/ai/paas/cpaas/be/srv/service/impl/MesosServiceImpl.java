@@ -1,7 +1,6 @@
 package com.ai.paas.cpaas.be.srv.service.impl;
 
 import com.ai.paas.cpaas.be.srv.manage.model.marathon.FailedResp;
-import com.ai.paas.cpaas.be.srv.manage.model.mesos.ConfigDO;
 import com.ai.paas.cpaas.be.srv.service.MesosService;
 import com.ai.paas.cpaas.be.srv.service.RemoteServiceException;
 import com.google.gson.Gson;
