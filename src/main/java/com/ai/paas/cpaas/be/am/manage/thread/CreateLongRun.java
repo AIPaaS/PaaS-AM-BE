@@ -55,7 +55,8 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 		docker.setPrivileged(false);
 		appContainer.setDocker(docker);
 		List<Volume> volumes = new ArrayList<>();
-//		volumes.add(new Volume(container.getLogDir(), container.getDataDir(), "RW"));
+		// volumes.add(new Volume(container.getLogDir(), container.getDataDir(),
+		// "RW"));
 		appContainer.setVolumes(volumes);
 		createAppReq.setContainer(appContainer);
 
@@ -86,7 +87,7 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 	protected boolean validate(Container container) {
 		if (StringUtils.isBlank(container.getZoneId())) {
 			int taskId = appTaskDetailService.saveAppTaskDetail(reqId, appId, container.getContainerName(), toJson(container), TaskStateType.FAIL);
-			appTaskLogService.saveTaskLog(taskId, "start container " + container.getContainerName() + " failed because missing zoneId");
+			appTaskLogService.saveTaskLog(taskId, "start container " + container.getContainerName() + " failed because missing zoneId", TaskStateType.FAIL);
 			return false;
 		}
 		return true;
