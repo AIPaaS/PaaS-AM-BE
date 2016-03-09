@@ -95,7 +95,7 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 
 	@Override
 	protected GeneralHttpResp runJob(String containerId, String param) throws RemoteServiceException {
-		return remoteService.deployLongRun(param, CreateAppResp.class);
+		return remoteService.deployLongRun(param, CreateAppResp.class); 
 	}
 
 }
