@@ -26,6 +26,7 @@ CREATE TABLE `app_task_log` (
   `log_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `task_id` int(11) NOT NULL,
   `log_cnt` varchar(4000) DEFAULT NULL,
+  `task_state` int(11) NOT NULL,
   `log_time` datetime NOT NULL,
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8;
