@@ -6,14 +6,23 @@ import com.ai.paas.ipaas.rest.vo.BaseResult;
 
 public class LogResp extends BaseResult {
 	private String actionType;
-	private String lastFetchTime;
+	private Long lastFetchTime;
+	private Integer finishState;
 	private List<Task> tasks;
 
-	public String getLastFetchTime() {
+	public Integer getFinishState() {
+		return finishState;
+	}
+
+	public void setFinishState(Integer finishState) {
+		this.finishState = finishState;
+	}
+
+	public Long getLastFetchTime() {
 		return lastFetchTime;
 	}
 
-	public void setLastFetchTime(String lastFetchTime) {
+	public void setLastFetchTime(Long lastFetchTime) {
 		this.lastFetchTime = lastFetchTime;
 	}
 
@@ -83,8 +92,17 @@ public class LogResp extends BaseResult {
 	}
 
 	public static class Log {
+		private int taskState;
 		private String logTime;
 		private String logCnt;
+
+		public int getTaskState() {
+			return taskState;
+		}
+
+		public void setTaskState(int taskState) {
+			this.taskState = taskState;
+		}
 
 		public String getLogTime() {
 			return logTime;
