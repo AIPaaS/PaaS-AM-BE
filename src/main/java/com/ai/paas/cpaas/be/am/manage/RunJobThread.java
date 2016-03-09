@@ -119,7 +119,7 @@ public abstract class RunJobThread<T> implements Runnable {
 							// running task equals instances , start
 							// successful
 							appTaskDetailService.updateAppTaskDetail(taskIdInfo.getTaskId(), TaskStateType.SUCCESS);
-							appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), getAppResp.getFailedMessage(), TaskStateType.SUCCESS);
+							appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), "task success finished", TaskStateType.SUCCESS);
 							needRemove.add(taskIdInfo);
 						} else {
 							continue;
