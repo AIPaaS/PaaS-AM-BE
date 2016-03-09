@@ -11,6 +11,8 @@ public class AppTaskLog {
 
     private Timestamp logTime;
 
+    private Integer taskState;
+
     public Long getLogId() {
         return logId;
     }
@@ -41,5 +43,13 @@ public class AppTaskLog {
 
     public void setLogTime(Timestamp logTime) {
         this.logTime = logTime;
+    }
+
+    public Integer getTaskState() {
+        return taskState;
+    }
+
+    public void setTaskState(Integer taskState) {
+        this.taskState = taskState;
     }
 }

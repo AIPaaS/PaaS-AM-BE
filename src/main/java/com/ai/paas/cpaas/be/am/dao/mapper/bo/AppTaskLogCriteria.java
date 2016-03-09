@@ -374,6 +374,66 @@ public class AppTaskLogCriteria {
             addCriterion("log_time not between", value1, value2, "logTime");
             return (Criteria) this;
         }
+
+        public Criteria andTaskStateIsNull() {
+            addCriterion("task_state is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateIsNotNull() {
+            addCriterion("task_state is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateEqualTo(Integer value) {
+            addCriterion("task_state =", value, "taskState");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateNotEqualTo(Integer value) {
+            addCriterion("task_state <>", value, "taskState");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateGreaterThan(Integer value) {
+            addCriterion("task_state >", value, "taskState");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("task_state >=", value, "taskState");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateLessThan(Integer value) {
+            addCriterion("task_state <", value, "taskState");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateLessThanOrEqualTo(Integer value) {
+            addCriterion("task_state <=", value, "taskState");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateIn(List<Integer> values) {
+            addCriterion("task_state in", values, "taskState");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateNotIn(List<Integer> values) {
+            addCriterion("task_state not in", values, "taskState");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateBetween(Integer value1, Integer value2) {
+            addCriterion("task_state between", value1, value2, "taskState");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskStateNotBetween(Integer value1, Integer value2) {
+            addCriterion("task_state not between", value1, value2, "taskState");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

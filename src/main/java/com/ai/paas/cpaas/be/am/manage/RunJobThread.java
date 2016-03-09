@@ -74,7 +74,7 @@ public abstract class RunJobThread<T> implements Runnable {
 	protected IAppTaskLogService appTaskLogService;
 	@Autowired
 	protected ISystemCodesService systemCodesService;
-	
+
 	protected IRemoteService remoteService;
 
 	public RunJobThread() {
@@ -170,6 +170,7 @@ public abstract class RunJobThread<T> implements Runnable {
 			}
 
 			CallBackReq callBackReq = new CallBackReq();
+			callBackReq.setReqId(new Integer(reqId).longValue());
 			callBackReq.setAppId(appId);
 			callBackReq.setActionType(actionType.getName());
 			callBackReq.setClusterId(generalReq.getClusterId());

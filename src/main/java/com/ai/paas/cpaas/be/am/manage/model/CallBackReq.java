@@ -13,7 +13,16 @@ public class CallBackReq {
 	private String dataCenterId;
 	private String appId;
 	private String actionType;
+	private Long reqId;
 	private List<Container> containers;
+
+	public Long getReqId() {
+		return reqId;
+	}
+
+	public void setReqId(Long reqId) {
+		this.reqId = reqId;
+	}
 
 	public String getClusterId() {
 		return clusterId;

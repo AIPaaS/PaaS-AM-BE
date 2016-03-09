@@ -1,10 +1,9 @@
 package com.ai.paas.cpaas.be.am.dao.interfaces;
 
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
-
 import com.ai.paas.cpaas.be.am.dao.mapper.bo.AppTaskLog;
 import com.ai.paas.cpaas.be.am.dao.mapper.bo.AppTaskLogCriteria;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AppTaskLogMapper {
     int countByExample(AppTaskLogCriteria example);
