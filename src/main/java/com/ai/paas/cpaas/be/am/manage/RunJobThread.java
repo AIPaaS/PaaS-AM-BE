@@ -196,9 +196,9 @@ public abstract class RunJobThread<T> implements Runnable {
 						Instance instance = new Instance();
 						instance.setHost(task.getHost());
 						if (task.getStartedAt() == null)
-							instance.setState(InstanceStateType.FAILED.toString());
+							instance.setState(InstanceStateType.FAILED.getName());
 						else
-							instance.setState(InstanceStateType.RUNNING.toString());
+							instance.setState(InstanceStateType.RUNNING.getName());
 						instance.setInstanceId("mesos-" + task.getSlaveId() + "." + getTaskNameFromMesos(task.getHost(), task.getId()));
 						instances.add(instance);
 					}

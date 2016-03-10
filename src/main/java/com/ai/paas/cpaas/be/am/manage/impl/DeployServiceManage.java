@@ -1,5 +1,6 @@
 package com.ai.paas.cpaas.be.am.manage.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -251,7 +252,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 				task.setEndTime(appTaskDetail.getTaskEndTime().toString());
 				task.setTaskName(appTaskDetail.getTaskName());
 				task.setTaskState(TaskStateType.valueOf(appTaskDetail.getTaskState()));
-				List<AppTaskLog> appTaskLogs = appTaskLogService.getTaskLogs(appTaskDetail.getTaskId());
+				List<AppTaskLog> appTaskLogs = appTaskLogService.getTaskLogs(appTaskDetail.getTaskId(), new Timestamp(logReq.getLastFetchTime()));
 				if (CollectionUtils.isNotEmpty(appTaskLogs)) {
 					List<Log> logs = new ArrayList<>();
 					for (AppTaskLog appTaskLog : appTaskLogs) {
