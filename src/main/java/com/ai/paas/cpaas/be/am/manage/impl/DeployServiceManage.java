@@ -249,7 +249,8 @@ public class DeployServiceManage implements IDeployServiceManager {
 			for (AppTaskDetail appTaskDetail : taskDetails) {
 				Task task = new Task();
 				task.setStartTime(appTaskDetail.getTaskStartTime().toString());
-				task.setEndTime(appTaskDetail.getTaskEndTime().toString());
+				if (appTaskDetail.getTaskEndTime() != null)
+					task.setEndTime(appTaskDetail.getTaskEndTime().toString());
 				task.setTaskName(appTaskDetail.getTaskName());
 				task.setTaskState(TaskStateType.valueOf(appTaskDetail.getTaskState()));
 				List<AppTaskLog> appTaskLogs = appTaskLogService.getTaskLogs(appTaskDetail.getTaskId(), new Timestamp(logReq.getLastFetchTime()));
