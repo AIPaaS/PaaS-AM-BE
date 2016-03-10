@@ -38,7 +38,7 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 		CreateAppReq.Container appContainer = new CreateAppReq.Container();
 		appContainer.setType("DOCKER");
 		Docker docker = new Docker();
-		docker.setImage(container.getImgFullName() + ":" + container.getImgVersion());
+		docker.setImage(container.getImgFullName());
 		docker.setNetwork("BRIDGE");
 		if (CollectionUtils.isNotEmpty(container.getServicesFor())) {
 			List<PortMapping> portMappings = new ArrayList<>();
@@ -55,8 +55,6 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 		docker.setPrivileged(false);
 		appContainer.setDocker(docker);
 		List<Volume> volumes = new ArrayList<>();
-		// volumes.add(new Volume(container.getLogDir(), container.getDataDir(),
-		// "RW"));
 		appContainer.setVolumes(volumes);
 		createAppReq.setContainer(appContainer);
 
@@ -95,7 +93,7 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 
 	@Override
 	protected GeneralHttpResp runJob(String containerId, String param) throws RemoteServiceException {
-		return remoteService.deployLongRun(param, CreateAppResp.class); 
+		return remoteService.deployLongRun(param, CreateAppResp.class);
 	}
 
 }

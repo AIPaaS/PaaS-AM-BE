@@ -30,7 +30,7 @@ public class UpgradeApp extends RunJobThread<GetConfigResp> {
 			GetConfigResp.Container containerResp = getConfigResp.getContainer();
 			if (containerResp != null) {
 				GetConfigResp.Container.Docker docker = containerResp.getDocker();
-				docker.setImage(container.getImgFullName() + ":" + container.getImgVersion());
+				docker.setImage(container.getImgFullName());
 			}
 			getConfigResp.setInstances(container.getInstances());
 		}

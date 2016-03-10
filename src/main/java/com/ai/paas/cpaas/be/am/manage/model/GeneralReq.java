@@ -20,7 +20,6 @@ public class GeneralReq {
 		private String zoneId;
 		private List<Parameter> attrs;
 		private String imgFullName;
-		private String imgVersion;
 		private String depends;
 		private Double cpu;
 		private Integer mem;
@@ -100,14 +99,6 @@ public class GeneralReq {
 
 		public void setImgFullName(String imgFullName) {
 			this.imgFullName = imgFullName;
-		}
-
-		public String getImgVersion() {
-			return imgVersion;
-		}
-
-		public void setImgVersion(String imgVersion) {
-			this.imgVersion = imgVersion;
 		}
 
 		public String getDepends() {

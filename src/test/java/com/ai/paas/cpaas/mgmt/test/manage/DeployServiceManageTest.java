@@ -40,8 +40,7 @@ public class DeployServiceManageTest {
 		List<Container> containers = new ArrayList<>();
 		Container container = new Container();
 		container.setContainerName("test-redis-1");
-		container.setImgFullName("redis");
-		container.setImgVersion("3.0.5");
+		container.setImgFullName("redis:3.0.5");
 		container.setCpu(1d);
 		container.setMem(512);
 		container.setInstances(1);
@@ -129,8 +128,7 @@ public class DeployServiceManageTest {
 		Container container = new Container();
 		container.setVersion("2016-02-18T06:40:25.930Z");
 		container.setContainerName("test-redis-1");
-		container.setImgFullName("redis");
-		container.setImgVersion("3.0.6");
+		container.setImgFullName("redis:3.0.6");
 		containers.add(container);
 		scaleReq.setContainers(containers);
 		StringEntity entity = new StringEntity((new Gson()).toJson(scaleReq), "utf-8");
