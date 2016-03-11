@@ -53,12 +53,13 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 			}
 			docker.setPortMappings(portMappings);
 		}
-		List<Parameter> params = new ArrayList<>();
-		params.add(new Parameter("-v", container.getLogDir()));
-		docker.setParameters(params);
+		List<Parameter> parameters = new ArrayList<>();
+		parameters.add(new Parameter("volume", container.getLogDir()));
+		docker.setParameters(parameters);
 		docker.setPrivileged(false);
 		appContainer.setDocker(docker);
 		List<Volume> volumes = new ArrayList<>();
+		// volumes.add(new Volume(container.getLogDir(), null, null));
 		appContainer.setVolumes(volumes);
 		createAppReq.setContainer(appContainer);
 
