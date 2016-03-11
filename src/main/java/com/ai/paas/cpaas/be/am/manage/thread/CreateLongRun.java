@@ -13,6 +13,7 @@ import com.ai.paas.cpaas.be.am.manage.model.TaskStateType;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container.Check;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container.For;
+import com.ai.paas.cpaas.be.am.manage.model.Parameter;
 import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppReq;
 import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppResp;
 import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppReq.HealthCheck;
@@ -52,6 +53,9 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 			}
 			docker.setPortMappings(portMappings);
 		}
+		List<Parameter> params = new ArrayList<>();
+		params.add(new Parameter("-v", container.getLogDir()));
+		docker.setParameters(params);
 		docker.setPrivileged(false);
 		appContainer.setDocker(docker);
 		List<Volume> volumes = new ArrayList<>();
