@@ -40,12 +40,12 @@ public class DeployServiceManageTest {
 		List<Container> containers = new ArrayList<>();
 		Container container = new Container();
 		container.setContainerName("test-redis-1");
-		container.setImgFullName("redis:3.0.5");
+		container.setImgFullName("redis:3.0.6");
 		container.setCpu(1d);
 		container.setMem(512);
 		container.setInstances(1);
 		container.setZoneId("backend");
-		container.setLogDir("/var/log/");
+		container.setLogDir("/var/bixy/log/");
 		container.setDataDir("/data");
 		List<For> servicesFor = new ArrayList<>();
 		For fo = new For();
