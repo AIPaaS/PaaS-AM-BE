@@ -1,5 +1,6 @@
 package com.ai.paas.cpaas.be.am.manage.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,16 +17,16 @@ import com.ai.paas.cpaas.be.am.manage.model.ActionType;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralDeployResp;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralHttpResp;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralReq;
+import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralResp;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralTimerReq;
 import com.ai.paas.cpaas.be.am.manage.model.LogReq;
 import com.ai.paas.cpaas.be.am.manage.model.LogResp;
+import com.ai.paas.cpaas.be.am.manage.model.LogResp.Log;
+import com.ai.paas.cpaas.be.am.manage.model.LogResp.Task;
 import com.ai.paas.cpaas.be.am.manage.model.StatusResp;
 import com.ai.paas.cpaas.be.am.manage.model.TaskStateType;
 import com.ai.paas.cpaas.be.am.manage.model.TimerQueryResp;
-import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container;
-import com.ai.paas.cpaas.be.am.manage.model.LogResp.Log;
-import com.ai.paas.cpaas.be.am.manage.model.LogResp.Task;
 import com.ai.paas.cpaas.be.am.manage.model.chronos.ChronosJob;
 import com.ai.paas.cpaas.be.am.manage.model.chronos.JobsResp;
 import com.ai.paas.cpaas.be.am.manage.model.chronos.TurnChronosFactory;
@@ -242,29 +243,35 @@ public class DeployServiceManage implements IDeployServiceManager {
 		AppReqInfo appReqInfo = appReqInfoService.getReqInfo(logReq.getReqId());
 		logResp.setActionType(ActionType.valueOf(appReqInfo.getActionType()));
 		List<AppTaskDetail> taskDetails = appTaskDetailService.getTasksByReq(logReq.getReqId());
-		String lastFetchTime = null;
+		long lastFetchTime = 0l;
 		if (CollectionUtils.isNotEmpty(taskDetails)) {
 			List<Task> tasks = new ArrayList<>();
 			for (AppTaskDetail appTaskDetail : taskDetails) {
 				Task task = new Task();
-				task.setStartTime(appTaskDetail.getTaskStartTime().toString());
-				task.setEndTime(appTaskDetail.getTaskEndTime().toString());
 				task.setTaskName(appTaskDetail.getTaskName());
-				task.setTaskState(TaskStateType.valueOf(appTaskDetail.getTaskState()));
-				List<AppTaskLog> appTaskLogs = appTaskLogService.getTaskLogs(appTaskDetail.getTaskId());
+//				task.setStartTime(appTaskDetail.getTaskStartTime().toString());
+//				if (appTaskDetail.getTaskEndTime() != null)
+//					task.setEndTime(appTaskDetail.getTaskEndTime().toString());
+//				task.setTaskState(TaskStateType.valueOf(appTaskDetail.getTaskState()));
+				List<AppTaskLog> appTaskLogs = appTaskLogService.getTaskLogs(appTaskDetail.getTaskId(), new Timestamp(logReq.getLastFetchTime()));
 				if (CollectionUtils.isNotEmpty(appTaskLogs)) {
 					List<Log> logs = new ArrayList<>();
 					for (AppTaskLog appTaskLog : appTaskLogs) {
 						Log log = new Log();
 						log.setLogTime(appTaskLog.getLogTime().toString());
 						log.setLogCnt(appTaskLog.getLogCnt());
+						log.setTaskState(TaskStateType.valueOf(appTaskLog.getTaskState()));
 						logs.add(log);
+						if (lastFetchTime < appTaskLog.getLogTime().getTime()) {
+							lastFetchTime = appTaskLog.getLogTime().getTime();
+						}
 					}
 					task.setLogs(logs);
 				}
 				tasks.add(task);
 			}
 			logResp.setTasks(tasks);
+			logResp.setLastFetchTime(lastFetchTime);
 		}
 		return gson.toJson(logResp);
 	}

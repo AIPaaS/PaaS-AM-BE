@@ -9,16 +9,17 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.ai.paas.cpaas.be.am.manage.RunJobThread;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralHttpResp;
-import com.ai.paas.cpaas.be.am.manage.model.TaskStateType;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container.Check;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralReq.Container.For;
+import com.ai.paas.cpaas.be.am.manage.model.Parameter;
+import com.ai.paas.cpaas.be.am.manage.model.TaskStateType;
 import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppReq;
-import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppResp;
-import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppReq.HealthCheck;
 import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppReq.Container.Docker;
-import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppReq.Container.Volume;
 import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppReq.Container.Docker.PortMapping;
+import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppReq.Container.Volume;
+import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppReq.HealthCheck;
+import com.ai.paas.cpaas.be.am.manage.model.marathon.CreateAppResp;
 import com.ai.paas.cpaas.be.am.service.RemoteServiceException;
 
 public class CreateLongRun extends RunJobThread<CreateAppReq> {
@@ -38,7 +39,7 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 		CreateAppReq.Container appContainer = new CreateAppReq.Container();
 		appContainer.setType("DOCKER");
 		Docker docker = new Docker();
-		docker.setImage(container.getImgFullName() + ":" + container.getImgVersion());
+		docker.setImage(container.getImgFullName());
 		docker.setNetwork("BRIDGE");
 		if (CollectionUtils.isNotEmpty(container.getServicesFor())) {
 			List<PortMapping> portMappings = new ArrayList<>();
@@ -52,11 +53,15 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 			}
 			docker.setPortMappings(portMappings);
 		}
+		List<Parameter> parameters = new ArrayList<>();
+		parameters.add(new Parameter("volume", container.getLogDir()));
+		docker.setParameters(parameters);
 		docker.setPrivileged(false);
 		appContainer.setDocker(docker);
 		List<Volume> volumes = new ArrayList<>();
 		// volumes.add(new Volume(container.getLogDir(), container.getDataDir(),
 		// "RW"));
+		// volumes.add(new Volume(container.getLogDir(), null, null));
 		appContainer.setVolumes(volumes);
 		createAppReq.setContainer(appContainer);
 

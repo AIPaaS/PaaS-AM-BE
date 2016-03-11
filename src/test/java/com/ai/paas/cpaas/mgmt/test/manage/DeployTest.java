@@ -31,8 +31,7 @@ public class DeployTest {
 		List<Container> containers = new ArrayList<>();
 		Container container = new Container();
 		container.setContainerName("test");
-		container.setImgFullName("redis");
-		container.setImgVersion("3.0.6");
+		container.setImgFullName("redis:3.0.6");
 		container.setCpu(1d);
 		container.setMem(512);
 		container.setInstances(1);

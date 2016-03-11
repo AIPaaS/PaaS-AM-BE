@@ -6,14 +6,23 @@ import com.ai.paas.ipaas.rest.vo.BaseResult;
 
 public class LogResp extends BaseResult {
 	private String actionType;
-	private String lastFetchTime;
+	private Long lastFetchTime;
+	private Integer finishState;
 	private List<Task> tasks;
 
-	public String getLastFetchTime() {
+	public Integer getFinishState() {
+		return finishState;
+	}
+
+	public void setFinishState(Integer finishState) {
+		this.finishState = finishState;
+	}
+
+	public Long getLastFetchTime() {
 		return lastFetchTime;
 	}
 
-	public void setLastFetchTime(String lastFetchTime) {
+	public void setLastFetchTime(Long lastFetchTime) {
 		this.lastFetchTime = lastFetchTime;
 	}
 
@@ -35,9 +44,9 @@ public class LogResp extends BaseResult {
 
 	public static class Task {
 		private String taskName;
-		private String taskState;
-		private String startTime;
-		private String endTime;
+		// private String taskState;
+		// private String startTime;
+		// private String endTime;
 		private List<Log> logs;
 
 		public String getTaskName() {
@@ -46,30 +55,6 @@ public class LogResp extends BaseResult {
 
 		public void setTaskName(String taskName) {
 			this.taskName = taskName;
-		}
-
-		public String getTaskState() {
-			return taskState;
-		}
-
-		public void setTaskState(String taskState) {
-			this.taskState = taskState;
-		}
-
-		public String getStartTime() {
-			return startTime;
-		}
-
-		public void setStartTime(String startTime) {
-			this.startTime = startTime;
-		}
-
-		public String getEndTime() {
-			return endTime;
-		}
-
-		public void setEndTime(String endTime) {
-			this.endTime = endTime;
 		}
 
 		public List<Log> getLogs() {
@@ -83,8 +68,17 @@ public class LogResp extends BaseResult {
 	}
 
 	public static class Log {
+		private String taskState;
 		private String logTime;
 		private String logCnt;
+
+		public String getTaskState() {
+			return taskState;
+		}
+
+		public void setTaskState(String taskState) {
+			this.taskState = taskState;
+		}
 
 		public String getLogTime() {
 			return logTime;

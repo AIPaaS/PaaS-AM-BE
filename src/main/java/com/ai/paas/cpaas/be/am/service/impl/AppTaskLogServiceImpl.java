@@ -30,11 +30,12 @@ public class AppTaskLogServiceImpl implements IAppTaskLogService {
 	}
 
 	@Override
-	public List<AppTaskLog> getTaskLogs(int taskId) {
+	public List<AppTaskLog> getTaskLogs(int taskId,Timestamp logTime) {
 		AppTaskLogMapper mapper = ServiceUtil.getMapper(AppTaskLogMapper.class);
 		AppTaskLogCriteria appTaskLogCriteria = new AppTaskLogCriteria();
 		Criteria criteria = appTaskLogCriteria.createCriteria();
 		criteria.andTaskIdEqualTo(taskId);
+		criteria.andLogTimeGreaterThan(logTime);
 		return mapper.selectByExample(appTaskLogCriteria);
 	}
 
