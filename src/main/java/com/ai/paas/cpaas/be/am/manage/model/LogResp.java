@@ -44,9 +44,9 @@ public class LogResp extends BaseResult {
 
 	public static class Task {
 		private String taskName;
-		private String taskState;
-		private String startTime;
-		private String endTime;
+		// private String taskState;
+		// private String startTime;
+		// private String endTime;
 		private List<Log> logs;
 
 		public String getTaskName() {
@@ -55,30 +55,6 @@ public class LogResp extends BaseResult {
 
 		public void setTaskName(String taskName) {
 			this.taskName = taskName;
-		}
-
-		public String getTaskState() {
-			return taskState;
-		}
-
-		public void setTaskState(String taskState) {
-			this.taskState = taskState;
-		}
-
-		public String getStartTime() {
-			return startTime;
-		}
-
-		public void setStartTime(String startTime) {
-			this.startTime = startTime;
-		}
-
-		public String getEndTime() {
-			return endTime;
-		}
-
-		public void setEndTime(String endTime) {
-			this.endTime = endTime;
 		}
 
 		public List<Log> getLogs() {
@@ -92,15 +68,15 @@ public class LogResp extends BaseResult {
 	}
 
 	public static class Log {
-		private int taskState;
+		private String taskState;
 		private String logTime;
 		private String logCnt;
 
-		public int getTaskState() {
+		public String getTaskState() {
 			return taskState;
 		}
 
-		public void setTaskState(int taskState) {
+		public void setTaskState(String taskState) {
 			this.taskState = taskState;
 		}
 

@@ -248,11 +248,11 @@ public class DeployServiceManage implements IDeployServiceManager {
 			List<Task> tasks = new ArrayList<>();
 			for (AppTaskDetail appTaskDetail : taskDetails) {
 				Task task = new Task();
-				task.setStartTime(appTaskDetail.getTaskStartTime().toString());
-				if (appTaskDetail.getTaskEndTime() != null)
-					task.setEndTime(appTaskDetail.getTaskEndTime().toString());
-				task.setTaskName(appTaskDetail.getTaskName());
-				task.setTaskState(TaskStateType.valueOf(appTaskDetail.getTaskState()));
+//				task.setStartTime(appTaskDetail.getTaskStartTime().toString());
+//				if (appTaskDetail.getTaskEndTime() != null)
+//					task.setEndTime(appTaskDetail.getTaskEndTime().toString());
+//				task.setTaskName(appTaskDetail.getTaskName());
+//				task.setTaskState(TaskStateType.valueOf(appTaskDetail.getTaskState()));
 				List<AppTaskLog> appTaskLogs = appTaskLogService.getTaskLogs(appTaskDetail.getTaskId(), new Timestamp(logReq.getLastFetchTime()));
 				if (CollectionUtils.isNotEmpty(appTaskLogs)) {
 					List<Log> logs = new ArrayList<>();
@@ -260,7 +260,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 						Log log = new Log();
 						log.setLogTime(appTaskLog.getLogTime().toString());
 						log.setLogCnt(appTaskLog.getLogCnt());
-						log.setTaskState(appTaskLog.getTaskState());
+						log.setTaskState(TaskStateType.valueOf(appTaskLog.getTaskState()));
 						logs.add(log);
 						if (lastFetchTime < appTaskLog.getLogTime().getTime()) {
 							lastFetchTime = appTaskLog.getLogTime().getTime();
