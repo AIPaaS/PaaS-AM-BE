@@ -26,5 +26,6 @@
     <!-- 设定注解扫描基础包 -->
     <context:component-scan base-package="com.ai.paas.cpaas.be.srv.service"/>
 
+
 	<bean id="mesosService" class="com.ai.paas.cpaas.be.srv.service.impl.MesosServiceImpl"/>
 </beans>
