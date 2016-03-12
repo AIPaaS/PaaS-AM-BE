@@ -31,5 +31,6 @@
     <context:component-scan base-package="com.ai.paas.cpaas.be"/>
 	<dubbo:annotation package="com.ai.paas.cpaas" />
 
+
 	<bean id="mesosService" class="com.ai.paas.cpaas.be.srv.service.impl.MesosServiceImpl"/>
 </beans>

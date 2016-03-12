@@ -78,7 +78,6 @@ public abstract class RunJobThread<T> implements Runnable {
 	protected IRemoteService remoteService;
 
 	public RunJobThread() {
-
 	}
 
 	@Override
