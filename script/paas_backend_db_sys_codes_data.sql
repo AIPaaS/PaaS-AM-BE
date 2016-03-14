@@ -1,0 +1,1 @@
+insert into sys_codes values('CALLBACK','url','CALLBACK',0,1);commit;
