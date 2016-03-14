@@ -47,7 +47,7 @@ public class TurnChronosFactory {
 		chronosJob.setMem(reqContainer.getMem());
 		chronosJob.setDisk(reqContainer.getDisk());
 		ChronosJob.Container container = new ChronosJob.Container();
-		container.setImage(reqContainer.getImgFullName() + ":" + reqContainer.getImgVersion());
+		container.setImage(reqContainer.getImgFullName());
 		// List<ChronosJob.Container.Volume> volumes = new ArrayList<>();
 		// volumes.add(new ChronosJob.Container.Volume(reqContainer.getLogDir(),
 		// reqContainer.getDataDir(), "RW"));

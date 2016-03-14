@@ -35,8 +35,7 @@ public class TimerServiceManageTest {
 		container.setContainerName("redis-chronos111");
 		// container.setZoneId("backend");
 		// container.setAttrs("disk:ssd;netband:1G");
-		container.setImgFullName("redis");
-		container.setImgVersion("3.0.6");
+		container.setImgFullName("redis:3.0.6");
 		container.setCpu("2.0");
 		container.setMem("512");
 		container.setDisk("512");
