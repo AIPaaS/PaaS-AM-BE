@@ -142,7 +142,7 @@ public class GeneralTimerReq {
 		private String disk;
 		private String logDir;
 		private String dataDir;
-		private List<Parameter> envVars;
+		private List<EnvironmentVariable> envVars;
 
 		public String getContainerId() {
 			return containerId;
@@ -224,11 +224,11 @@ public class GeneralTimerReq {
 			this.dataDir = dataDir;
 		}
 
-		public List<Parameter> getEnvVars() {
+		public List<EnvironmentVariable> getEnvVars() {
 			return envVars;
 		}
 
-		public void setEnvVars(List<Parameter> envVars) {
+		public void setEnvVars(List<EnvironmentVariable> envVars) {
 			this.envVars = envVars;
 		}
 

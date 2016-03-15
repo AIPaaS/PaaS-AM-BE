@@ -1,6 +1,8 @@
 package com.ai.paas.cpaas.mgmt.test.manage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -12,6 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
+import com.ai.paas.cpaas.be.am.manage.model.EnvironmentVariable;
 import com.ai.paas.cpaas.be.am.manage.model.GeneralTimerReq;
 import com.google.gson.Gson;
 
@@ -24,7 +27,7 @@ public class TimerServiceManageTest {
 
 		GeneralTimerReq generalTimerReq = new GeneralTimerReq();
 		generalTimerReq.setAppId("redis-chronos111");
-		generalTimerReq.setClusterId("dev");
+		generalTimerReq.setClusterId("99");
 		generalTimerReq.setRetries(2);
 		generalTimerReq.setStart("20160223231500");
 		generalTimerReq.setRepeatNum("2");
@@ -39,9 +42,9 @@ public class TimerServiceManageTest {
 		container.setCpu("2.0");
 		container.setMem("512");
 		container.setDisk("512");
-		// List<Parameter> params = new ArrayList<>();
-		// params.add(new Parameter("a", "b"));
-		// container.setEnvVars(params);
+		 List<EnvironmentVariable> params = new ArrayList<>();
+		 params.add(new EnvironmentVariable("volume", "/test/log"));
+		 container.setEnvVars(params);
 		generalTimerReq.setContainer(container);
 
 		StringEntity entity = new StringEntity((new Gson()).toJson(generalTimerReq), "utf-8");
