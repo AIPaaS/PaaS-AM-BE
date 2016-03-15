@@ -16,21 +16,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `res_instance_props`
+-- Dumping data for table `res_cluster_info`
 --
 
-DROP TABLE IF EXISTS `res_instance_props`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `res_instance_props` (
-  `key_id` int(11) NOT NULL AUTO_INCREMENT,
-  `key_code` varchar(4000) NOT NULL,
-  `key_value` varchar(4000) DEFAULT NULL,
-  `cluster_id` varchar(64) NOT NULL,
-  `state` int(11) DEFAULT NULL,
-  PRIMARY KEY (`key_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `res_cluster_info` WRITE;
+/*!40000 ALTER TABLE `res_cluster_info` DISABLE KEYS */;
+INSERT INTO `res_cluster_info` VALUES ('1','dev','http://10.1.241.122:8080','http://10.1.241.123:8500','http://10.1.241.124:4400','',''),('99','gaga','http://10.1.241.122:8080','http://10.1.241.123:8500','http://10.1.241.124:4400',' ',' ');
+/*!40000 ALTER TABLE `res_cluster_info` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -41,4 +34,4 @@ CREATE TABLE `res_instance_props` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-
+-- Dump completed on 2016-03-15 19:37:26
