@@ -16,14 +16,23 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `res_cluster_info`
+-- Table structure for table `res_cluster_info`
 --
 
-LOCK TABLES `res_cluster_info` WRITE;
-/*!40000 ALTER TABLE `res_cluster_info` DISABLE KEYS */;
-INSERT INTO `res_cluster_info` VALUES ('1','dev','http://10.1.241.122:8080','http://10.1.241.123:8500','http://10.1.241.124:4400','',''),('99','gaga','http://10.1.241.122:8080','http://10.1.241.123:8500','http://10.1.241.124:4400',' ',' ');
-/*!40000 ALTER TABLE `res_cluster_info` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `res_cluster_info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `res_cluster_info` (
+  `cluster_id` varchar(64) NOT NULL,
+  `cluster_name` varchar(255) NOT NULL,
+  `marathon_addr` varchar(512) NOT NULL,
+  `consul_addr` varchar(512) NOT NULL,
+  `chronos_addr` varchar(512) DEFAULT NULL,
+  `mesos_domain` varchar(128) NOT NULL,
+  `external_domain` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`cluster_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -34,4 +43,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-15 19:37:26
+-- Dump completed on 2016-03-15 19:42:03
