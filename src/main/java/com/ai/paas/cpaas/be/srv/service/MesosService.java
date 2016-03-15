@@ -1,5 +1,9 @@
 package com.ai.paas.cpaas.be.srv.service;
 
+import com.ai.paas.cpaas.be.srv.manage.model.mesos.ServiceDO;
+
+import java.util.List;
+
 /**
  * shaozhanpeng
  * 2016/3/7
@@ -22,6 +26,6 @@ public interface MesosService {
     /**
      * 获取服务相关信息
      */
-    public String getServices(String serviceName);
+    public List<ServiceDO> getServices(String serviceName);
 
 }

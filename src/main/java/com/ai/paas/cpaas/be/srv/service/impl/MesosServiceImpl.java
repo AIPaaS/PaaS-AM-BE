@@ -1,9 +1,12 @@
 package com.ai.paas.cpaas.be.srv.service.impl;
 
 import com.ai.paas.cpaas.be.srv.manage.model.marathon.FailedResp;
+import com.ai.paas.cpaas.be.srv.manage.model.mesos.ConfigDO;
+import com.ai.paas.cpaas.be.srv.manage.model.mesos.ServiceDO;
 import com.ai.paas.cpaas.be.srv.service.MesosService;
 import com.ai.paas.cpaas.be.srv.service.RemoteServiceException;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -14,6 +17,9 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ai.paas.cpaas.be.srv.util.HttpRequestUtils.httpGet;
 
@@ -41,34 +47,41 @@ public class MesosServiceImpl implements MesosService {
 
     @Override
     public String getVersion() {
-        String url  = splitURL(ip,port,MESOS_VERSION_PATH,null);
+        String url  = mkURL(ip,port,MESOS_VERSION_PATH,null);
         String result = httpGet(url);
         return result;
     }
 
     @Override
     public String getConfig() {
-        String url  = splitURL(ip,port,MESOS_CONFIG_PATH,null);
+        String url  = mkURL(ip,port,MESOS_CONFIG_PATH,null);
         String result = httpGet(url);
+        if (null == result) return null;
         return result;
     }
 
     @Override
     public String getHosts(String hostName) {
-        String url  = splitURL(ip,port,MESOS_HOST_PATH,hostid);
+        String url  = mkURL(ip,port,MESOS_HOST_PATH,hostid);
         String result = httpGet(url);
         return result;
     }
 
     @Override
-    public String getServices(String serviceName) {
-        String url  = splitURL(ip,port,MESOS_SERVICE_PATH,serviceid);
+    public List<ServiceDO> getServices(String serviceName) {
+        String url  = mkURL(ip,port,MESOS_SERVICE_PATH,serviceid);
         String result = httpGet(url);
-        return result;
+        Gson gson=new Gson();
+        List<ServiceDO> serviceDOs = gson.fromJson(result, new TypeToken<List<ServiceDO>>(){}.getType());
+        //TODO check List
+        for (ServiceDO tmp:serviceDOs){
+            if (null ==tmp.getIp()) return null;
+        }
+        return serviceDOs;
     }
 
 
-    public static String splitURL (String ip,String port,String param,String id){
+    public static String mkURL (String ip,String port,String param,String id){
             return "http://" + ip + ":" +  port + param + id;
     }
 
