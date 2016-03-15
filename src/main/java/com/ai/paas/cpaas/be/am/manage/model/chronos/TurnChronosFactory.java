@@ -58,24 +58,25 @@ public class TurnChronosFactory {
 		}
 
 		List<List<String>> constraints = new ArrayList<>();
-//		if (StringUtils.isNotBlank(reqContainer.getZoneId())) {
-//			constraints.add(Arrays.asList("zoneId", "CLUSTER", reqContainer.getZoneId()));
-//		}
-//		if (StringUtils.isNotBlank(reqContainer.getAttrs())) {
-//			String[] kvs = reqContainer.getAttrs().split(";", -1);
-//			for (String kv : kvs) {
-//				String[] pair = kv.split(":", -1);
-//				constraints.add(Arrays.asList(pair[0], "CLUSTER", pair[1]));
-//			}
-//		}
+		// if (StringUtils.isNotBlank(reqContainer.getZoneId())) {
+		// constraints.add(Arrays.asList("zoneId", "CLUSTER",
+		// reqContainer.getZoneId()));
+		// }
+		// if (StringUtils.isNotBlank(reqContainer.getAttrs())) {
+		// String[] kvs = reqContainer.getAttrs().split(";", -1);
+		// for (String kv : kvs) {
+		// String[] pair = kv.split(":", -1);
+		// constraints.add(Arrays.asList(pair[0], "CLUSTER", pair[1]));
+		// }
+		// }
 		if (CollectionUtils.isNotEmpty(constraints))
 			chronosJob.setConstraints(constraints);
 		return chronosJob;
 	}
 
-	public static TimerQueryResp fillTimerQueryResp(TimerQueryResp timerQueryResp, JobsResp jobsResp) {
+	public static TimerQueryResp fillTimerQueryResp(String jobName, TimerQueryResp timerQueryResp, JobsResp jobsResp) {
 		for (ChronosJob job : jobsResp.getJobs()) {
-			if (job.getName().equals(timerQueryResp.getAppId())) {
+			if (job.getName().equals(jobName)) {
 				timerQueryResp.setErrorCount(job.getErrorCount());
 				timerQueryResp.setLastError(job.getLastError());
 				timerQueryResp.setLastSuccess(job.getLastSuccess());

@@ -356,7 +356,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 			generalResp.setReqId(reqId);
 			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
-			GeneralHttpResp generalHttpResp = clusterProxy.destroyTimer(generalTimerReq.getAppId());
+			GeneralHttpResp generalHttpResp = clusterProxy.destroyTimer(generalTimerReq.getContainer().getContainerName());
 
 			if (generalHttpResp.getSuccess()) {
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
@@ -384,7 +384,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 			generalResp.setReqId(reqId);
 			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
-			GeneralHttpResp generalHttpResp = clusterProxy.forceTimer(generalTimerReq.getAppId());
+			GeneralHttpResp generalHttpResp = clusterProxy.forceTimer(generalTimerReq.getContainer().getContainerName());
 
 			if (generalHttpResp.getSuccess()) {
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
@@ -450,7 +450,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
 			JobsResp jobsResp = clusterProxy.getTimerJobs();
 			if (jobsResp.getSuccess()) {
-				generalResp = TurnChronosFactory.fillTimerQueryResp(generalResp, jobsResp);
+				generalResp = TurnChronosFactory.fillTimerQueryResp(generalTimerReq.getContainer().getContainerName(), generalResp, jobsResp);
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
 				generalResp.setResultMsg("query success");
 			} else {
