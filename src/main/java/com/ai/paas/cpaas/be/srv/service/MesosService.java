@@ -14,18 +14,18 @@ public interface MesosService {
     /**
      * 获取版本信息
      */
-    public String getVersion();
+    public String getVersion(String clusterId);
     /**
      * 获取配置信息
      */
-    public String getConfig();
+    public String getConfig(String clusterId);
     /**
      * 获取host、ip
      */
-    public String getHosts(String hostName);
+    public String getHosts(String hostName,String clusterId);
     /**
      * 获取服务相关信息
      */
-    public List<ServiceDO> getServices(String serviceName);
+    public List<ServiceDO> getServices(String serviceName,String clusterId);
 
 }

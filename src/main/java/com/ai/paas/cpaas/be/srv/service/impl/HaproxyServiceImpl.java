@@ -1,8 +1,10 @@
 package com.ai.paas.cpaas.be.srv.service.impl;
 
+import com.ai.paas.cpaas.be.srv.manage.model.HaproxyInfoDO;
 import com.ai.paas.cpaas.be.srv.manage.model.haproxy.HaproxyCfgDO;
 import com.ai.paas.cpaas.be.srv.manage.model.mesos.ServiceDO;
 import com.ai.paas.cpaas.be.srv.service.HaproxyService;
+import com.ai.paas.cpaas.be.srv.util.MHServiceInfo;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.apache.log4j.Logger;
 
@@ -25,10 +27,15 @@ public class HaproxyServiceImpl implements HaproxyService {
 
     private static Logger logger = Logger.getLogger(HaproxyServiceImpl.class);
 
+    /**ansible creat haproxyip hosts
+     * 0 path 1 hosts 2 hostip
+     * */
+    public static final String ADD_ANSIBLE_HAPROXYHOSTS = "{0}/creat_ansible_hosts.sh {1} {2}";
+
+
     /**ansible addorupdate
      * 0 path 1 user 2 passwd(sudo nopasswd) 3 newservername 4 server acl 5 editdate 6 oldservername
      * */
-    public static final String ADD_ANSIBLE_HAPROXY = "{0}/init_ansible_ssh_hosts.sh {1} {2} {3} {4} {5}";
     public static final String ADDORUPDATE_ANSIBLE_HAPROXY = "{0}/addorupdate_ansible_haproxy.sh {1} {2} {3} {4} {5} {6}";
     /**ansible rollback
      * 0 path 1 user 2 passwd(sudo nopasswd)
@@ -45,17 +52,14 @@ public class HaproxyServiceImpl implements HaproxyService {
     * */
     public static final String ANSIBLE_PATH = "/etc/ansible";
 
-    //test
-    //TODO get u p from sql
-    public static final String user = "shaotest";
-    public static final String passwd = "sss008";
-
-
     @Override
-    public boolean addOrUpdate(String newServiceName, String oldServiceName, List<ServiceDO> serviceDOs,String editDate) {
+    public boolean addOrUpdate(String newServiceName, String oldServiceName, List<ServiceDO> serviceDOs,String editDate,String cluster) {
         //get acl
         String mkAcl = getAcl(newServiceName,serviceDOs);
-
+        //get user pwd
+        HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
+        String user = haproxyInfoDO.getUser();
+        String passwd = haproxyInfoDO.getPwd();
         //get shell
         String mkShell = fillStringByArgs(
                 ADDORUPDATE_ANSIBLE_HAPROXY,
@@ -81,8 +85,12 @@ public class HaproxyServiceImpl implements HaproxyService {
     }
 
     @Override
-    public boolean delConfig(String serviceName,String editDate) {
+    public boolean delConfig(String serviceName,String editDate,String cluster) {
 
+        //get user pwd
+        HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
+        String user = haproxyInfoDO.getUser();
+        String passwd = haproxyInfoDO.getPwd();
 
         //get shell
         String mkShell = fillStringByArgs(
@@ -103,7 +111,11 @@ public class HaproxyServiceImpl implements HaproxyService {
     }
 
     @Override
-    public boolean rollBack() {
+    public boolean rollBack(String cluster) {
+        //get user pwd
+        HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
+        String user = haproxyInfoDO.getUser();
+        String passwd = haproxyInfoDO.getPwd();
         //get shell
         String mkShell = fillStringByArgs(
                 ROLlBACK_ANSIBLE_HAPROXY,
@@ -142,5 +154,16 @@ public class HaproxyServiceImpl implements HaproxyService {
 
     }
 
+
+    //生成目标host
+    public static String getHaproxyHosts (List<String> ips) {
+
+        String Str = "[haproxy]\n";
+        String StrN = "\n";
+        for (String tmp:ips){
+            Str = Str + tmp + StrN;
+        }
+        return Str;
+    }
 
 }

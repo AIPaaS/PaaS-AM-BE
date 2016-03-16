@@ -5,6 +5,7 @@ import com.ai.paas.cpaas.be.srv.manage.model.mesos.ConfigDO;
 import com.ai.paas.cpaas.be.srv.manage.model.mesos.ServiceDO;
 import com.ai.paas.cpaas.be.srv.service.MesosService;
 import com.ai.paas.cpaas.be.srv.service.RemoteServiceException;
+import com.ai.paas.cpaas.be.srv.util.MHServiceInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpEntity;
@@ -37,39 +38,41 @@ public class MesosServiceImpl implements MesosService {
     public static final String MESOS_HOST_PATH = "/v1/hosts/";
     public static final String MESOS_SERVICE_PATH = "/v1/services/";
 
-
-    //test
-    public static final String ip = "10.1.241.124";
-    public static final String port = "8123";
-    public static final String serviceid = "_test._tcp.marathon.ai";
-    public static final String hostid = "test.marathon.ai";
+//    test
+//    public static final String serviceid = "_test._tcp.marathon.ai";
+//    public static final String hostid = "test.marathon.ai";
 
 
     @Override
-    public String getVersion() {
-        String url  = mkURL(ip,port,MESOS_VERSION_PATH,null);
+    public String getVersion(String clusterId) {
+        String tmpUrl = MHServiceInfo.getMesosdnsHttp(clusterId);
+        String url  = mkMesosDnsURL(tmpUrl,MESOS_VERSION_PATH,"");
         String result = httpGet(url);
         return result;
     }
 
     @Override
-    public String getConfig() {
-        String url  = mkURL(ip,port,MESOS_CONFIG_PATH,null);
+    public String getConfig(String clusterId) {
+        String tmpUrl = MHServiceInfo.getMesosdnsHttp(clusterId);
+        String url  = mkMesosDnsURL(tmpUrl,MESOS_CONFIG_PATH,"");
         String result = httpGet(url);
         if (null == result) return null;
         return result;
     }
 
     @Override
-    public String getHosts(String hostName) {
-        String url  = mkURL(ip,port,MESOS_HOST_PATH,hostid);
+    public String getHosts(String hostId,String clusterId) {
+        String tmpUrl = MHServiceInfo.getMesosdnsHttp(clusterId);
+        String url  = mkMesosDnsURL(tmpUrl,MESOS_HOST_PATH,hostId);
         String result = httpGet(url);
         return result;
     }
 
     @Override
-    public List<ServiceDO> getServices(String serviceName) {
-        String url  = mkURL(ip,port,MESOS_SERVICE_PATH,serviceid);
+    public List<ServiceDO> getServices(String serviceId,String clusterId) {
+
+        String tmpUrl = MHServiceInfo.getMesosdnsHttp(clusterId);
+        String url = mkMesosDnsURL(tmpUrl,MESOS_SERVICE_PATH,serviceId);
         String result = httpGet(url);
         Gson gson=new Gson();
         List<ServiceDO> serviceDOs = gson.fromJson(result, new TypeToken<List<ServiceDO>>(){}.getType());
@@ -80,11 +83,9 @@ public class MesosServiceImpl implements MesosService {
         return serviceDOs;
     }
 
-
-    public static String mkURL (String ip,String port,String param,String id){
-            return "http://" + ip + ":" +  port + param + id;
+    public static String mkMesosDnsURL (String url,String param,String id){
+        return url + param + id;
     }
-
 
 
 }

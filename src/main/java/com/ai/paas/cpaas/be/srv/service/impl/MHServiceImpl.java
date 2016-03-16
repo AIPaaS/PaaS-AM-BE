@@ -4,6 +4,7 @@ import com.ai.paas.cpaas.be.srv.manage.model.mesos.ServiceDO;
 import com.ai.paas.cpaas.be.srv.service.HaproxyService;
 import com.ai.paas.cpaas.be.srv.service.MHService;
 import com.ai.paas.cpaas.be.srv.service.MesosService;
+import com.ai.paas.cpaas.be.srv.util.MHServiceInfo;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,23 +28,22 @@ public class MHServiceImpl implements MHService {
     private HaproxyService haproxyService;
 
     @Override
-    public boolean addOrUpdateAcl(String newServiceName, String oldServiceName) {
+    public boolean addOrUpdateAcl(String newServiceName, String oldServiceName,String clusterId) {
         String editDate = getDate();
-        List<ServiceDO> result = mesosService.getServices(newServiceName);
+        List<ServiceDO> result = mesosService.getServices(newServiceName,clusterId);
 
         if (null == result) return false;
-        boolean tf =  haproxyService.addOrUpdate(newServiceName,oldServiceName,result,editDate);
-        //rollback
-        if (!tf) haproxyService.rollBack();
+        boolean tf =  haproxyService.addOrUpdate(newServiceName,oldServiceName,result,editDate,clusterId);
+        if (!tf) haproxyService.rollBack(clusterId);
         //TODO if rollback fail
         return tf;
     }
 
     @Override
-    public boolean delAcl(String oldServiceName) {
+    public boolean delAcl(String oldServiceName,String clusterId) {
         String editDate = getDate();
-        boolean tf = haproxyService.delConfig(oldServiceName,editDate);
-        if(!tf) haproxyService.rollBack();
+        boolean tf = haproxyService.delConfig(oldServiceName,editDate,clusterId);
+        if(!tf) haproxyService.rollBack(clusterId);
         //TODO if rollback fail
         return tf;
     }
@@ -51,6 +51,11 @@ public class MHServiceImpl implements MHService {
     @Override
     public String quryHaproxyCfg() {
         return null;
+    }
+
+    @Override
+    public String quryKeepAliveVIP(String clusterId) {
+        return  MHServiceInfo.getKeepalivedVip(clusterId);
     }
 
     //时间戳

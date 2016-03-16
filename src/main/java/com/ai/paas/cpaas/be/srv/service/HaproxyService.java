@@ -15,7 +15,7 @@ public interface HaproxyService {
     /**
      * 新增或更新 ACL  haproxy.cfg
      */
-    public boolean addOrUpdate(String newServiceName,String oldServiceName,List<ServiceDO> serviceDOs,String editDate);
+    public boolean addOrUpdate(String newServiceName,String oldServiceName,List<ServiceDO> serviceDOs,String editDate,String cluster);
     /**
      * 查询 ACL haproxy.cfg by appname
      */
@@ -23,11 +23,11 @@ public interface HaproxyService {
     /**
      * 删除 ACL haproxy.cfg
      */
-    public boolean delConfig(String serviceName,String editDate);
+    public boolean delConfig(String serviceName,String editDate,String cluster);
 
     /**
      * 回滚 ACL haproxy.cfg
      */
-    public boolean rollBack ();
+    public boolean rollBack (String cluster);
 
 }
