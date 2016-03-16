@@ -1,6 +1,8 @@
 package com.ai.paas.cpaas.be.srv.util;
 
 
+import com.ai.paas.cpaas.be.srv.manage.model.mesos.ConfigDO;
+import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -57,17 +59,24 @@ public class HttpRequestUtils {
      */
     public static String httpGet(String url){
 
-
+        CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(url);
             CloseableHttpResponse resp = httpclient.execute(httpGet);
             HttpEntity respEntity = resp.getEntity();
             String respString = EntityUtils.toString(respEntity, "UTF-8");
+
             return respString;
         } catch (Exception e) {
             logger.error("HttpGet Exception:" + url);
             return null;
+        }finally {
+            // 关闭连接,释放资源
+            try {
+                httpclient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

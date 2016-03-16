@@ -27,8 +27,8 @@ public class MesosServiceTest {
 
     @Test
     public void testGetConfig() throws Exception {
-        String config = mesosService.getConfig();
-        System.out.println(config);
+//        String config = mesosService.getConfig();
+//        System.out.println(config);
     }
 
     @Test
