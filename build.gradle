@@ -93,6 +93,10 @@ task copyBin(type: Copy) {
 jar {
     baseName projectName
     version moduleVersion
+    exclude "context"
+    exclude "mybatis"
+    exclude "**.xml"
+    exclude "**.properties"
     manifest {
         attributes 'packageName': projectName, 'Built-By': builtBy, 'create-date': new Date().format('yyyy-MM-dd HH:mm:ss')
     }
