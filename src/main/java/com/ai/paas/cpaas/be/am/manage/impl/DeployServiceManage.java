@@ -249,10 +249,10 @@ public class DeployServiceManage implements IDeployServiceManager {
 			for (AppTaskDetail appTaskDetail : taskDetails) {
 				Task task = new Task();
 				task.setTaskName(appTaskDetail.getTaskName());
-//				task.setStartTime(appTaskDetail.getTaskStartTime().toString());
-//				if (appTaskDetail.getTaskEndTime() != null)
-//					task.setEndTime(appTaskDetail.getTaskEndTime().toString());
-//				task.setTaskState(TaskStateType.valueOf(appTaskDetail.getTaskState()));
+				// task.setStartTime(appTaskDetail.getTaskStartTime().toString());
+				// if (appTaskDetail.getTaskEndTime() != null)
+				// task.setEndTime(appTaskDetail.getTaskEndTime().toString());
+				// task.setTaskState(TaskStateType.valueOf(appTaskDetail.getTaskState()));
 				List<AppTaskLog> appTaskLogs = appTaskLogService.getTaskLogs(appTaskDetail.getTaskId(), new Timestamp(logReq.getLastFetchTime()));
 				if (CollectionUtils.isNotEmpty(appTaskLogs)) {
 					List<Log> logs = new ArrayList<>();
@@ -313,6 +313,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 
 	@Override
 	public String createTimer(String param) {
+		logger.info("receive create timer req : " + param);
 		Gson gson = new Gson();
 		GeneralResp generalResp = new GeneralResp();
 		try {
@@ -337,7 +338,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 				generalResp.setResultMsg("create timer failed");
 			}
 		} catch (Exception e) {
-			logger.error(e);
+			logger.error("", e);
 			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
 			generalResp.setResultMsg("create timer failed because exception");
 		}
@@ -355,7 +356,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 			generalResp.setReqId(reqId);
 			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
-			GeneralHttpResp generalHttpResp = clusterProxy.destroyTimer(generalTimerReq.getAppId());
+			GeneralHttpResp generalHttpResp = clusterProxy.destroyTimer(generalTimerReq.getContainer().getContainerName());
 
 			if (generalHttpResp.getSuccess()) {
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
@@ -383,7 +384,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 			generalResp.setReqId(reqId);
 			ResClusterInfo resClusterInfo = resClusterInfoService.getClusterInfo(generalTimerReq.getClusterId());
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
-			GeneralHttpResp generalHttpResp = clusterProxy.forceTimer(generalTimerReq.getAppId());
+			GeneralHttpResp generalHttpResp = clusterProxy.forceTimer(generalTimerReq.getContainer().getContainerName());
 
 			if (generalHttpResp.getSuccess()) {
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
@@ -449,7 +450,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 			DirectRemoteService clusterProxy = new DirectRemoteService(resClusterInfo);
 			JobsResp jobsResp = clusterProxy.getTimerJobs();
 			if (jobsResp.getSuccess()) {
-				generalResp = TurnChronosFactory.fillTimerQueryResp(generalResp, jobsResp);
+				generalResp = TurnChronosFactory.fillTimerQueryResp(generalTimerReq.getContainer().getContainerName(), generalResp, jobsResp);
 				generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
 				generalResp.setResultMsg("query success");
 			} else {

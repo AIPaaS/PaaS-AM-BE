@@ -137,13 +137,12 @@ public class GeneralTimerReq {
 		private String zoneId;
 		private String attrs;
 		private String imgFullName;
-		private String imgVersion;
 		private String cpu;
 		private String mem;
 		private String disk;
 		private String logDir;
 		private String dataDir;
-		private List<Parameter> envVars;
+		private List<EnvironmentVariable> envVars;
 
 		public String getContainerId() {
 			return containerId;
@@ -183,14 +182,6 @@ public class GeneralTimerReq {
 
 		public void setImgFullName(String imgFullName) {
 			this.imgFullName = imgFullName;
-		}
-
-		public String getImgVersion() {
-			return imgVersion;
-		}
-
-		public void setImgVersion(String imgVersion) {
-			this.imgVersion = imgVersion;
 		}
 
 		public String getCpu() {
@@ -233,11 +224,11 @@ public class GeneralTimerReq {
 			this.dataDir = dataDir;
 		}
 
-		public List<Parameter> getEnvVars() {
+		public List<EnvironmentVariable> getEnvVars() {
 			return envVars;
 		}
 
-		public void setEnvVars(List<Parameter> envVars) {
+		public void setEnvVars(List<EnvironmentVariable> envVars) {
 			this.envVars = envVars;
 		}
 

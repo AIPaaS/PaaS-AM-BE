@@ -20,7 +20,6 @@ public class TurnChronosFactory {
 
 	public static ChronosJob turnCreateReq(GeneralTimerReq generalTimerReq) throws RequestParamException {
 		ChronosJob chronosJob = new ChronosJob();
-		chronosJob.setName(generalTimerReq.getAppId());
 		chronosJob.setRetries(generalTimerReq.getRetries());
 		// chronosJob.setCommand(command);
 		StringBuilder schedule = new StringBuilder("");
@@ -43,11 +42,12 @@ public class TurnChronosFactory {
 		if (reqContainer == null) {
 			throw new RequestParamException("miss container info");
 		}
+		chronosJob.setName(reqContainer.getContainerName());
 		chronosJob.setCpus(reqContainer.getCpu());
 		chronosJob.setMem(reqContainer.getMem());
 		chronosJob.setDisk(reqContainer.getDisk());
 		ChronosJob.Container container = new ChronosJob.Container();
-		container.setImage(reqContainer.getImgFullName() + ":" + reqContainer.getImgVersion());
+		container.setImage(reqContainer.getImgFullName());
 		// List<ChronosJob.Container.Volume> volumes = new ArrayList<>();
 		// volumes.add(new ChronosJob.Container.Volume(reqContainer.getLogDir(),
 		// reqContainer.getDataDir(), "RW"));
@@ -58,24 +58,25 @@ public class TurnChronosFactory {
 		}
 
 		List<List<String>> constraints = new ArrayList<>();
-		if (StringUtils.isNotBlank(reqContainer.getZoneId())) {
-			constraints.add(Arrays.asList("zoneId", "CLUSTER", reqContainer.getZoneId()));
-		}
-		if (StringUtils.isNotBlank(reqContainer.getAttrs())) {
-			String[] kvs = reqContainer.getAttrs().split(";", -1);
-			for (String kv : kvs) {
-				String[] pair = kv.split(":", -1);
-				constraints.add(Arrays.asList(pair[0], "CLUSTER", pair[1]));
-			}
-		}
+		// if (StringUtils.isNotBlank(reqContainer.getZoneId())) {
+		// constraints.add(Arrays.asList("zoneId", "CLUSTER",
+		// reqContainer.getZoneId()));
+		// }
+		// if (StringUtils.isNotBlank(reqContainer.getAttrs())) {
+		// String[] kvs = reqContainer.getAttrs().split(";", -1);
+		// for (String kv : kvs) {
+		// String[] pair = kv.split(":", -1);
+		// constraints.add(Arrays.asList(pair[0], "CLUSTER", pair[1]));
+		// }
+		// }
 		if (CollectionUtils.isNotEmpty(constraints))
 			chronosJob.setConstraints(constraints);
 		return chronosJob;
 	}
 
-	public static TimerQueryResp fillTimerQueryResp(TimerQueryResp timerQueryResp, JobsResp jobsResp) {
+	public static TimerQueryResp fillTimerQueryResp(String jobName, TimerQueryResp timerQueryResp, JobsResp jobsResp) {
 		for (ChronosJob job : jobsResp.getJobs()) {
-			if (job.getName().equals(timerQueryResp.getAppId())) {
+			if (job.getName().equals(jobName)) {
 				timerQueryResp.setErrorCount(job.getErrorCount());
 				timerQueryResp.setLastError(job.getLastError());
 				timerQueryResp.setLastSuccess(job.getLastSuccess());
