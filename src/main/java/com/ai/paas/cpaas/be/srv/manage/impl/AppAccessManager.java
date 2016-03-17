@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AppAccessManager implements IAppAccessManager {
 
 	@Autowired
-	MHService mHService;
+	private MHService mHService;
 
 	@Override
 	public String add(String param) {
@@ -19,6 +19,8 @@ public class AppAccessManager implements IAppAccessManager {
 		AppAccess appAccess = gson.fromJson(param, AppAccess.class);
 
 		if (appAccess.getProtocol() != 1) return  null;
+		if (null == appAccess.getAccessCode() || null != appAccess.getAccessCodeOld()) return null;
+
 		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId());
 		return result;
 	}
@@ -50,6 +52,7 @@ public class AppAccessManager implements IAppAccessManager {
 		Gson gson = new Gson();
 		AppAccess appAccess = gson.fromJson(param, AppAccess.class);
 
+		if (appAccess.getProtocol() != 1) return  null;
 		String result = mHService.quryKeepAliveVIP(appAccess.getResCenterId());
 		return result;
 	}
