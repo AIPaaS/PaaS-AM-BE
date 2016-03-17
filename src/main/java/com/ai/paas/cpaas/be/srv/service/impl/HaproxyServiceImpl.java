@@ -124,7 +124,7 @@ public class HaproxyServiceImpl implements HaproxyService {
             minresult = minresult +"server__" + serviceName + "_server-" + num + "__" + tmp.getIp() + "：" + tmp.getPort() + "__check__";
             num  = num +1;
         }
-        String result  =  "acl__access_code_" + serviceName +"__path_beg__-i__/" + serviceName + "/__use_backend__" + serviceName + "_servers__if__access_code_" + serviceName + "__backend__" + serviceName +"_servers__balance__source__mode__http__" + minresult;
+        String result  =  "acl__" + serviceName +"__path_beg__-i__/" + serviceName + "/__use_backend__" + serviceName + "_servers__if__access_code_" + serviceName + "__backend__" + serviceName +"_servers__balance__source__mode__http__" + minresult;
 
         return result;
     }
