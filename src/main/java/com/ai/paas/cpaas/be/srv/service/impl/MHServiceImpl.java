@@ -43,7 +43,7 @@ public class MHServiceImpl implements MHService {
         HaproxyResultVo haproxyResultVo = new HaproxyResultVo();
         haproxyResultVo.setCode(resultVo.getCode());
         haproxyResultVo.setMsg(resultVo.getMsg());
-        haproxyResultVo.setAccessUrl(MHServiceInfo.getKeepalivedVip(clusterId));
+        haproxyResultVo.setAccessUrl(mkAccessUrl(clusterId,newServiceName));
 
         Gson gsonre = new Gson();
         String response = gsonre.toJson(haproxyResultVo);
@@ -64,7 +64,7 @@ public class MHServiceImpl implements MHService {
         HaproxyResultVo haproxyResultVo = new HaproxyResultVo();
         haproxyResultVo.setCode(resultVo.getCode());
         haproxyResultVo.setMsg(resultVo.getMsg());
-        haproxyResultVo.setAccessUrl(MHServiceInfo.getKeepalivedVip(clusterId));
+        haproxyResultVo.setAccessUrl(mkAccessUrl(clusterId,oldServiceName));
 
         Gson gsonre = new Gson();
         String response = gsonre.toJson(haproxyResultVo);
@@ -100,10 +100,11 @@ public class MHServiceImpl implements MHService {
         return format.format(new Date());
     }
 
-//    public static String mkAccessUrl(String ip){
-//
-//    return
-//    }
+    public static String mkAccessUrl(String clusterId,String serverName){
+        String tmp = MHServiceInfo.getKeepalivedVip(clusterId);
+        String result = "http://" + tmp + "/" + serverName;
+    return result;
+    }
 
 
 }
