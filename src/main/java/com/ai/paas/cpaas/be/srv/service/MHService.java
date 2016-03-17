@@ -12,12 +12,12 @@ public interface MHService {
      * @param newServiceName 新增
      * @param oldServiceName 需删除
      */
-    public boolean addOrUpdateAcl(String newServiceName,String oldServiceName,String clusterId );
+    public String addOrUpdateAcl(String dns,String container,String newServiceName,String oldServiceName,String clusterId );
 
     /**
      * 删除 Haproxy.cfg ACL
      */
-    public boolean delAcl(String oldServiceName,String clusterId );
+    public String delAcl(String oldServiceName,String clusterId );
 
 
     /**

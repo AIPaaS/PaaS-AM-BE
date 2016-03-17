@@ -1,5 +1,8 @@
 package com.ai.paas.cpaas.be.srv.service.impl;
 
+import com.ai.paas.cpaas.be.srv.AddOrUpdateHaproxyCfg;
+import com.ai.paas.cpaas.be.srv.DelAclHaproxyCfg;
+import com.ai.paas.cpaas.be.srv.RollBackHaproxyCfg;
 import com.ai.paas.cpaas.be.srv.manage.model.HaproxyInfoDO;
 import com.ai.paas.cpaas.be.srv.manage.model.haproxy.HaproxyCfgDO;
 import com.ai.paas.cpaas.be.srv.manage.model.mesos.ServiceDO;
@@ -7,6 +10,7 @@ import com.ai.paas.cpaas.be.srv.service.HaproxyService;
 import com.ai.paas.cpaas.be.srv.util.MHServiceInfo;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.apache.log4j.Logger;
+import org.springframework.batch.repeat.RepeatStatus;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -32,7 +36,6 @@ public class HaproxyServiceImpl implements HaproxyService {
      * */
     public static final String ADD_ANSIBLE_HAPROXYHOSTS = "{0}/creat_ansible_hosts.sh {1} {2}";
 
-
     /**ansible addorupdate
      * 0 path 1 user 2 passwd(sudo nopasswd) 3 newservername 4 server acl 5 editdate 6 oldservername
      * */
@@ -53,30 +56,22 @@ public class HaproxyServiceImpl implements HaproxyService {
     public static final String ANSIBLE_PATH = "/etc/ansible";
 
     @Override
-    public boolean addOrUpdate(String newServiceName, String oldServiceName, List<ServiceDO> serviceDOs,String editDate,String cluster) {
+    public String addOrUpdate(String newServiceName, String oldServiceName, List<ServiceDO> serviceDOs,String editDate,String cluster) {
         //get acl
-        String mkAcl = getAcl(newServiceName,serviceDOs);
+        String getAcl = mkAcl(newServiceName,serviceDOs);
         //get user pwd
         HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
         String user = haproxyInfoDO.getUser();
         String passwd = haproxyInfoDO.getPwd();
-        //get shell
-        String mkShell = fillStringByArgs(
-                ADDORUPDATE_ANSIBLE_HAPROXY,
-                new String[]{
-                        ANSIBLE_PATH,
-                        user,
-                        passwd,
-                        newServiceName,
-                        mkAcl,
-                        editDate,
-                        oldServiceName
-                }
-        );
-        //run shell
-        boolean result = ansibleExecCommand(mkShell);
 
-        return result;
+        try {
+            String result = AddOrUpdateHaproxyCfg.execute(cluster,user,passwd,newServiceName,getAcl,editDate,oldServiceName);
+            return result;
+
+        }catch (Exception e){
+            System.out.println(e);
+            return null;
+        }
     }
 
     @Override
@@ -85,53 +80,43 @@ public class HaproxyServiceImpl implements HaproxyService {
     }
 
     @Override
-    public boolean delConfig(String serviceName,String editDate,String cluster) {
+    public String delConfig(String serviceName,String editDate,String cluster) {
 
         //get user pwd
         HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
         String user = haproxyInfoDO.getUser();
         String passwd = haproxyInfoDO.getPwd();
 
-        //get shell
-        String mkShell = fillStringByArgs(
-                DEL_ANSIBLE_HAPROXY,
-                new String[]{
-                        ANSIBLE_PATH,
-                        user,
-                        passwd,
-                        serviceName,
-                        editDate
-                }
-        );
+        try {
+            String result = DelAclHaproxyCfg.execute(cluster,user,passwd,editDate,serviceName);
+            return result;
 
-        //run shell
-        boolean result = ansibleExecCommand(mkShell);
+        }catch (Exception e){
+            System.out.println(e);
+            return null;
+        }
 
-        return result;
     }
 
     @Override
-    public boolean rollBack(String cluster) {
+    public String rollBack(String cluster) {
         //get user pwd
         HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
         String user = haproxyInfoDO.getUser();
         String passwd = haproxyInfoDO.getPwd();
-        //get shell
-        String mkShell = fillStringByArgs(
-                ROLlBACK_ANSIBLE_HAPROXY,
-                new String[]{
-                        ANSIBLE_PATH,
-                        user,
-                        passwd
-                }
-        );
-        boolean result = ansibleExecCommand(mkShell);
 
-        return result;
+        try {
+            String result = RollBackHaproxyCfg.execute(cluster,user,passwd);
+            return result;
+
+        }catch (Exception e){
+            System.out.println(e);
+            return null;
+        }
     }
 
     //获取acl配置
-    public static String getAcl ( String serviceName,List<ServiceDO> serviceDOs ) {
+    public static String mkAcl ( String serviceName,List<ServiceDO> serviceDOs ) {
         String minresult = "";
         int num = 1;
         //TODO ServiceDO.host shoudbe put into server

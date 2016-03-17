@@ -17,7 +17,7 @@ public class AppAccess implements Serializable{
 	//旧的应用访问名称
 	private String accessCodeOld;
 	//资源中心，集群ID
-	private int resCenterId;
+	private String resCenterId;
 	public String getContainer() {
 		return container;
 	}
@@ -48,10 +48,10 @@ public class AppAccess implements Serializable{
 	public void setAccessCodeOld(String accessCodeOld) {
 		this.accessCodeOld = accessCodeOld;
 	}
-	public int getResCenterId() {
+	public String getResCenterId() {
 		return resCenterId;
 	}
-	public void setResCenterId(int resCenterId) {
+	public void setResCenterId(String resCenterId) {
 		this.resCenterId = resCenterId;
 	}
 	

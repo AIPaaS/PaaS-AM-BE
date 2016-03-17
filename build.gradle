@@ -1,6 +1,7 @@
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+//apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'maven-publish'
 
 ext {
@@ -13,7 +14,7 @@ ext {
 }
 
 compileJava.dependsOn clean
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
@@ -49,6 +50,10 @@ dependencies {
         compile 'javax.servlet:javax.servlet-api:3.1.0'
     }
 
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 task cleanTempDir(type: Delete) {
     delete fileTree(dir: "$buildDir", include: "$project.ext.projectName*")

@@ -1,0 +1,27 @@
+---
+- hosts: '{{ hosts }}'
+  user: '{{ user }}'
+  vars:
+  tasks:
+    - name: copy haproxy.cfg bak
+      command: cp -f /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
+      sudo: yes
+    - name: copy haproxy.cfg logbak
+      command: cp -f /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy{{ haproxydate }}.bak
+      sudo: yes
+    - name: delete oldservername acl anyway
+      command: sed -i '/\<{{ oldservername }}\>/d' /etc/haproxy/haproxy.cfg
+      sudo: yes
+    - name: delete newservername acl anyway
+      command: sed -i '/\<{{ newservername }}\>/d' /etc/haproxy/haproxy.cfg
+      sudo: yes
+    - name: insert new acl 
+      command: echo {{ insertacl }} >> /etc/haproxy/haproxy.cfg
+      sudo: yes
+    - name: edit acl del '__'
+      command: sed -i 's/__/ /g' /etc/haproxy/haproxy.cfg
+      sudo: yes
+    - name: reload haproxy service
+      command: /usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg
+      sudo: yes
+

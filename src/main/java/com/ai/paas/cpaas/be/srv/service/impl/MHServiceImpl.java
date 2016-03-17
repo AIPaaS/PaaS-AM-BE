@@ -5,6 +5,8 @@ import com.ai.paas.cpaas.be.srv.service.HaproxyService;
 import com.ai.paas.cpaas.be.srv.service.MHService;
 import com.ai.paas.cpaas.be.srv.service.MesosService;
 import com.ai.paas.cpaas.be.srv.util.MHServiceInfo;
+import com.ai.paas.cpaas.be.srv.vo.HaproxyResultVo;
+import com.ai.paas.cpaas.be.srv.vo.TransResultVo;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,24 +30,48 @@ public class MHServiceImpl implements MHService {
     private HaproxyService haproxyService;
 
     @Override
-    public boolean addOrUpdateAcl(String newServiceName, String oldServiceName,String clusterId) {
+    public String addOrUpdateAcl(String dns,String container,String newServiceName, String oldServiceName,String clusterId) {
         String editDate = getDate();
-        List<ServiceDO> result = mesosService.getServices(newServiceName,clusterId);
+        List<ServiceDO> result = mesosService.getServices(dns,clusterId);
 
-        if (null == result) return false;
-        boolean tf =  haproxyService.addOrUpdate(newServiceName,oldServiceName,result,editDate,clusterId);
-        if (!tf) haproxyService.rollBack(clusterId);
+        if (null == result) return null;
+        String tf =  haproxyService.addOrUpdate(newServiceName,oldServiceName,result,editDate,clusterId);
+
+        Gson gson = new Gson();
+        TransResultVo resultVo = gson.fromJson(tf, TransResultVo.class);
+
+        HaproxyResultVo haproxyResultVo = new HaproxyResultVo();
+        haproxyResultVo.setCode(resultVo.getCode());
+        haproxyResultVo.setMsg(resultVo.getMsg());
+        haproxyResultVo.setAccessUrl(MHServiceInfo.getKeepalivedVip(clusterId));
+
+        Gson gsonre = new Gson();
+        String response = gsonre.toJson(haproxyResultVo);
+
+//        if (!tf) haproxyService.rollBack(clusterId);
         //TODO if rollback fail
-        return tf;
+        return response;
     }
 
     @Override
-    public boolean delAcl(String oldServiceName,String clusterId) {
+    public String delAcl(String oldServiceName,String clusterId) {
         String editDate = getDate();
-        boolean tf = haproxyService.delConfig(oldServiceName,editDate,clusterId);
-        if(!tf) haproxyService.rollBack(clusterId);
+        String tf = haproxyService.delConfig(oldServiceName,editDate,clusterId);
+
+        Gson gson = new Gson();
+        TransResultVo resultVo = gson.fromJson(tf, TransResultVo.class);
+
+        HaproxyResultVo haproxyResultVo = new HaproxyResultVo();
+        haproxyResultVo.setCode(resultVo.getCode());
+        haproxyResultVo.setMsg(resultVo.getMsg());
+        haproxyResultVo.setAccessUrl(MHServiceInfo.getKeepalivedVip(clusterId));
+
+        Gson gsonre = new Gson();
+        String response = gsonre.toJson(haproxyResultVo);
+
+//        if(!tf) haproxyService.rollBack(clusterId);
         //TODO if rollback fail
-        return tf;
+        return response;
     }
 
     @Override
@@ -55,7 +81,17 @@ public class MHServiceImpl implements MHService {
 
     @Override
     public String quryKeepAliveVIP(String clusterId) {
-        return  MHServiceInfo.getKeepalivedVip(clusterId);
+        String result = MHServiceInfo.getKeepalivedVip(clusterId);
+        if (null == result ) return null;
+        HaproxyResultVo haproxyResultVo = new HaproxyResultVo();
+        haproxyResultVo.setCode("0");
+        haproxyResultVo.setMsg("success");
+        haproxyResultVo.setAccessUrl(result);
+
+        Gson gsonre = new Gson();
+        String response = gsonre.toJson(haproxyResultVo);
+
+        return  response;
     }
 
     //时间戳

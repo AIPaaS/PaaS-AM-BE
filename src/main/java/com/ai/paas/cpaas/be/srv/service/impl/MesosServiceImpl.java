@@ -71,6 +71,7 @@ public class MesosServiceImpl implements MesosService {
     @Override
     public List<ServiceDO> getServices(String serviceId,String clusterId) {
 
+        //TODO 暂时只存一条mesosdns
         String tmpUrl = MHServiceInfo.getMesosdnsHttp(clusterId);
         String url = mkMesosDnsURL(tmpUrl,MESOS_SERVICE_PATH,serviceId);
         String result = httpGet(url);
