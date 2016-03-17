@@ -39,15 +39,24 @@ public class MHServiceInfo {
 
         return mHInfoDO;
     }
-    //返回keepaliveIP
+    //返回keepaliveVIP
     public static String getKeepalivedVip(String clusterId){
         return getData(KEEPALIVED_VIP,clusterId);
     }
     //返回一个Mesosdns访问地址
     public static String getMesosdnsHttp(String clusterId){
+        //TODO split ,
         return getData(MESOSDNS_HTTP,clusterId);
     }
     //返回haproxy ip port user pwd
+    public static List<HaproxyInfoDO> getHaproxyInfos(String clusterId){
+        String result = getData(HAPROXY_INFO,clusterId);
+        Gson gson=new Gson();
+        List<HaproxyInfoDO> haproxyInfoDOs = gson.fromJson(result, new TypeToken<List<HaproxyInfoDO>>(){}.getType());
+        return haproxyInfoDOs;
+    }
+
+    //返回single haproxy ip port user pwd
     public static HaproxyInfoDO getHaproxyInfo(String clusterId){
         String result = getData(HAPROXY_INFO,clusterId);
         Gson gson=new Gson();
@@ -73,8 +82,6 @@ public class MHServiceInfo {
         return null;
 
     }
-
-
 
 
 }

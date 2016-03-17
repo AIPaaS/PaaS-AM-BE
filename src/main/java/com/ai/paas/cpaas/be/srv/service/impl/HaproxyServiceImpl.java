@@ -1,6 +1,7 @@
 package com.ai.paas.cpaas.be.srv.service.impl;
 
 import com.ai.paas.cpaas.be.srv.AddOrUpdateHaproxyCfg;
+import com.ai.paas.cpaas.be.srv.AnsibleHostsConfig;
 import com.ai.paas.cpaas.be.srv.DelAclHaproxyCfg;
 import com.ai.paas.cpaas.be.srv.RollBackHaproxyCfg;
 import com.ai.paas.cpaas.be.srv.manage.model.HaproxyInfoDO;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -64,7 +66,16 @@ public class HaproxyServiceImpl implements HaproxyService {
         String user = haproxyInfoDO.getUser();
         String passwd = haproxyInfoDO.getPwd();
 
+        //get haproxy ips
+        List<HaproxyInfoDO> haproxyInfoDOs = MHServiceInfo.getHaproxyInfos(cluster);
+        List<String> ips = new ArrayList<>();
+        for (HaproxyInfoDO tmp:haproxyInfoDOs) {
+            ips.add(tmp.getIp());
+        }
+
         try {
+            String hostresult = AnsibleHostsConfig.execute(ips,cluster);
+            //TODO process hostresult
             String result = AddOrUpdateHaproxyCfg.execute(cluster,user,passwd,newServiceName,getAcl,editDate,oldServiceName);
             return result;
 
@@ -87,7 +98,16 @@ public class HaproxyServiceImpl implements HaproxyService {
         String user = haproxyInfoDO.getUser();
         String passwd = haproxyInfoDO.getPwd();
 
+        //get haproxy ips
+        List<HaproxyInfoDO> haproxyInfoDOs = MHServiceInfo.getHaproxyInfos(cluster);
+        List<String> ips = new ArrayList<>();
+        for (HaproxyInfoDO tmp:haproxyInfoDOs) {
+            ips.add(tmp.getIp());
+        }
+
         try {
+            String hostresult = AnsibleHostsConfig.execute(ips,cluster);
+            //TODO process hostresult
             String result = DelAclHaproxyCfg.execute(cluster,user,passwd,editDate,serviceName);
             return result;
 
@@ -105,7 +125,16 @@ public class HaproxyServiceImpl implements HaproxyService {
         String user = haproxyInfoDO.getUser();
         String passwd = haproxyInfoDO.getPwd();
 
+        //get haproxy ips
+        List<HaproxyInfoDO> haproxyInfoDOs = MHServiceInfo.getHaproxyInfos(cluster);
+        List<String> ips = new ArrayList<>();
+        for (HaproxyInfoDO tmp:haproxyInfoDOs) {
+            ips.add(tmp.getIp());
+        }
+
         try {
+            String hostresult = AnsibleHostsConfig.execute(ips,cluster);
+            //TODO process hostresult
             String result = RollBackHaproxyCfg.execute(cluster,user,passwd);
             return result;
 

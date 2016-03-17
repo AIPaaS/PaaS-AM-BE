@@ -100,4 +100,10 @@ public class MHServiceImpl implements MHService {
         return format.format(new Date());
     }
 
+//    public static String mkAccessUrl(String ip){
+//
+//    return
+//    }
+
+
 }

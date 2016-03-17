@@ -21,8 +21,7 @@ public class AnsibleHostsConfig {
      * @param aid 集群ID
      */
 
-    public RepeatStatus execute(List<String> ips,String aid)
-            throws PaasException {
+    public static String execute(List<String> ips,String aid) throws Exception {
 
         boolean useAgent = true;
 
@@ -50,6 +49,7 @@ public class AnsibleHostsConfig {
         int status = TaskUtil.FINISHED;
         try {
             result = TaskUtil.executeFile("configAnsibleHosts", shellContext.toString(), useAgent, aid);
+            return result;
         } catch (Exception e) {
             Log.error(e.toString());
             result = e.toString();
@@ -59,9 +59,9 @@ public class AnsibleHostsConfig {
         } finally {
             //TODO
             System.out.println(status);
+            return result;
 
         }
 
-        return RepeatStatus.FINISHED;
     }
 }
