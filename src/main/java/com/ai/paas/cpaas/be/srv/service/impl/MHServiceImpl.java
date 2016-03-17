@@ -7,9 +7,9 @@ import com.ai.paas.cpaas.be.srv.service.MesosService;
 import com.ai.paas.cpaas.be.srv.util.MHServiceInfo;
 import com.ai.paas.cpaas.be.srv.vo.HaproxyResultVo;
 import com.ai.paas.cpaas.be.srv.vo.TransResultVo;
-import com.alibaba.dubbo.config.annotation.Service;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;

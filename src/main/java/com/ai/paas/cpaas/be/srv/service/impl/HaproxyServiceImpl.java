@@ -8,9 +8,9 @@ import com.ai.paas.cpaas.be.srv.manage.model.haproxy.HaproxyCfgDO;
 import com.ai.paas.cpaas.be.srv.manage.model.mesos.ServiceDO;
 import com.ai.paas.cpaas.be.srv.service.HaproxyService;
 import com.ai.paas.cpaas.be.srv.util.MHServiceInfo;
-import com.alibaba.dubbo.config.annotation.Service;
 import org.apache.log4j.Logger;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.stereotype.Service;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;

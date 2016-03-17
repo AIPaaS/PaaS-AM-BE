@@ -5,9 +5,11 @@ import com.ai.paas.cpaas.be.srv.manage.model.AppAccess;
 import com.ai.paas.cpaas.be.srv.service.MHService;
 import com.ai.paas.cpaas.be.srv.vo.HaproxyResultVo;
 import com.ai.paas.cpaas.be.srv.vo.TransResultVo;
+import com.alibaba.dubbo.config.annotation.Service;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Service
 public class AppAccessManager implements IAppAccessManager {
 
 	@Autowired
