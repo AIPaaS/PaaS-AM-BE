@@ -20,8 +20,7 @@ public class AppAccessManager implements IAppAccessManager {
 
 		if (appAccess.getProtocol() != 1) return  null;
 		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId());
-		//TODO return
-		return null;
+		return result;
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class AppAccessManager implements IAppAccessManager {
 
 		if (appAccess.getProtocol() != 1) return  null;
 		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId());
-		return null;
+		return result;
 	}
 
 	@Override
@@ -42,7 +41,7 @@ public class AppAccessManager implements IAppAccessManager {
 
 		if (appAccess.getProtocol() != 1) return  null;
 		String result = mHService.delAcl(appAccess.getAccessCodeOld(),appAccess.getResCenterId());
-		return null;
+		return result;
 	}
 
 	@Override
