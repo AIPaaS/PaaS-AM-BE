@@ -1,7 +1,7 @@
 
 apply plugin: 'java'
-//apply plugin: 'eclipse'
-apply plugin: 'idea'
+apply plugin: 'eclipse'
+//apply plugin: 'idea'
 apply plugin: 'maven-publish'
 
 ext {
@@ -14,7 +14,7 @@ ext {
 }
 
 compileJava.dependsOn clean
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
 
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
