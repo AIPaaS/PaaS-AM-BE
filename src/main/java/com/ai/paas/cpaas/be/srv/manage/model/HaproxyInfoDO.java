@@ -1,5 +1,7 @@
 package com.ai.paas.cpaas.be.srv.manage.model;
 
+import com.ai.paas.ipaas.util.CiperUtil;
+
 /**
  * shaozhanpeng
  * 2016/3/15
@@ -40,6 +42,14 @@ public class HaproxyInfoDO {
     }
 
     public void setPwd(String pwd) {
+        CiperUtil.decrypt(CiperUtil.SECURITY_KEY,pwd);
         this.pwd = pwd;
     }
+    public static void main(String[] args) {
+        String bb = CiperUtil.encrypt(CiperUtil.SECURITY_KEY,"sss008");
+        System.out.println("bb:" + bb);
+        String aa = CiperUtil.decrypt(CiperUtil.SECURITY_KEY,bb);
+        System.out.println("aa:" + aa);
+    }
+
 }
