@@ -42,8 +42,7 @@ public class HaproxyInfoDO {
     }
 
     public void setPwd(String pwd) {
-        CiperUtil.decrypt(CiperUtil.SECURITY_KEY,pwd);
-        this.pwd = pwd;
+        this.pwd = CiperUtil.decrypt(CiperUtil.SECURITY_KEY,pwd);
     }
     public static void main(String[] args) {
         String bb = CiperUtil.encrypt(CiperUtil.SECURITY_KEY,"sss008");
