@@ -16,7 +16,7 @@
       command: sed -i '/\<{{ newservername }}\>/d' /etc/haproxy/haproxy.cfg
       sudo: yes
     - name: insert new acl 
-      command: echo {{ insertacl }} >> /etc/haproxy/haproxy.cfg
+      shell: echo "{{ insertacl }}" >> /etc/haproxy/haproxy.cfg
       sudo: yes
     - name: edit acl del '__'
       command: sed -i 's/__/ /g' /etc/haproxy/haproxy.cfg
