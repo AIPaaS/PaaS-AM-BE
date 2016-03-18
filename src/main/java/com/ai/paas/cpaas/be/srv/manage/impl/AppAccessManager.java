@@ -22,7 +22,8 @@ public class AppAccessManager implements IAppAccessManager {
 		AppAccess appAccess = gson.fromJson(param, AppAccess.class);
 
 		if (appAccess.getProtocol() != 1) return  errorJson("only accept http");
-		if (null == appAccess.getAccessCode() || null != appAccess.getAccessCodeOld()) return errorJson("AccessCode is wrong");
+//		if (null == appAccess.getAccessCode() || null != appAccess.getAccessCodeOld()) return errorJson("AccessCode is wrong");
+		if (null == appAccess.getAccessCode()) return errorJson("AccessCode is wrong");
 
 		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId());
 		return result;
