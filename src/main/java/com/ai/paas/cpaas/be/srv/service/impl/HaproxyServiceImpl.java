@@ -9,6 +9,7 @@ import com.ai.paas.cpaas.be.srv.manage.model.haproxy.HaproxyCfgDO;
 import com.ai.paas.cpaas.be.srv.manage.model.mesos.ServiceDO;
 import com.ai.paas.cpaas.be.srv.service.HaproxyService;
 import com.ai.paas.cpaas.be.srv.util.MHServiceInfo;
+import com.ai.paas.ipaas.util.CiperUtil;
 import org.apache.log4j.Logger;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class HaproxyServiceImpl implements HaproxyService {
         //get user pwd
         HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
         String user = haproxyInfoDO.getUser();
-        String passwd = haproxyInfoDO.getPwd();
+        String passwd = getpasswd(haproxyInfoDO.getPwd());
 
         //get haproxy ips
         List<HaproxyInfoDO> haproxyInfoDOs = MHServiceInfo.getHaproxyInfos(cluster);
@@ -96,7 +97,7 @@ public class HaproxyServiceImpl implements HaproxyService {
         //get user pwd
         HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
         String user = haproxyInfoDO.getUser();
-        String passwd = haproxyInfoDO.getPwd();
+        String passwd = getpasswd(haproxyInfoDO.getPwd());
 
         //get haproxy ips
         List<HaproxyInfoDO> haproxyInfoDOs = MHServiceInfo.getHaproxyInfos(cluster);
@@ -123,7 +124,7 @@ public class HaproxyServiceImpl implements HaproxyService {
         //get user pwd
         HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
         String user = haproxyInfoDO.getUser();
-        String passwd = haproxyInfoDO.getPwd();
+        String passwd = getpasswd(haproxyInfoDO.getPwd());
 
         //get haproxy ips
         List<HaproxyInfoDO> haproxyInfoDOs = MHServiceInfo.getHaproxyInfos(cluster);
@@ -178,6 +179,12 @@ public class HaproxyServiceImpl implements HaproxyService {
             Str = Str + tmp + StrN;
         }
         return Str;
+    }
+
+
+    //密码解码
+    public static String getpasswd (String pwd) {
+        return CiperUtil.decrypt(CiperUtil.SECURITY_KEY,pwd);
     }
 
 }
