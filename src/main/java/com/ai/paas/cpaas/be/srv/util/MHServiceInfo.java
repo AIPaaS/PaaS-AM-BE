@@ -43,10 +43,14 @@ public class MHServiceInfo {
     public static String getKeepalivedVip(String clusterId){
         return getData(KEEPALIVED_VIP,clusterId);
     }
+
     //返回一个Mesosdns访问地址
     public static String getMesosdnsHttp(String clusterId){
-        //TODO split ,
-        return getData(MESOSDNS_HTTP,clusterId);
+        String[] dnsips = getData(MESOSDNS_HTTP,clusterId).split(",");
+        if (dnsips.length > 0){
+                return dnsips[0];
+        }
+        return null;
     }
     //返回haproxy ip port user pwd
     public static List<HaproxyInfoDO> getHaproxyInfos(String clusterId){
