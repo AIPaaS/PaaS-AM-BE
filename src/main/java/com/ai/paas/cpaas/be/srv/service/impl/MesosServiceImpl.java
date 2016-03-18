@@ -72,12 +72,17 @@ public class MesosServiceImpl implements MesosService {
         }
         String url = mkMesosDnsURL(tmpUrl,MESOS_SERVICE_PATH,serviceId);
         String result = httpGet(url);
-        if (null == result){
-            logger.warn("MesosService.getServices httpget is err");
-            return null;
-        }
+
         Gson gson=new Gson();
         List<ServiceDO> serviceDOs = gson.fromJson(result, new TypeToken<List<ServiceDO>>(){}.getType());
+
+        for (ServiceDO tmp:serviceDOs){
+            if (null == tmp.getIp() || null == tmp.getPort()) {
+                logger.warn("MesosService.getServices httpget is null");
+                return null;
+            }
+        }
+
         //TODO check List
         for (ServiceDO tmp:serviceDOs){
             if (null ==tmp.getIp()) {
