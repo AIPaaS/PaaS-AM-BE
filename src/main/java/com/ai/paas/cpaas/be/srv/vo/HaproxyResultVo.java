@@ -1,5 +1,7 @@
 package com.ai.paas.cpaas.be.srv.vo;
 
+import com.ai.paas.cpaas.be.srv.util.ExceptionCodeConstants;
+
 import java.io.Serializable;
 
 /**
@@ -10,9 +12,6 @@ import java.io.Serializable;
 public class HaproxyResultVo  implements Serializable{
 
     private static final long serialVersionUID = 5915023903815180766L;
-
-    private final static String SUCCESS = "000000";
-    private final static String FAILED = "999999";
 
      private String code;
      private String accessUrl;
@@ -25,9 +24,9 @@ public class HaproxyResultVo  implements Serializable{
 
     public void setCode(String code) {
         if (code.equals("0")){
-            this.code = SUCCESS;
+            this.code = ExceptionCodeConstants.DubboServiceCode.SUCCESS_CODE;
         }else {
-            this.code = FAILED;
+            this.code = ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE;
         }
 
     }
