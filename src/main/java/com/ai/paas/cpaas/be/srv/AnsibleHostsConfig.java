@@ -4,6 +4,7 @@ import com.ai.paas.cpaas.be.srv.util.ExceptionCodeConstants;
 import com.ai.paas.cpaas.be.srv.util.TaskUtil;
 import com.ai.paas.ipaas.PaasException;
 import com.esotericsoftware.minlog.Log;
+import org.apache.log4j.Logger;
 import org.springframework.batch.repeat.RepeatStatus;
 
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
  */
 public class AnsibleHostsConfig {
 
+    private static Logger logger = Logger.getLogger(AnsibleHostsConfig.class);
+
     /**
      * 创建ansible执行目标haproxy服务器hosts
      * @param ips 集群 haproxy ip
@@ -22,6 +25,8 @@ public class AnsibleHostsConfig {
      */
 
     public static String execute(List<String> ips,String aid) throws Exception {
+
+
 
         boolean useAgent = true;
 
@@ -51,7 +56,7 @@ public class AnsibleHostsConfig {
             result = TaskUtil.executeFile("configAnsibleHosts", shellContext.toString(), useAgent, aid);
             return result;
         } catch (Exception e) {
-            Log.error(e.toString());
+            logger.error(e.toString());
             result = e.toString();
             status = TaskUtil.FAILED;
             throw new PaasException(ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE,

@@ -5,6 +5,7 @@ import com.ai.paas.cpaas.be.srv.util.ExceptionCodeConstants;
 import com.ai.paas.cpaas.be.srv.util.TaskUtil;
 import com.ai.paas.ipaas.PaasException;
 import com.esotericsoftware.minlog.Log;
+import org.apache.log4j.Logger;
 import org.springframework.batch.repeat.RepeatStatus;
 
 import java.io.InputStream;
@@ -17,6 +18,9 @@ import java.util.List;
  * AIC
  */
 public class RollBackHaproxyCfg {
+
+    private static Logger logger = Logger.getLogger(DelAclHaproxyCfg.class);
+
 
     public static String execute(String clusterId, String user, String password) throws Exception {
         //远程调用
@@ -46,7 +50,7 @@ public class RollBackHaproxyCfg {
             return result;
 
         } catch (Exception e) {
-            Log.error(e.toString());
+            logger.error(e.toString());
             result = e.toString();
             status = TaskUtil.FAILED;
             throw new PaasException(ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE,

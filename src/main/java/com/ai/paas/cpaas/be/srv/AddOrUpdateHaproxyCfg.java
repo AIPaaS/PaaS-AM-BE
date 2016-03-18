@@ -6,6 +6,7 @@ import com.ai.paas.cpaas.be.srv.util.TaskUtil;
 import com.ai.paas.ipaas.PaasException;
 import com.esotericsoftware.minlog.Log;
 import org.apache.catalina.User;
+import org.apache.log4j.Logger;
 import org.springframework.batch.repeat.RepeatStatus;
 
 import java.io.InputStream;
@@ -19,6 +20,9 @@ import java.util.List;
  * AIC
  */
 public class AddOrUpdateHaproxyCfg {
+
+    private static Logger logger = Logger.getLogger(AddOrUpdateHaproxyCfg.class);
+
 
     public static String execute(String clusterId,String user,String password,String newservername,String insertacl,String haproxydate,String oldservername) throws Exception {
         //远程调用
@@ -50,7 +54,7 @@ public class AddOrUpdateHaproxyCfg {
             //shell start
             result = TaskUtil.executeFile("addorupdatehaproxy", command.toString(), useAgent, clusterId);
         } catch (Exception e) {
-            Log.error(e.toString());
+            logger.error(e.toString());
             result = e.toString();
             status = TaskUtil.FAILED;
             throw new PaasException(ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE,

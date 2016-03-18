@@ -97,7 +97,55 @@ public class RemoteExecuteEnvImpl implements RemoteExecuteEnv {
         }
         Gson gson = new Gson();
         TransResultVo resultVo = gson.fromJson(result, TransResultVo.class);
-        //TODO process resultVo
+        //返回信息处理
+        if (!url.contains("upload")) {
+            String excResult = resultVo.getMsg();
+            JsonParser parser = new JsonParser();
+            JsonObject o = parser.parse(excResult).getAsJsonObject();
+            String stderr = o.get("stderr").getAsString();
+            String stdout = o.get("stdout").getAsString();
+            // judge the result with stderr and stdout
+            if (!resultVo.getCode().equals(ExceptionCodeConstants.TransServiceCode.SUCCESS_CODE)) {
+                System.out.println(stderr);
+                logger.error(stderr);
+                throw new PaasException(ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE,
+                        resultVo.getMsg());
+            }
+            // analyze stdout
+            if (stdout.contains("unreachable")) {
+                String pattern = "unreachable=[1-9]";
+                Pattern r = Pattern.compile(pattern);
+                Matcher m = r.matcher(stdout);
+                if (m.find()) {
+                    System.out.println(stdout);
+                    logger.error(stdout);
+                    throw new PaasException(ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE,
+                            resultVo.getMsg());
+                }
+            }
+            if (stdout.contains("failed")) {
+                String pattern = "failed=[1-9]";
+                Pattern r = Pattern.compile(pattern);
+                Matcher m = r.matcher(stdout);
+                if (m.find()) {
+                    System.out.println(stdout);
+                    logger.error(stdout);
+                    throw new PaasException(ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE,
+                            resultVo.getMsg());
+                }
+            }
+            if (!StringUtils.isEmpty(stderr)) {
+                System.out.println(stderr);
+                logger.error(stderr);
+                throw new PaasException(ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE,
+                        resultVo.getMsg());
+            }
+            System.out.println("code:" + resultVo.getCode() + ";stderr:" + stdout + ";stderr:" + stderr);
+            logger.debug("code:" + resultVo.getCode() + ";stderr:" + stdout + ";stderr:" + stderr);
+        }
+
+
+
 
         return result;
     }
