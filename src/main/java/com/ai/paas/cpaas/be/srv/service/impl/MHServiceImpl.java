@@ -36,6 +36,7 @@ public class MHServiceImpl implements MHService {
 
         if (null == result) return null;
         String tf =  haproxyService.addOrUpdate(newServiceName,oldServiceName,result,editDate,clusterId);
+        if (null == tf) return null;
 
         Gson gson = new Gson();
         TransResultVo resultVo = gson.fromJson(tf, TransResultVo.class);

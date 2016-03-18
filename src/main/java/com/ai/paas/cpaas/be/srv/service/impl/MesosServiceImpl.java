@@ -38,11 +38,6 @@ public class MesosServiceImpl implements MesosService {
     public static final String MESOS_HOST_PATH = "/v1/hosts/";
     public static final String MESOS_SERVICE_PATH = "/v1/services/";
 
-//    test
-//    public static final String serviceid = "_test._tcp.marathon.ai";
-//    public static final String hostid = "test.marathon.ai";
-
-
     @Override
     public String getVersion(String clusterId) {
         String tmpUrl = MHServiceInfo.getMesosdnsHttp(clusterId);
@@ -70,16 +65,25 @@ public class MesosServiceImpl implements MesosService {
 
     @Override
     public List<ServiceDO> getServices(String serviceId,String clusterId) {
-
-        //TODO 暂时只存一条mesosdns
         String tmpUrl = MHServiceInfo.getMesosdnsHttp(clusterId);
+        if (null == tmpUrl) {
+            logger.warn("MesosService.getServices canot get mesosdns");
+            return null;
+        }
         String url = mkMesosDnsURL(tmpUrl,MESOS_SERVICE_PATH,serviceId);
         String result = httpGet(url);
+        if (null == result){
+            logger.warn("MesosService.getServices httpget is err");
+            return null;
+        }
         Gson gson=new Gson();
         List<ServiceDO> serviceDOs = gson.fromJson(result, new TypeToken<List<ServiceDO>>(){}.getType());
         //TODO check List
         for (ServiceDO tmp:serviceDOs){
-            if (null ==tmp.getIp()) return null;
+            if (null ==tmp.getIp()) {
+                logger.warn("MesosService.getServices some service IP canot get");
+                return null;
+            }
         }
         return serviceDOs;
     }

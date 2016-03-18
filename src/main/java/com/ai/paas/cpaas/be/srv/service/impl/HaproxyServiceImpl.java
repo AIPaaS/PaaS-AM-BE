@@ -39,7 +39,7 @@ public class HaproxyServiceImpl implements HaproxyService {
         //get acl
         String getAcl = mkAcl(newServiceName,serviceDOs);
         if (null == getAcl) {
-            logger.warn("haproxy acl canot make");
+            logger.warn("HaproxyService.addOrUpdate haproxy acl canot make");
             return null;
         }
 
@@ -48,7 +48,7 @@ public class HaproxyServiceImpl implements HaproxyService {
         String user = haproxyInfoDO.getUser();
         String passwd = getpasswd(haproxyInfoDO.getPwd());
         if(null == user||null == passwd){
-            logger.warn("user or passwd canot get");
+            logger.warn("HaproxyService.addOrUpdate user or passwd canot get");
             return null;
         }
 
@@ -57,7 +57,7 @@ public class HaproxyServiceImpl implements HaproxyService {
         List<String> ips = new ArrayList<>();
         for (HaproxyInfoDO tmp:haproxyInfoDOs) {
             if (null == tmp.getIp()) {
-            logger.warn("haproxy ip canot get");
+            logger.warn("HaproxyService.addOrUpdate haproxy ip canot get");
                 return null;
             }
             ips.add(tmp.getIp());
@@ -87,11 +87,21 @@ public class HaproxyServiceImpl implements HaproxyService {
         HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
         String user = haproxyInfoDO.getUser();
         String passwd = getpasswd(haproxyInfoDO.getPwd());
+        if(null == user||null == passwd){
+            logger.warn("HaproxyService.delConfig user or passwd canot get");
+            return null;
+        }
+
 
         //get haproxy ips
         List<HaproxyInfoDO> haproxyInfoDOs = MHServiceInfo.getHaproxyInfos(cluster);
         List<String> ips = new ArrayList<>();
         for (HaproxyInfoDO tmp:haproxyInfoDOs) {
+
+            if (null == tmp.getIp()) {
+                logger.warn("HaproxyService.delConfig haproxy ip canot get");
+                return null;
+            }
             ips.add(tmp.getIp());
         }
 
