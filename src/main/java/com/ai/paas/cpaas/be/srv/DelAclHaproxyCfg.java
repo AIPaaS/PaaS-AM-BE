@@ -55,7 +55,7 @@ public class DelAclHaproxyCfg {
             throw new PaasException(ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE,
                     e.toString());
         }finally {
-            //TODO
+            logger.info(result);
             System.out.println(result);
             return result;
 

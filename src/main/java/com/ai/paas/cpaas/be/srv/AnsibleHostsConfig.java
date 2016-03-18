@@ -62,8 +62,8 @@ public class AnsibleHostsConfig {
             throw new PaasException(ExceptionCodeConstants.DubboServiceCode.SYSTEM_ERROR_CODE,
                     e.toString());
         } finally {
-            //TODO
-            System.out.println(status);
+            logger.info(result);
+            System.out.println(result);
             return result;
 
         }
