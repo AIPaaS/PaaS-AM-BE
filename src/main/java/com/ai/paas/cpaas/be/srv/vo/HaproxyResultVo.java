@@ -30,7 +30,6 @@ public class HaproxyResultVo  implements Serializable{
             this.code = FAILED;
         }
 
-        this.code = code;
     }
 
     public String getAccessUrl() {
