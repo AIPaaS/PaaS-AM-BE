@@ -34,43 +34,32 @@ public class HaproxyServiceImpl implements HaproxyService {
 
     private static Logger logger = Logger.getLogger(HaproxyServiceImpl.class);
 
-    /**ansible creat haproxyip hosts
-     * 0 path 1 hosts 2 hostip
-     * */
-    public static final String ADD_ANSIBLE_HAPROXYHOSTS = "{0}/creat_ansible_hosts.sh {1} {2}";
-
-    /**ansible addorupdate
-     * 0 path 1 user 2 passwd(sudo nopasswd) 3 newservername 4 server acl 5 editdate 6 oldservername
-     * */
-    public static final String ADDORUPDATE_ANSIBLE_HAPROXY = "{0}/addorupdate_ansible_haproxy.sh {1} {2} {3} {4} {5} {6}";
-    /**ansible rollback
-     * 0 path 1 user 2 passwd(sudo nopasswd)
-     * */
-    public static final String ROLlBACK_ANSIBLE_HAPROXY = "{0}/rollback_ansible_haproxy.sh {1} {2}";
-
-    /**ansible del
-     * 0 path 1 user 2 passwd(sudo nopasswd) 3 servername 4 editdate
-     * */
-    public static final String DEL_ANSIBLE_HAPROXY = "{0}/del_ansible_haproxy.sh {1} {2} {3} {4}";
-
-    /**
-     * shell Path
-    * */
-    public static final String ANSIBLE_PATH = "/etc/ansible";
-
     @Override
     public String addOrUpdate(String newServiceName, String oldServiceName, List<ServiceDO> serviceDOs,String editDate,String cluster) {
         //get acl
         String getAcl = mkAcl(newServiceName,serviceDOs);
+        if (null == getAcl) {
+            logger.warn("haproxy acl canot make");
+            return null;
+        }
+
         //get user pwd
         HaproxyInfoDO haproxyInfoDO = MHServiceInfo.getHaproxyInfo(cluster);
         String user = haproxyInfoDO.getUser();
         String passwd = getpasswd(haproxyInfoDO.getPwd());
+        if(null == user||null == passwd){
+            logger.warn("user or passwd canot get");
+            return null;
+        }
 
         //get haproxy ips
         List<HaproxyInfoDO> haproxyInfoDOs = MHServiceInfo.getHaproxyInfos(cluster);
         List<String> ips = new ArrayList<>();
         for (HaproxyInfoDO tmp:haproxyInfoDOs) {
+            if (null == tmp.getIp()) {
+            logger.warn("haproxy ip canot get");
+                return null;
+            }
             ips.add(tmp.getIp());
         }
 
@@ -149,12 +138,14 @@ public class HaproxyServiceImpl implements HaproxyService {
     public static String mkAcl ( String serviceName,List<ServiceDO> serviceDOs ) {
         String minresult = "";
         int num = 1;
-        //TODO ServiceDO.host shoudbe put into server
+
         for (ServiceDO tmp:serviceDOs) {
+            //TODO ServiceDOInfo shoudbe all exist
+            if (null == tmp.getIp() || null == tmp.getPort()) return null;
             minresult = minresult +"server__" + serviceName + "_server-" + num + "__" + tmp.getIp() + ":" + tmp.getPort() + "__check__";
             num  = num +1;
         }
-        String result  =  "acl__" + serviceName +"__path_beg__-i__/" + serviceName + "/__use_backend__" + serviceName + "_servers__if__access_code_" + serviceName + "__backend__" + serviceName +"_servers__balance__source__mode__http__" + minresult;
+        String result  =  "acl__" + serviceName +"__path_beg__-i__/" + serviceName + "/__use_backend__" + serviceName + "_servers__if__" + serviceName + "__backend__" + serviceName +"_servers__balance__source__mode__http__" + minresult;
 
         return result;
     }
