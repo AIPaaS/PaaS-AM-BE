@@ -1,7 +1,7 @@
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+//apply plugin: 'distribution'
 
 ext {
     projectName="PaaS-BE-AM"
@@ -65,11 +65,7 @@ task copyConfig(type: Copy) {
     project.each { project ->
         from project.fileTree(
                 dir: 'src/main/resources',
-                include: {
-                    'dubbo/registry/**'
-                    '**.xml'
-                    '**.properties'
-                }
+                
         )
         destinationDir file("$buildDir/config")
     }
@@ -97,4 +93,16 @@ jar {
     }
 }
 
-build.dependsOn copy3rdJars,copyConfig,copyBin,cleanTempDir
+task tar(dependsOn: build,type: Tar) { 
+    from(project.file('build')) { 
+		exclude '.setting' 
+		exclude '.gradle' 
+		exclude 'classes'
+		exclude 'dependency-cache'
+		exclude 'distributions'
+		exclude 'resources'
+		exclude 'tmp'
+   } 
+} 
+
+build.dependsOn copy3rdJars,copyConfig,copyBin
