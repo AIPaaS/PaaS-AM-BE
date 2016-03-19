@@ -21,9 +21,9 @@ public class CreateAppReq {
 	private List<String> uris;
 	private List<String> dependencies;
 	private List<HealthCheck> healthChecks;
-	private String backoffSeconds;
-	private Double backoffFactor;
-	private Integer maxLaunchDelaySeconds;
+	private String backoffSeconds = "100";
+	private Double backoffFactor = 1.15d;
+	private Integer maxLaunchDelaySeconds =3600;
 	private UpgradeStrategy upgradeStrategy;
 
 	public String toJson() {
