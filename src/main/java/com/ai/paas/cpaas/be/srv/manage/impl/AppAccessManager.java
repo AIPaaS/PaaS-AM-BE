@@ -25,6 +25,7 @@ public class AppAccessManager implements IAppAccessManager {
 		if (null == appAccess.getAccessCode()) return errorJson("AppAccessManager.add AccessCode is wrong");
 
 		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId(),appAccess.getProtocol());
+		if (null == result) return errorJson("AppAccessManager.add  is faild");
 		return result;
 	}
 
@@ -36,6 +37,7 @@ public class AppAccessManager implements IAppAccessManager {
 
 //		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.modify only accept http");
 		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId(),appAccess.getProtocol());
+		if (null == result) return errorJson("AppAccessManager.modify  is faild");
 		return result;
 	}
 
@@ -46,6 +48,7 @@ public class AppAccessManager implements IAppAccessManager {
 
 //		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.delete only accept http");
 		String result = mHService.delAcl(appAccess.getAccessCodeOld(),appAccess.getResCenterId());
+		if (null == result) return errorJson("AppAccessManager.delete  is faild");
 		return result;
 	}
 
