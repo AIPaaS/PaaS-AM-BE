@@ -21,9 +21,9 @@ public class CreateAppReq {
 	private List<String> uris;
 	private List<String> dependencies;
 	private List<HealthCheck> healthChecks;
-	private String backoffSeconds = "100";
+	private Integer backoffSeconds = 100;
 	private Double backoffFactor = 1.15d;
-	private Integer maxLaunchDelaySeconds =3600;
+	private Integer maxLaunchDelaySeconds = 3600;
 	private UpgradeStrategy upgradeStrategy;
 
 	public String toJson() {
@@ -150,11 +150,11 @@ public class CreateAppReq {
 		this.healthChecks = healthChecks;
 	}
 
-	public String getBackoffSeconds() {
+	public Integer getBackoffSeconds() {
 		return backoffSeconds;
 	}
 
-	public void setBackoffSeconds(String backoffSeconds) {
+	public void setBackoffSeconds(Integer backoffSeconds) {
 		this.backoffSeconds = backoffSeconds;
 	}
 
