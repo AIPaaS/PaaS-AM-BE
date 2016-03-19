@@ -61,6 +61,11 @@ task copy3rdJars(type: Copy) {
     }
 }
 
+task copyDockerfile(type: Copy) {
+	from project.file('Dockerfile')
+	destinationDir file("$buildDir/distributions")
+}
+
 task copyConfig(type: Copy) {
     project.each { project ->
         from project.fileTree(
@@ -105,4 +110,4 @@ task tar(dependsOn: build,type: Tar) {
    } 
 } 
 
-build.dependsOn copy3rdJars,copyConfig,copyBin
+build.dependsOn copy3rdJars,copyConfig,copyBin,copyDockerfile
