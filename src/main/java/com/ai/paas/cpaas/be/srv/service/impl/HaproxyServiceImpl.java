@@ -74,6 +74,7 @@ public class HaproxyServiceImpl implements HaproxyService {
 
         }catch (Exception e){
             System.out.println(e);
+            logger.error(e);
             return null;
         }
     }
@@ -116,6 +117,7 @@ public class HaproxyServiceImpl implements HaproxyService {
 
         }catch (Exception e){
             System.out.println(e);
+            logger.error(e);
             return null;
         }
 
@@ -143,6 +145,7 @@ public class HaproxyServiceImpl implements HaproxyService {
 
         }catch (Exception e){
             System.out.println(e);
+            logger.error(e);
             return null;
         }
     }
