@@ -21,11 +21,10 @@ public class AppAccessManager implements IAppAccessManager {
 		Gson gson = new Gson();
 		AppAccess appAccess = gson.fromJson(param, AppAccess.class);
 
-		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.add only accept http");
-//		if (null == appAccess.getAccessCode() || null != appAccess.getAccessCodeOld()) return errorJson("AccessCode is wrong");
+//		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.add only accept http");
 		if (null == appAccess.getAccessCode()) return errorJson("AppAccessManager.add AccessCode is wrong");
 
-		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId());
+		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId(),appAccess.getProtocol());
 		return result;
 	}
 
@@ -35,8 +34,8 @@ public class AppAccessManager implements IAppAccessManager {
 		Gson gson = new Gson();
 		AppAccess appAccess = gson.fromJson(param, AppAccess.class);
 
-		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.modify only accept http");
-		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId());
+//		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.modify only accept http");
+		String result = mHService.addOrUpdateAcl(appAccess.getDns(),appAccess.getContainer(),appAccess.getAccessCode(),appAccess.getAccessCodeOld(),appAccess.getResCenterId(),appAccess.getProtocol());
 		return result;
 	}
 
@@ -45,7 +44,7 @@ public class AppAccessManager implements IAppAccessManager {
 		Gson gson = new Gson();
 		AppAccess appAccess = gson.fromJson(param, AppAccess.class);
 
-		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.delete only accept http");
+//		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.delete only accept http");
 		String result = mHService.delAcl(appAccess.getAccessCodeOld(),appAccess.getResCenterId());
 		return result;
 	}
@@ -56,7 +55,7 @@ public class AppAccessManager implements IAppAccessManager {
 		Gson gson = new Gson();
 		AppAccess appAccess = gson.fromJson(param, AppAccess.class);
 
-		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.query only accept http");
+//		if (appAccess.getProtocol() != 1) return  errorJson("AppAccessManager.query only accept http");
 		String result = mHService.quryKeepAliveVIP(appAccess.getResCenterId());
 		return result;
 	}

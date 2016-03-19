@@ -35,9 +35,12 @@ public class HaproxyServiceImpl implements HaproxyService {
     private static Logger logger = Logger.getLogger(HaproxyServiceImpl.class);
 
     @Override
-    public String addOrUpdate(String newServiceName, String oldServiceName, List<ServiceDO> serviceDOs,String editDate,String cluster) {
+    public String addOrUpdate(String newServiceName, String oldServiceName, List<ServiceDO> serviceDOs,String editDate,String cluster,int mode) {
         //get acl
-        String getAcl = mkAcl(newServiceName,serviceDOs);
+        if (mode == 0) {
+
+        }
+        String getAcl = mkAcl(newServiceName,serviceDOs,mode);
         if (null == getAcl) {
             logger.warn("HaproxyService.addOrUpdate haproxy acl canot make");
             return null;
@@ -145,7 +148,17 @@ public class HaproxyServiceImpl implements HaproxyService {
     }
 
     //获取acl配置
-    public static String mkAcl ( String serviceName,List<ServiceDO> serviceDOs ) {
+    public static String mkAcl ( String serviceName,List<ServiceDO> serviceDOs,int mode ) {
+        String balance;
+        String requestMode;
+        if (mode == 1){
+             balance = "source";
+             requestMode = "http";
+        }else {
+             balance = "leastconn";
+             requestMode = "tcp";
+        }
+
         String minresult = "";
         int num = 1;
 
@@ -155,7 +168,8 @@ public class HaproxyServiceImpl implements HaproxyService {
             minresult = minresult +"server__" + serviceName + "_server-" + num + "__" + tmp.getIp() + ":" + tmp.getPort() + "__check__";
             num  = num +1;
         }
-        String result  =  "acl__" + serviceName +"__path_beg__-i__/" + serviceName + "/__use_backend__" + serviceName + "_servers__if__" + serviceName + "__backend__" + serviceName +"_servers__balance__source__mode__http__" + minresult;
+//        String result  =  "acl__" + serviceName +"__path_beg__-i__/" + serviceName + "/__use_backend__" + serviceName + "_servers__if__" + serviceName + "__backend__" + serviceName +"_servers__balance__source__mode__http__" + minresult;
+        String result  =  "acl__" + serviceName +"__path_beg__-i__/" + serviceName + "/__use_backend__" + serviceName + "_servers__if__" + serviceName + "__backend__" + serviceName +"_servers__balance__" + balance + "__mode__" + requestMode + "__" + minresult;
 
         return result;
     }

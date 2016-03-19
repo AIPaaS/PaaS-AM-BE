@@ -30,12 +30,12 @@ public class MHServiceImpl implements MHService {
     private HaproxyService haproxyService;
 
     @Override
-    public String addOrUpdateAcl(String dns,String container,String newServiceName, String oldServiceName,String clusterId) {
+    public String addOrUpdateAcl(String dns,String container,String newServiceName, String oldServiceName,String clusterId,int mode) {
         String editDate = getDate();
         List<ServiceDO> result = mesosService.getServices(dns,clusterId);
 
         if (null == result) return null;
-        String tf =  haproxyService.addOrUpdate(newServiceName,oldServiceName,result,editDate,clusterId);
+        String tf =  haproxyService.addOrUpdate(newServiceName,oldServiceName,result,editDate,clusterId,mode);
         if (null == tf) return null;
 
         Gson gson = new Gson();

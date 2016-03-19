@@ -15,7 +15,7 @@ public interface HaproxyService {
     /**
      * 新增或更新 ACL  haproxy.cfg
      */
-    public String addOrUpdate(String newServiceName,String oldServiceName,List<ServiceDO> serviceDOs,String editDate,String cluster);
+    public String addOrUpdate(String newServiceName,String oldServiceName,List<ServiceDO> serviceDOs,String editDate,String cluster,int mode);
     /**
      * 查询 ACL haproxy.cfg by appname
      */
