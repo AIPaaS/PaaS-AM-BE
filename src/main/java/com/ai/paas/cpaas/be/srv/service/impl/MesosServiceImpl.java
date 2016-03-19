@@ -75,6 +75,10 @@ public class MesosServiceImpl implements MesosService {
 
         Gson gson=new Gson();
         List<ServiceDO> serviceDOs = gson.fromJson(result, new TypeToken<List<ServiceDO>>(){}.getType());
+        if(null == serviceDOs) {
+            logger.warn("MesosService.getServices serviceDOs is null");
+            return null;
+        }
 
         for (ServiceDO tmp:serviceDOs){
             if (null == tmp.getIp() || null == tmp.getPort()) {
