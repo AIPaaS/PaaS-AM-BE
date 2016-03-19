@@ -12,9 +12,9 @@
     - name: delete oldservername acl anyway
       command: sed -i '/\<{{ oldservername }}\>/d' /etc/haproxy/haproxy.cfg
       sudo: yes
-    - name: delete newservername acl anyway
-      command: sed -i '/\<{{ newservername }}\>/d' /etc/haproxy/haproxy.cfg
-      sudo: yes
+#    - name: delete newservername acl anyway
+#      command: sed -i '/\<{{ newservername }}\>/d' /etc/haproxy/haproxy.cfg
+#      sudo: yes
     - name: insert new acl 
       shell: echo "{{ insertacl }}" >> /etc/haproxy/haproxy.cfg
       sudo: yes
