@@ -31,7 +31,6 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 		createAppReq.setMem(container.getMem());
 		createAppReq.setInstances(container.getInstances());
 		createAppReq.setRequirePorts(false);
-		createAppReq.setMaxLaunchDelaySeconds(3);
 		String depends = container.getDepends();
 		if (StringUtils.isNotBlank(depends)) {
 			createAppReq.setDependencies(Arrays.asList(depends.split(",", -1)));
