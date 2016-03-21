@@ -3,6 +3,8 @@ package test.dubborest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ai.paas.cpaas.be.srv.interfaces.IAppAccessManager;
+import com.ai.paas.cpaas.be.srv.manage.model.AppAccess;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +19,17 @@ import com.google.gson.Gson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "/consumer.xml" })
-public class RestService {
+public class RestService{
 	@Autowired
 	private IExternalServiceManager externalServiceManager;
 	@Reference
 	private IExternalServiceManager iExternalServiceManager;
-	
-	@Test
+
+	@Autowired
+	private IAppAccessManager iAppAccessManager;
+
+
+		@Test
 	public void add() {
 		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
 		externalServiceReq.setClusterId("dev");
@@ -40,5 +46,21 @@ public class RestService {
 		externalServiceReq.setCheck(checks);
 		String result= externalServiceManager.add((new Gson()).toJson(externalServiceReq));
 		System.out.println(result);
+	}
+
+	@Test
+	public void haproxyAdd() {
+
+		AppAccess appAccess = new AppAccess();
+		appAccess.setDns("_shao-test._tcp.marathon.ai"+"duang~~~~");
+		appAccess.setAccessCode("shao-test");
+		appAccess.setAccessCodeOld("shao-test");
+		appAccess.setProtocol(1);
+		appAccess.setResCenterId("dev");
+		appAccess.setContainer("ghoul");
+
+//		String result = iAppAccessManager.add((new Gson()).toJson(appAccess));
+//		System.out.println(result);
+
 	}
 }
