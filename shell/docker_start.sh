@@ -16,4 +16,4 @@ done
 
 echo $CP
 
-nohup ${JAVA_HOME}/bin/java -classpath $CONF_DIR:$CP  com.ai.paas.ipaas.DubboServiceStart $1 &
+${JAVA_HOME}/bin/java -classpath $CONF_DIR:$CP  com.ai.paas.ipaas.DubboServiceStart $1

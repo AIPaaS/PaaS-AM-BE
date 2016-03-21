@@ -2,7 +2,7 @@ package com.ai.paas.cpaas.be.am.manage.model.chronos;
 
 import java.util.List;
 
-import com.ai.paas.cpaas.be.am.manage.model.Parameter;
+import com.ai.paas.cpaas.be.am.manage.model.EnvironmentVariable;
 
 public class ChronosJob {
 	private String name;
@@ -30,7 +30,7 @@ public class ChronosJob {
 	private Boolean dataProcessingJobType;
 	private Integer errorsSinceLastSuccess;
 	private List<String> parents;
-	private List<Parameter> environmentVariables;
+	private List<EnvironmentVariable> environmentVariables;
 	private List<List<String>> constraints;
 	private Container container;
 
@@ -42,11 +42,11 @@ public class ChronosJob {
 		this.container = container;
 	}
 
-	public List<Parameter> getEnvironmentVariables() {
+	public List<EnvironmentVariable> getEnvironmentVariables() {
 		return environmentVariables;
 	}
 
-	public void setEnvironmentVariables(List<Parameter> environmentVariables) {
+	public void setEnvironmentVariables(List<EnvironmentVariable> environmentVariables) {
 		this.environmentVariables = environmentVariables;
 	}
 

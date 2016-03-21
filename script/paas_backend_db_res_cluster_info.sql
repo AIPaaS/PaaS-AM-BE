@@ -16,20 +16,22 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `res_instance_props`
+-- Table structure for table `res_cluster_info`
 --
 
-DROP TABLE IF EXISTS `res_instance_props`;
+DROP TABLE IF EXISTS `res_cluster_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `res_instance_props` (
-  `key_id` int(11) NOT NULL AUTO_INCREMENT,
-  `key_code` varchar(4000) NOT NULL,
-  `key_value` varchar(4000) DEFAULT NULL,
+CREATE TABLE `res_cluster_info` (
   `cluster_id` varchar(64) NOT NULL,
-  `state` int(11) DEFAULT NULL,
-  PRIMARY KEY (`key_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `cluster_name` varchar(255) NOT NULL,
+  `marathon_addr` varchar(512) NOT NULL,
+  `consul_addr` varchar(512) NOT NULL,
+  `chronos_addr` varchar(512) DEFAULT NULL,
+  `mesos_domain` varchar(128) NOT NULL,
+  `external_domain` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`cluster_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -41,4 +43,4 @@ CREATE TABLE `res_instance_props` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-
+-- Dump completed on 2016-03-15 19:42:03

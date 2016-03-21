@@ -1,18 +1,18 @@
 package com.ai.paas.cpaas.be.am.manage.model;
 
 public class LogReq extends GeneralReq {
-	private String lastFetchTime;
+	private Long lastFetchTime;
 	private Integer reqId;
 
 	public Integer getReqId() {
 		return reqId;
 	}
 
-	public String getLastFetchTime() {
+	public Long getLastFetchTime() {
 		return lastFetchTime;
 	}
 
-	public void setLastFetchTime(String lastFetchTime) {
+	public void setLastFetchTime(Long lastFetchTime) {
 		this.lastFetchTime = lastFetchTime;
 	}
 
