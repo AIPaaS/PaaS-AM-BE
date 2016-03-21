@@ -50,6 +50,7 @@ public class DirectRemoteService implements IRemoteService {
 			HttpEntity respEntity = resp.getEntity();
 			String respString = EntityUtils.toString(respEntity, "UTF-8");
 			logger.info(resp.getStatusLine().getStatusCode());
+			logger.info("deploy longrun response : " + respString);
 			if (resp.getStatusLine().getStatusCode() == 201) {
 				t = (new Gson()).fromJson(respString, cls);
 				t.setSuccess(true);
