@@ -6,8 +6,11 @@
     - name: copy haproxy.cfg bak
       command: cp -f /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
       sudo: yes
+    - name: mkdir date edit log folder
+      command: mkdir -p /etc/haproxy/log
+      sudo: yes
     - name: copy haproxy.cfg logbak
-      command: cp -f /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy{{ haproxydate }}.bak
+      command: cp -f /etc/haproxy/haproxy.cfg /etc/haproxy/log/haproxy{{ haproxydate }}.bak
       sudo: yes
     - name: delete oldservername acl anyway
       command: sed -i '/\<{{ oldservername }}\>/d' /etc/haproxy/haproxy.cfg
