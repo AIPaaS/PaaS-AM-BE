@@ -37,9 +37,6 @@ public class HaproxyServiceImpl implements HaproxyService {
     @Override
     public String addOrUpdate(String newServiceName, String oldServiceName, List<ServiceDO> serviceDOs,String editDate,String cluster,int mode) {
         //get acl
-        if (mode == 0) {
-
-        }
         String getAcl = mkAcl(newServiceName,serviceDOs,mode);
         if (null == getAcl) {
             logger.warn("HaproxyService.addOrUpdate haproxy acl canot make");

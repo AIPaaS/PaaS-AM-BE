@@ -42,7 +42,12 @@ public class MHServiceImpl implements MHService {
         TransResultVo resultVo = gson.fromJson(tf, TransResultVo.class);
 
         HaproxyResultVo haproxyResultVo = new HaproxyResultVo();
-        haproxyResultVo.setCode(resultVo.getCode());
+
+        if (resultVo.getCode().isEmpty()){
+            haproxyResultVo.setCode("1");
+        }else {
+            haproxyResultVo.setCode(resultVo.getCode());
+        }
         haproxyResultVo.setMsg(resultVo.getMsg());
         haproxyResultVo.setAccessUrl(mkAccessUrl(clusterId,newServiceName));
 
