@@ -126,8 +126,7 @@ public abstract class RunJobThread<T> implements Runnable {
 					else {
 						// http error ,record message to database without
 						// retry
-						appTaskDetailService.updateAppTaskDetail(taskIdInfo.getTaskId(), TaskStateType.FAIL);
-						appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), getAppResp.getFailedMessage(), TaskStateType.FAIL);
+						getInfoFailed(taskIdInfo, getAppResp);
 						needRemove.add(taskIdInfo);
 					}
 				}
@@ -157,6 +156,11 @@ public abstract class RunJobThread<T> implements Runnable {
 		} catch (InterruptedException e) {
 			logger.error(e);
 		}
+	}
+
+	protected void getInfoFailed(TaskIdInfo taskIdInfo, GetAppResp getAppResp) {
+		appTaskDetailService.updateAppTaskDetail(taskIdInfo.getTaskId(), TaskStateType.FAIL);
+		appTaskLogService.saveTaskLog(taskIdInfo.getTaskId(), getAppResp.getFailedMessage(), TaskStateType.FAIL);
 	}
 
 	private void executeCallback() throws RemoteServiceException {
