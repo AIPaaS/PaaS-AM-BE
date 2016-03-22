@@ -43,7 +43,7 @@ public class MHServiceImpl implements MHService {
 
         HaproxyResultVo haproxyResultVo = new HaproxyResultVo();
 
-        if (resultVo.getCode().isEmpty()){
+        if (null == resultVo.getCode()){
             haproxyResultVo.setCode("1");
         }else {
             haproxyResultVo.setCode(resultVo.getCode());
@@ -69,7 +69,7 @@ public class MHServiceImpl implements MHService {
 
         HaproxyResultVo haproxyResultVo = new HaproxyResultVo();
 
-        if (resultVo.getCode().isEmpty()){
+        if (null == resultVo.getCode()){
             haproxyResultVo.setCode("1");
         }else {
             haproxyResultVo.setCode(resultVo.getCode());
