@@ -78,7 +78,6 @@ public class DeployServiceManage implements IDeployServiceManager {
 			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_SUCCESS);
 			generalResp.setResultMsg("deploy started");
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error(e);
 			generalResp.setResultCode(PaaSMgmtConstant.REST_SERVICE_RESULT_FAIL);
 			generalResp.setResultMsg("deploy failed because exception");
@@ -90,6 +89,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 
 	@Override
 	public String destroyLongRun(String param) {
+		logger.info("destroy longrun param......." + param);
 		Gson gson = new Gson();
 		GeneralDeployResp generalResp = new GeneralDeployResp();
 		int reqId = -1;
