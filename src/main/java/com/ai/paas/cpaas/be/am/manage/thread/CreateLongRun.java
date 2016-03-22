@@ -2,7 +2,9 @@ package com.ai.paas.cpaas.be.am.manage.thread;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +37,13 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 		if (StringUtils.isNotBlank(depends)) {
 			createAppReq.setDependencies(Arrays.asList(depends.split(",", -1)));
 		}
+		if (CollectionUtils.isNotEmpty(container.getAttrs())) {
+			Map<String, String> env = new HashMap<>();
+			for (Parameter parameter : container.getAttrs()) {
+				env.put(parameter.getKey(), parameter.getValue());
+			}
+			createAppReq.setEnv(env);
+		}
 		CreateAppReq.Container appContainer = new CreateAppReq.Container();
 		appContainer.setType("DOCKER");
 		Docker docker = new Docker();
@@ -53,10 +62,8 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 			docker.setPortMappings(portMappings);
 		}
 		List<Parameter> parameters = new ArrayList<>();
-		parameters.add(new Parameter("volume", container.getLogDir()));
-		if (CollectionUtils.isNotEmpty(container.getAttrs())) {
-			parameters.addAll(container.getAttrs());
-		}
+		if (StringUtils.isNotBlank(container.getLogDir()))
+			parameters.add(new Parameter("volume", container.getLogDir()));
 		docker.setParameters(parameters);
 		docker.setPrivileged(false);
 		appContainer.setDocker(docker);

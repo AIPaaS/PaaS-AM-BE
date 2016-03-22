@@ -1,6 +1,7 @@
 package com.ai.paas.cpaas.be.am.manage.model.marathon;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ai.paas.cpaas.be.am.manage.model.Parameter;
 import com.google.gson.Gson;
@@ -25,6 +26,15 @@ public class CreateAppReq {
 	private Double backoffFactor;
 	private Integer maxLaunchDelaySeconds;
 	private UpgradeStrategy upgradeStrategy;
+	private Map<String, String> env;
+
+	public Map<String, String> getEnv() {
+		return env;
+	}
+
+	public void setEnv(Map<String, String> env) {
+		this.env = env;
+	}
 
 	public String toJson() {
 		return (new Gson()).toJson(this);
