@@ -54,6 +54,9 @@ public class CreateLongRun extends RunJobThread<CreateAppReq> {
 		}
 		List<Parameter> parameters = new ArrayList<>();
 		parameters.add(new Parameter("volume", container.getLogDir()));
+		if (CollectionUtils.isNotEmpty(container.getAttrs())) {
+			parameters.addAll(container.getAttrs());
+		}
 		docker.setParameters(parameters);
 		docker.setPrivileged(false);
 		appContainer.setDocker(docker);

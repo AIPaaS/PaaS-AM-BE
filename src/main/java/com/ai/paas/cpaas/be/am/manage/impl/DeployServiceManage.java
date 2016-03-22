@@ -59,6 +59,7 @@ public class DeployServiceManage implements IDeployServiceManager {
 
 	@Override
 	public String createLongRun(String param) {
+		logger.info("deploy longrun param......." + param);
 		Gson gson = new Gson();
 		GeneralDeployResp generalResp = new GeneralDeployResp();
 		int reqId = -1;
