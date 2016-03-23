@@ -1,5 +1,7 @@
 package com.ai.paas.cpaas.be.am.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +22,11 @@ public class ResClusterInfoServiceImpl implements IResClusterInfoService {
 		ResClusterInfoCriteria resClusterInfoCriteria = new ResClusterInfoCriteria();
 		Criteria criteria = resClusterInfoCriteria.createCriteria();
 		criteria.andClusterIdEqualTo(clusterId);
-		return mapper.selectByExample(resClusterInfoCriteria).get(0);
+		List<ResClusterInfo> list = mapper.selectByExample(resClusterInfoCriteria);
+		if(list != null && !list.isEmpty()){
+			return list.get(0);
+		}
+		return new ResClusterInfo();
 	}
 
 }
