@@ -1,5 +1,6 @@
 package com.ai.paas.cpaas.be.srv;
 
+import com.ai.paas.cpaas.be.srv.manage.model.haproxy.HaproxyCfgPointDO;
 import com.ai.paas.cpaas.be.srv.util.AnsibleCommand;
 import com.ai.paas.cpaas.be.srv.util.ExceptionCodeConstants;
 import com.ai.paas.cpaas.be.srv.util.TaskUtil;
@@ -24,7 +25,7 @@ public class AddOrUpdateHaproxyCfg {
     private static Logger logger = Logger.getLogger(AddOrUpdateHaproxyCfg.class);
 
 
-    public static String execute(String clusterId,String user,String password,String newservername,String insertacl,String haproxydate,String oldservername) throws Exception {
+    public static String execute(String clusterId, String user, String password, String newservername, HaproxyCfgPointDO insertacl, String haproxydate, String oldservername) throws Exception {
         //远程调用
         boolean useAgent = true;
 
@@ -39,7 +40,11 @@ public class AddOrUpdateHaproxyCfg {
         configvars.add("hosts=haproxy");
         configvars.add("user=" + user);
         configvars.add("newservername=" + newservername);
-        configvars.add("insertacl=" + insertacl);
+        //插入
+        configvars.add("insertacl=" + insertacl.getAcl());
+        configvars.add("insertusebackend=" + insertacl.getUseBackend());
+        configvars.add("insertbackend=" + insertacl.getBackend());
+
         configvars.add("haproxydate=" + haproxydate);
         configvars.add("oldservername=" + oldservername);
 

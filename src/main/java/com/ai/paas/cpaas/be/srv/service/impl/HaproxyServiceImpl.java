@@ -6,6 +6,7 @@ import com.ai.paas.cpaas.be.srv.DelAclHaproxyCfg;
 import com.ai.paas.cpaas.be.srv.RollBackHaproxyCfg;
 import com.ai.paas.cpaas.be.srv.manage.model.HaproxyInfoDO;
 import com.ai.paas.cpaas.be.srv.manage.model.haproxy.HaproxyCfgDO;
+import com.ai.paas.cpaas.be.srv.manage.model.haproxy.HaproxyCfgPointDO;
 import com.ai.paas.cpaas.be.srv.manage.model.mesos.ServiceDO;
 import com.ai.paas.cpaas.be.srv.service.HaproxyService;
 import com.ai.paas.cpaas.be.srv.util.MHServiceInfo;
@@ -37,7 +38,7 @@ public class HaproxyServiceImpl implements HaproxyService {
     @Override
     public String addOrUpdate(String newServiceName, String oldServiceName, List<ServiceDO> serviceDOs,String editDate,String cluster,int mode) {
         //get acl
-        String getAcl = mkAcl(newServiceName,serviceDOs,mode);
+        HaproxyCfgPointDO getAcl = mkAcl(newServiceName,serviceDOs,mode);
         if (null == getAcl) {
             logger.warn("HaproxyService.addOrUpdate haproxy acl canot make");
             return null;
@@ -148,12 +149,16 @@ public class HaproxyServiceImpl implements HaproxyService {
     }
 
     //获取acl配置
-    public static String mkAcl ( String serviceName,List<ServiceDO> serviceDOs,int mode ) {
+    public static HaproxyCfgPointDO mkAcl ( String serviceName,List<ServiceDO> serviceDOs,int mode ) {
         String balance;
         String requestMode;
+        String aclPoint = mkAclPoint(mode);
+        String useBackendPoint = mkUseBackendPoint(mode);
+        String backendPoint = mkBackendPoint(mode);
         if (mode == 1){
              balance = "source";
              requestMode = "http";
+
         }else {
              balance = "leastconn";
              requestMode = "tcp";
@@ -161,17 +166,33 @@ public class HaproxyServiceImpl implements HaproxyService {
 
         String minresult = "";
         int num = 1;
+        //删除标记
+        String accessPoint =  mkAccessCodePoint(serviceName);
 
         for (ServiceDO tmp:serviceDOs) {
             //TODO ServiceDOInfo shoudbe all exist
             if (null == tmp.getIp() || null == tmp.getPort()) return null;
-            minresult = minresult +"server__" + serviceName + "_server-" + num + "__" + tmp.getIp() + ":" + tmp.getPort() + "__check__";
+            minresult = minresult +"|server__" + serviceName + "_server-" + num + "__" + tmp.getIp() + ":" + tmp.getPort() + "__check__" + accessPoint ;
             num  = num +1;
         }
 //        String result  =  "acl__" + serviceName +"__path_beg__-i__/" + serviceName + "/__use_backend__" + serviceName + "_servers__if__" + serviceName + "__backend__" + serviceName +"_servers__balance__source__mode__http__" + minresult;
-        String result  =  "acl__" + serviceName +"__path_beg__-i__/" + serviceName + "/__use_backend__" + serviceName + "_servers__if__" + serviceName + "__backend__" + serviceName +"_servers__balance__" + balance + "__mode__" + requestMode + "__" + minresult;
+//        String result  =  "acl__" + serviceName +"__path_beg__-i__/" +
+//                serviceName + "/__use_backend__" + serviceName + "_servers__if__" +
+//                serviceName + "__backend__" + serviceName +"_servers__balance__" +
+//                balance + "__mode__" + requestMode + "__" + minresult;
 
-        return result;
+        String resultAcl = "acl__" + serviceName +"__path_beg__-i__\\/" + serviceName + "\\/__" + accessPoint + aclPoint;
+        String resultUseBackend = "use_backend__" + serviceName + "_servers__if__" + serviceName + "__" + accessPoint + useBackendPoint;
+        String resultBackend = "backend__" + serviceName +"_servers__balance__" + balance + "__mode__" + requestMode + "__" + accessPoint + minresult + backendPoint;
+
+
+        HaproxyCfgPointDO haproxyCfgPointDO = new HaproxyCfgPointDO();
+        haproxyCfgPointDO.setAcl(resultAcl);
+        haproxyCfgPointDO.setUseBackend(resultUseBackend);
+        haproxyCfgPointDO.setBackend(resultBackend);
+
+
+        return haproxyCfgPointDO;
     }
 
     //获取执行命令
@@ -201,5 +222,46 @@ public class HaproxyServiceImpl implements HaproxyService {
     public static String getpasswd (String pwd) {
         return CiperUtil.decrypt(CiperUtil.SECURITY_KEY,pwd);
     }
+
+    //生成特定删除标识
+    public static String mkAccessCodePoint (String accessCode) {
+        return "#" + accessCode;
+    }
+    //重新生成特定插入acl标识
+    public static String mkAclPoint (int mode) {
+        if (mode == 1) {
+          return  "|#httpacl";
+        }else {
+            return "|#tcpacl";
+        }
+    }
+
+    //重新生成特定插入usebackend标识
+    public static String mkUseBackendPoint (int mode) {
+        if (mode == 1) {
+            return  "|#httpusebackend";
+        }else {
+            return "|#tcpusebackend";
+        }
+    }
+
+    //重新生成特定插入backend标识
+    public static String mkBackendPoint (int mode) {
+        if (mode == 1) {
+            return  "|#httpbackend";
+        }else {
+            return "|#tcpbackend";
+        }
+    }
+
+
+//    public static void main (String[] args){
+//        String abc = "sss008";
+//        String aaa = CiperUtil.encrypt(CiperUtil.SECURITY_KEY,abc);
+//        System.out.println(aaa);
+//        String aaaaaa = mkAccessCodePoint("shao-test");
+//        System.out.println(aaaaaa);
+//        System.out.println("\\");
+//    }
 
 }

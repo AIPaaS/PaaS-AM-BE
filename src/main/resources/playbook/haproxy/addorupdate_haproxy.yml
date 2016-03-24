@@ -13,18 +13,26 @@
       command: cp -f /etc/haproxy/haproxy.cfg /etc/haproxy/log/haproxy{{ haproxydate }}.bak
       sudo: yes
     - name: delete oldservername acl anyway
-      command: sed -i '/\<{{ oldservername }}\>/d' /etc/haproxy/haproxy.cfg
+      command: sed -i '/#{{ oldservername }}\>/d' /etc/haproxy/haproxy.cfg
       sudo: yes
-#    - name: delete newservername acl anyway
-#      command: sed -i '/\<{{ newservername }}\>/d' /etc/haproxy/haproxy.cfg
-#      sudo: yes
-    - name: insert new acl 
-      shell: echo "{{ insertacl }}" >> /etc/haproxy/haproxy.cfg
+    - name: insert new acl step1
+      command: sed -i 's/^#httpacl\>/{{ insertacl }}/g' /etc/haproxy/haproxy.cfg
       sudo: yes
-    - name: edit acl del '__'
+    - name: insert new acl step2
+      command: sed -i 's/^#httpusebackend\>/{{ insertusebackend }}/g' /etc/haproxy/haproxy.cfg
+      sudo: yes
+    - name: insert new acl step3
+      command: sed -i 's/^#httpbackend\>/{{ insertbackend }}/g' /etc/haproxy/haproxy.cfg
+      sudo: yes
+    - name: insert new acl step4
       command: sed -i 's/__/ /g' /etc/haproxy/haproxy.cfg
       sudo: yes
-    - name: reload haproxy service
-      command: /usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg
+    - name: insert new acl step5
+      command: sed -i 's/|/\n/g' /etc/haproxy/haproxy.cfg
       sudo: yes
-
+#    - name: reload haproxy service
+#      command: /usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg
+#      sudo: yes
+    - name: reload haproxy service
+      command: killall haproxy
+      sudo: yes
