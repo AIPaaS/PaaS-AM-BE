@@ -13,9 +13,12 @@
       command: cp -f /etc/haproxy/haproxy.cfg /etc/haproxy/log/haproxy{{ haproxydate }}.bak
       sudo: yes
     - name: delete oldservername acl anyway
-      command: sed -i '/\<{{ oldservername }}\>/d' /etc/haproxy/haproxy.cfg
+      command: sed -i '/#{{ oldservername }}\>/d' /etc/haproxy/haproxy.cfg
       sudo: yes
+#    - name: reload haproxy service
+#      command: /usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg
+#      sudo: yes
     - name: reload haproxy service
-      command: /usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg
+      command: killall haproxy
       sudo: yes
 
